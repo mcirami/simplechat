@@ -5383,17 +5383,20 @@ var Chat = function Chat() {
   var allMessages = [];
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     // Enable pusher logging - don't include this in production
-    (pusher_js__WEBPACK_IMPORTED_MODULE_2___default().logToConsole) = true;
+    //Pusher.logToConsole = true;
     var pusher = new (pusher_js__WEBPACK_IMPORTED_MODULE_2___default())('1ae4bd9595a6c0f1c9a6', {
       cluster: 'us2'
     });
     var channel = pusher.subscribe('chat');
     channel.bind('message', function (data) {
-      console.log(data);
+      //console.log(data);
       allMessages.push(data);
       setMessages(allMessages);
     });
   }, []);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    console.log("hi");
+  }, [setMessages]);
 
   var handleSubmit = /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(e) {
@@ -5408,7 +5411,7 @@ var Chat = function Chat() {
                 message: message
               };
               axios__WEBPACK_IMPORTED_MODULE_3___default().post('http://localhost:8081/api/messages', packets).then(function (response) {
-                console.log(response);
+                //console.log(response);
                 setMessage('');
               })["catch"](function (error) {
                 console.log(error);
@@ -5479,11 +5482,11 @@ var Chat = function Chat() {
                       className: "d-flex w-100 align-items-center justify-content-between",
                       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("strong", {
                         className: "mb-1",
-                        children: message.username
+                        children: message.message
                       })
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
                       className: "col-10 mb-1 small",
-                      children: message.message
+                      children: message.username
                     })]
                   }, index);
                 })

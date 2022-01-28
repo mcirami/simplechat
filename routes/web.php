@@ -13,12 +13,12 @@ use App\Http\Controllers\ChatController;
 |
 */
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('welcome');
-});
+});*/
 
 Route::group(['middleware' => 'web'], function() {
-    Route::get('/chat/{page}', [ChatController::class, 'showPrivateChat']);
-    Route::get('/chat', [ChatController::class, 'show']);
+    Route::get('{page}', [ChatController::class, 'showPrivateChat']);
+    Route::get('/', [ChatController::class, 'show']);
 
 });

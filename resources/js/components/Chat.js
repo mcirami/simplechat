@@ -11,7 +11,7 @@ const Chat = () => {
 
     useEffect(() => {
         // Enable pusher logging - don't include this in production
-        Pusher.logToConsole = true;
+        //Pusher.logToConsole = true;
 
         const pusher = new Pusher('1ae4bd9595a6c0f1c9a6', {
             cluster: 'us2'
@@ -19,12 +19,16 @@ const Chat = () => {
 
         const channel = pusher.subscribe('chat');
         channel.bind('message', function(data) {
-            console.log(data);
+            //console.log(data);
 
             allMessages.push(data);
             setMessages(allMessages);
         });
     }, []);
+
+    useEffect(() => {
+        console.log("hi");
+    }, [setMessages])
 
     const handleSubmit = async e => {
         e.preventDefault();
@@ -35,7 +39,7 @@ const Chat = () => {
         }
         axios.post('http://localhost:8081/api/messages', packets)
         .then((response) => {
-            console.log(response);
+            //console.log(response);
 
             setMessage('');
         }).catch((error) => {
@@ -85,9 +89,9 @@ const Chat = () => {
                                         return (
                                             <div key={index}>
                                                 <div className="d-flex w-100 align-items-center justify-content-between">
-                                                    <strong className="mb-1">{message.username}</strong>
+                                                    <strong className="mb-1">{message.message}</strong>
                                                 </div>
-                                                <div className="col-10 mb-1 small">{message.message}</div>
+                                                <div className="col-10 mb-1 small">{message.username}</div>
                                             </div>
                                         )
                                     })}
