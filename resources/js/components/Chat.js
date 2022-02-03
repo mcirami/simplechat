@@ -7,28 +7,30 @@ const Chat = () => {
     const [username, setUsername] = useState('username');
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState('')
+    const [pathName, setPathName] = useState(
+        window.location.pathname.replace("/", "")
+    );
     let allMessages = [];
 
     useEffect(() => {
         // Enable pusher logging - don't include this in production
-        //Pusher.logToConsole = true;
+        Pusher.logToConsole = true;
 
         const pusher = new Pusher('1ae4bd9595a6c0f1c9a6', {
-            cluster: 'us2'
+            cluster: 'us2',
+            encrypted: true,
         });
-
-        const channel = pusher.subscribe('chat');
-        channel.bind('message', function(data) {
-            //console.log(data);
+        console.log(pathName);
+        const channel = pusher.subscribe('chat-' + pathName);
+        channel.bind('send-message', function(data) {
+            console.log(data);
 
             allMessages.push(data);
             setMessages(allMessages);
         });
     }, []);
 
-    useEffect(() => {
-        console.log("hi");
-    }, [setMessages])
+    console.log(messages);
 
     const handleSubmit = async e => {
         e.preventDefault();
@@ -37,7 +39,7 @@ const Chat = () => {
             username: username,
             message: message
         }
-        axios.post('http://localhost:8081/api/messages', packets)
+        axios.post('http://localhost:8081/messages', packets)
         .then((response) => {
             //console.log(response);
 
@@ -89,9 +91,9 @@ const Chat = () => {
                                         return (
                                             <div key={index}>
                                                 <div className="d-flex w-100 align-items-center justify-content-between">
-                                                    <strong className="mb-1">{message.message}</strong>
+                                                    <strong className="mb-1">{message.username}</strong>
                                                 </div>
-                                                <div className="col-10 mb-1 small">{message.username}</div>
+                                                <div className="col-10 mb-1 small">{message.message}</div>
                                             </div>
                                         )
                                     })}

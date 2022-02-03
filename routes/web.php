@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,9 +17,14 @@ use App\Http\Controllers\ChatController;
 /*Route::get('/', function () {
     return view('welcome');
 });*/
+Route::get('/', [ChatController::class, 'redirect']);
 
-Route::group(['middleware' => 'web'], function() {
-    Route::get('{page}', [ChatController::class, 'showPrivateChat']);
-    Route::get('/', [ChatController::class, 'show']);
+/*Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
-});
+Route::group(['prefix' => 'chat'], function() {
+    Route::get('{slug}', [ChatController::class, 'showChat']);
+});*/
+
+require __DIR__.'/auth.php';
