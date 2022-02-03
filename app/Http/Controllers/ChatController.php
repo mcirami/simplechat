@@ -57,9 +57,4 @@ class ChatController extends Controller
 
         return view('chat');
     }
-
-    public function redirect() {
-
-        return redirect('/chat');
-    }
 }

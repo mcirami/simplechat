@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\vendor\Chatify;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Response;
@@ -13,6 +14,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Str;
+use Illuminate\View\View;
+use Psy\Util\Json;
+
 class MessagesController extends Controller
 {
     protected $perPage = 30;
@@ -22,7 +26,7 @@ class MessagesController extends Controller
      * Authinticate the connection for pusher
      *
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
     public function pusherAuth(Request $request)
     {
@@ -49,7 +53,8 @@ class MessagesController extends Controller
      * Returning the view of the app with the required data.
      *
      * @param int $id
-     * @return void
+     * @return View
+     *
      */
     public function index( $id = null)
     {
@@ -71,7 +76,7 @@ class MessagesController extends Controller
      * Fetch data by id for (user/group)
      *
      * @param Request $request
-     * @return collection
+     * @return JsonResponse
      */
     public function idFetchData(Request $request)
     {
@@ -115,7 +120,7 @@ class MessagesController extends Controller
      * Send a message to database
      *
      * @param Request $request
-     * @return JSON response
+     * @return JSONResponse
      */
     public function send(Request $request)
     {
@@ -192,7 +197,7 @@ class MessagesController extends Controller
      * fetch [user/group] messages from database
      *
      * @param Request $request
-     * @return JSON response
+     * @return JsonResponse
      */
     public function fetch(Request $request)
     {
@@ -230,7 +235,7 @@ class MessagesController extends Controller
      * Make messages as seen
      *
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
     public function seen(Request $request)
     {
@@ -246,7 +251,7 @@ class MessagesController extends Controller
      * Get contacts list
      *
      * @param Request $request
-     * @return JSON response
+     * @return JSONResponse
      */
     public function getContacts(Request $request)
     {
@@ -287,7 +292,7 @@ class MessagesController extends Controller
      * Update user's list item data
      *
      * @param Request $request
-     * @return JSON response
+     * @return JSONResponse
      */
     public function updateContactItem(Request $request)
     {
@@ -310,7 +315,7 @@ class MessagesController extends Controller
      * Put a user in the favorites list
      *
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
     public function favorite(Request $request)
     {
@@ -335,7 +340,7 @@ class MessagesController extends Controller
      * Get favorites list
      *
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
     public function getFavorites(Request $request)
     {
@@ -361,7 +366,7 @@ class MessagesController extends Controller
      * Search in messenger
      *
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
     public function search(Request $request)
     {
@@ -392,7 +397,7 @@ class MessagesController extends Controller
      * Get shared photos
      *
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
     public function sharedPhotos(Request $request)
     {
@@ -416,7 +421,7 @@ class MessagesController extends Controller
      * Delete conversation
      *
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
     public function deleteConversation(Request $request)
     {
@@ -490,7 +495,7 @@ class MessagesController extends Controller
      * Set user's active status
      *
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
     public function setActiveStatus(Request $request)
     {

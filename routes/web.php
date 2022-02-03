@@ -14,10 +14,9 @@ use App\Http\Controllers\ChatController;
 |
 */
 
-/*Route::get('/', function () {
-    return view('welcome');
-});*/
-Route::get('/', [ChatController::class, 'redirect']);
+Route::get('/', function () {
+    return redirect('/chat');
+});
 
 /*Route::get('/dashboard', function () {
     return view('dashboard');
