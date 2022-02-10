@@ -104,7 +104,7 @@ class MessagesController extends Controller
      * to be downloadable.
      *
      * @param string $fileName
-     * @return void
+     * @return
      */
     public function download($fileName)
     {
@@ -383,7 +383,7 @@ class MessagesController extends Controller
             ])->render();
         }
         if($records->total() < 1){
-            $getRecords = '<p class="message-hint center-el"><span>Nothing to show.</span></p>';
+            $getRecords = '<p class="message-hint center-el"><span>No Contacts Found.</span></p>';
         }
         // send the response
         return Response::json([
@@ -507,4 +507,5 @@ class MessagesController extends Controller
             'status' => $update,
         ], 200);
     }
+
 }

@@ -13,13 +13,22 @@
                 </nav>
             </nav>
             {{-- Search input --}}
-            <input type="text" class="messenger-search" placeholder="Search" />
+            <form id="add_user_form" action="#" >
+                <input class="messenger-search" type="text"  placeholder="Enter User Name" />
+                <button class="button" type="submit">+ Add User</button>
+            </form>
+
+
+            {{--React Component--}}
+            {{--<div id="add_user"></div>--}}
+
+
             {{-- Tabs --}}
             <div class="messenger-listView-tabs">
                 <a href="#" @if($type == 'user') class="active-tab" @endif data-view="users">
                     <span class="far fa-user"></span> People</a>
-                <a href="#" @if($type == 'group') class="active-tab" @endif data-view="groups">
-                    <span class="fas fa-users"></span> Groups</a>
+                {{--<a href="#" @if($type == 'group') class="active-tab" @endif data-view="groups">
+                    <span class="fas fa-users"></span> Groups</a>--}}
             </div>
         </div>
         {{-- tabs and lists --}}
@@ -38,24 +47,24 @@
                {!! view('Chatify::layouts.listItem', ['get' => 'saved']) !!}
 
                {{-- Contact --}}
-               <div class="listOfContacts" style="width: 100%;height: calc(100% - 200px);position: relative;"></div>
+               <div class="listOfContacts" style="width: 100%;height: calc(50% - 200px);position: relative;"></div>
 
            </div>
 
            {{-- ---------------- [ Group Tab ] ---------------- --}}
-           <div class="@if($type == 'group') show @endif messenger-tab groups-tab app-scroll" data-view="groups">
-                {{-- items --}}
+           {{--<div class="@if($type == 'group') show @endif messenger-tab groups-tab app-scroll" data-view="groups">
+                --}}{{-- items --}}{{--
                 <p style="text-align: center;color:grey;margin-top:30px">
                     <a target="_blank" style="color:{{$messengerColor}};" href="https://chatify.munafio.com/notes#groups-feature">Click here</a> for more info!
                 </p>
-             </div>
+             </div>--}}
 
              {{-- ---------------- [ Search Tab ] ---------------- --}}
-           <div class="messenger-tab search-tab app-scroll"app-scroll" data-view="search">
+           <div class="messenger-tab search-tab app-scroll" data-view="search">
                 {{-- items --}}
-                <p class="messenger-title">Search</p>
+                {{--<p class="messenger-title">Search</p>--}}
                 <div class="search-records">
-                    <p class="message-hint center-el"><span>Type to search..</span></p>
+                    {{--<p class="message-hint center-el"><span>Type to search..</span></p>--}}
                 </div>
              </div>
         </div>
@@ -76,9 +85,18 @@
                 {{-- header buttons --}}
                 <nav class="m-header-right">
                     <a href="#" class="add-to-favorite"><i class="fas fa-star"></i></a>
-                    <a href="/"><i class="fas fa-home"></i></a>
+                    {{--<a href="/"><i class="fas fa-home"></i></a>--}}
                     <a href="#" class="show-infoSide"><i class="fas fa-info-circle"></i></a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <a href="{{route('logout')}}"
+                                         onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </a>
+                    </form>
                 </nav>
+
             </nav>
         </div>
         {{-- Internet connection --}}

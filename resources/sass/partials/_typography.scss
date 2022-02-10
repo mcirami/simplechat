@@ -1,0 +1,36 @@
+// typography baselines and @font face setups
+
+@font-face {
+    font-family: "poppinsbold";
+    src: url("/css/fonts/poppins-bold-webfont.eot"),
+        url("/css/fonts/poppins-bold-webfont.ttf") format("truetype"),
+        url("/css/fonts/poppins-bold-webfont.woff") format("woff"),
+        url("/css/fonts/poppins-bold-webfont.woff2") format("woff2"),
+        url("/css/fonts/poppins-bold-webfont.svg#opensansregular") format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "muli";
+    src: url("/css/fonts/muli-webfont.eot"),
+        url("/css/fonts/muli-webfont.ttf") format("truetype"),
+        url("/css/fonts/muli-webfont.woff2") format("woff2"),
+        url("/css/fonts/muli-webfont.woff") format("woff"),
+        url("/css/fonts/muli-webfont.svg#opensansbold")
+            format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
+
+h1, h2, h3 {
+    @include poppinsbold;
+}
+
+label, button, h5, a {
+    @include muli;
+}
+
+h4, p {
+    @include muli;
+}

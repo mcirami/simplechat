@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\vendor\Chatify\Api;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Response;
@@ -11,6 +12,7 @@ use Chatify\Facades\ChatifyMessenger as Chatify;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 
@@ -22,7 +24,7 @@ class MessagesController extends Controller
      * Authinticate the connection for pusher
      *
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
     public function pusherAuth(Request $request)
     {
@@ -49,7 +51,8 @@ class MessagesController extends Controller
      * Fetch data by id for (user/group)
      *
      * @param Request $request
-     * @return collection
+     * @return JsonResponse
+     *
      */
     public function idFetchData(Request $request)
     {
@@ -78,7 +81,7 @@ class MessagesController extends Controller
      * to be downloadable.
      *
      * @param string $fileName
-     * @return void
+     * @return JsonResponse
      */
     public function download($fileName)
     {
@@ -99,7 +102,7 @@ class MessagesController extends Controller
      * Send a message to database
      *
      * @param Request $request
-     * @return JSON response
+     * @return JsonResponse
      */
     public function send(Request $request)
     {
@@ -126,7 +129,8 @@ class MessagesController extends Controller
                     $attachment_title = $file->getClientOriginalName();
                     // upload attachment and store the new name
                     $attachment = Str::uuid() . "." . $file->getClientOriginalExtension();
-                    $file->storeAs("public/" . config('chatify.attachments.folder'), $attachment);
+                    Storage::putFileAs('attachments/' . $attachment, $file, 'public');
+                    //$file->storeAs("public/" . config('chatify.attachments.folder'), $attachment);
                 } else {
                     $error->status = 1;
                     $error->message = "File extension not allowed!";
@@ -176,7 +180,7 @@ class MessagesController extends Controller
      * fetch [user/group] messages from database
      *
      * @param Request $request
-     * @return JSON response
+     * @return JsonResponse
      */
     public function fetch(Request $request)
     {
@@ -197,7 +201,7 @@ class MessagesController extends Controller
      * Make messages as seen
      *
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
     public function seen(Request $request)
     {
@@ -213,7 +217,7 @@ class MessagesController extends Controller
      * Get contacts list
      *
      * @param Request $request
-     * @return JSON response
+     * @return JsonResponse
      */
     public function getContacts(Request $request)
     {
@@ -243,7 +247,7 @@ class MessagesController extends Controller
      * Put a user in the favorites list
      *
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
     public function favorite(Request $request)
     {
@@ -268,7 +272,7 @@ class MessagesController extends Controller
      * Get favorites list
      *
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
     public function getFavorites(Request $request)
     {
@@ -286,7 +290,7 @@ class MessagesController extends Controller
      * Search in messenger
      *
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
     public function search(Request $request)
     {
@@ -305,14 +309,14 @@ class MessagesController extends Controller
      * Get shared photos
      *
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
     public function sharedPhotos(Request $request)
     {
         $images = Chatify::getSharedPhotos($request['user_id']);
 
         foreach ($images as $image) {
-            $image = asset('storage/attachments/' . $image);
+            $image = Storage::get('attachments/' . $image);
         }
         // send the response
         return Response::json([
@@ -324,7 +328,7 @@ class MessagesController extends Controller
      * Delete conversation
      *
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
     public function deleteConversation(Request $request)
     {
@@ -366,7 +370,7 @@ class MessagesController extends Controller
                 if (in_array($file->getClientOriginalExtension(), $allowed_images)) {
                     // delete the older one
                     if (Auth::user()->avatar != config('chatify.user_avatar.default')) {
-                        $path = storage_path('app/public/' . config('chatify.user_avatar.folder') . '/' . Auth::user()->avatar);
+                        $path = storage_path(config('chatify.user_avatar.folder') . '/' . Auth::user()->avatar);
                         if (file_exists($path)) {
                             @unlink($path);
                         }
@@ -398,7 +402,7 @@ class MessagesController extends Controller
      * Set user's active status
      *
      * @param Request $request
-     * @return void
+     * @return JsonResponse
      */
     public function setActiveStatus(Request $request)
     {

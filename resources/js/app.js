@@ -1,7 +1,11 @@
 require('./bootstrap');
 
-import Alpine from 'alpinejs';
+/*import Alpine from 'alpinejs';
 
 window.Alpine = Alpine;
 
-Alpine.start();
+Alpine.start();*/
+
+if (document.getElementById('add_user')) {
+    require('./Chat');
+}

@@ -18,9 +18,11 @@ class RegisteredUserController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('auth.register');
+
+        $addUser = $request->query('add');
+        return view('auth.register')->with(['addUser' => $addUser]);
     }
 
     /**
@@ -33,6 +35,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -49,6 +52,9 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+
+        $chatUser = $request->add_chat_user ? "?add_chat_user=" . $request->add_chat_user : "";
+
+        return redirect(RouteServiceProvider::HOME . $chatUser);
     }
 }

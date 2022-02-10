@@ -15,9 +15,15 @@ use App\Http\Controllers\ChatController;
 */
 
 Route::get('/', function () {
-    return redirect('/chat');
+    return view('home');
 });
 
+Route::group(['middleware' => 'auth'], function() {
+
+    Route::get('testing', [ChatController::class, 'testing']);
+    Route::post('add-user/', [ChatController::class, 'addUser']);
+
+});
 /*Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');

@@ -1,0 +1,19 @@
+@mixin poppinsbold {
+    font-family: 'poppinsbold', sans-serif;
+}
+
+@mixin muli {
+    font-family: 'muli', sans-serif;
+}
+
+@mixin boxShadow {
+    -webkit-box-shadow: 0px 0px 35px 5px rgba(170,170,170,0.18);
+    -moz-box-shadow: 0px 0px 35px 5px rgba(170,170,170,0.18);
+    box-shadow: 0px 0px 35px 5px rgba(170,170,170,0.18);
+}
+
+@mixin boxShadowAlt {
+    box-shadow: 0px 0px 4px 1px rgba(170, 170, 170, .5);
+    -moz-box-shadow: 0px 0px 4px 1px rgba(170, 170, 170, .5);
+    -webkit-box-shadow: 0px 0px 4px 1px rgba(170, 170, 170, .5);
+}

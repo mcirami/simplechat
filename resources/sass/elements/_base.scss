@@ -1,0 +1,55 @@
+* {
+    position: relative;
+}
+
+body {
+    height: 100%;
+    max-width: 100%;
+    display: inline-block;
+    width: 100%;
+}
+
+.my_row {
+    width: 100%;
+    float: left;
+    display: block;
+}
+
+h2, h3 {
+    line-height: 1.3;
+}
+
+a {
+    text-decoration: none;
+}
+
+img {
+    width: 100%;
+    height: auto;
+}
+
+.container {
+    max-width: 1200px !important;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 20px;
+}
+
+.button {
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    padding: 10px;
+    width: 100%;
+    max-width: 120px;
+    text-align: center;
+
+    &.red {
+        background: $darkRed;
+        color: $white;
+
+        &:hover {
+            background: $hoverRed;
+        }
+    }
+}

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Events\Message;
 use App\Models\Page;
@@ -13,7 +14,7 @@ use Pusher\Pusher;
 class ChatController extends Controller
 {
 
-    private $pusher;
+    /*private $pusher;
 
     public function __construct() {
         $config = Config::get('broadcasting.connections.pusher');
@@ -31,10 +32,7 @@ class ChatController extends Controller
         );
     }
 
-    public function  show() {
 
-        return view('chat');
-    }
 
     public function sendMessage(Request $request) {
 
@@ -56,5 +54,21 @@ class ChatController extends Controller
         $page = Page::where('route', $slug)->first();
 
         return view('chat');
+    }*/
+
+    public function testing() {
+        $user = User::where('name', 'Matteo')->get();
+        dd($user);
+
+    }
+
+    public function addUser(Request $request) {
+
+        $username = $request->userName;
+
+        $user = User::where('name', $username)->get()->toArray();
+
+        return response()->json(['user' => $user]);
+
     }
 }

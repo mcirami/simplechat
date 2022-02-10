@@ -1,3 +1,237 @@
 .message_section {
     min-height: 300px;
 }
+
+.messenger-listView .m-header {
+    position: relative;
+    padding: 10px !important;
+
+    svg {
+        color: $darkRed;
+    }
+
+    .messenger-headTitle {
+        color: $darkGray;
+    }
+}
+
+.m-header.m-header-messaging {
+    padding: 30px 20px;
+
+    .av-s {
+        width: 40px;
+        height: 40px;
+    }
+
+    .user-name {
+        color: $darkGray;
+        font-size: 20px;
+    }
+
+    .m-header-right {
+        svg {
+            color: $darkRed;
+        }
+    }
+}
+
+
+.messenger-listView .m-body {
+    margin-top: 0;
+}
+
+.messenger-listView-tabs {
+
+    a {
+        color: $darkGray;
+
+        &:hover {
+            background: none;
+        }
+
+        svg {
+            color: $darkRed;
+        }
+
+        &.active-tab {
+            border-bottom: 2px solid $darkRed;
+            color: $darkGray;
+        }
+    }
+}
+
+.messenger-tab {
+    display: block;
+    height: auto;
+
+    .messenger-list-item {
+        height: auto;
+
+        &.m-list-active {
+            background: $darkRed;
+        }
+
+        &:hover {
+            background: $hoverRed;
+
+            p, .lastMessageIndicator, span {
+                color: $white !important;
+            }
+        }
+    }
+
+    .avatar.av-m {
+        svg {
+            color: $darkRed !important;
+        }
+    }
+
+    &.search-tab {
+        display: block;
+        height: auto;
+    }
+}
+
+#add_user_form {
+    width: 100%;
+    display: block;
+    float: left;
+    margin-top: 20px;
+
+    .messenger-search[type="text"] {
+        margin: 0 0 10px 0;
+        width: 100%;
+        border-radius: 4px;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        height: 48px;
+    }
+
+    button {
+        width: 100%;
+        text-align: center;
+        -webkit-appearance: none;
+        background: $darkRed;
+        color: $white;
+        border-radius: 4px;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        padding: 15px 10px;
+
+        &:hover {
+            background: $hoverRed;
+        }
+    }
+
+}
+
+.messenger-infoView {
+
+    svg {
+        color: $darkRed;
+    }
+
+    .info-name {
+        color: $darkGray;
+    }
+}
+
+
+#message-form {
+    svg {
+        color: $darkRed;
+    }
+}
+
+.message-card {
+
+    p {
+        background: $red;
+        color: $white;
+        padding: 10px 20px 10px;
+        border-radius: 10px;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        position: relative;
+
+        &:after {
+            content: "";
+            position: absolute;
+            display: inline-block;
+            top: 0;
+            right: -8px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 15px 8px 0 12px;
+            border-color: $red transparent transparent transparent;
+        }
+    }
+
+    &.mc-sender p {
+        background: $gray;
+
+
+        &:after {
+            content: unset;
+        }
+
+        &:before {
+            content: "";
+            position: absolute;
+            display: inline-block;
+            top: 0;
+            left: -10px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 15px 8px 0 12px;
+            border-color: $gray transparent transparent transparent;
+        }
+    }
+}
+
+.app-modal-card {
+
+    .app-modal-header, .app-modal-body {
+        color: $darkGray;
+    }
+
+    .app-btn {
+        &.cancel {
+            color: $darkGray;
+        }
+
+        &.delete, &.update {
+            border-radius: 4px;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            background: $darkRed;
+            padding: 8px 25px;
+
+            &:hover {
+                background: $hoverRed;
+            }
+        }
+    }
+}
+
+
+.messenger-favorites div.avatar {
+    box-shadow: 0 0 0 2px $darkRed !important;
+}
+
+.messenger-infoView-shared {
+
+    .messenger-title {
+        color: $darkGray;
+    }
+}
+
+.message-hint span {
+    color: $darkGray;
+    background: rgba(69,15,24, .2);
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+}
