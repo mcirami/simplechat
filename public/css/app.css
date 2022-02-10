@@ -11545,6 +11545,10 @@ img {
   -moz-border-radius: 8px;
 }
 
+.messages-container .message-hint {
+  margin-top: 50px;
+}
+
 .home .top_section {
   background: url("/images/home-top-bg.jpg") no-repeat;
   background-size: 100% 100%;

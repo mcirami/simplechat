@@ -15,7 +15,7 @@
             {{-- Search input --}}
             <form id="add_user_form" action="#" >
                 <input class="messenger-search" type="text"  placeholder="Enter User Name" />
-                <button class="button" type="submit">+ Add User</button>
+                <button type="submit">+ Add User</button>
             </form>
 
 
