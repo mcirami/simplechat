@@ -27,7 +27,7 @@ const setMessengerType = (type) => $("meta[name=type]").attr("content", type);
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
-const addChatUser = urlParams.get('add_chat_user');
+let addChatUser = urlParams.get('add_chat_user');
 
 /**
  *-------------------------------------------------------------
@@ -1161,11 +1161,12 @@ $(document).ready(function () {
             }
 
             if (addChatUser) {
-                const userValue = addChatUser;
                 $.trim(userValue).length > 0
-                    ? $(".messenger-search").trigger("focus") + messengerSearch(userValue)
+                    ? $(".messenger-search").trigger("focus") + messengerSearch(addChatUser)
                     : $(".messenger-tab").hide() +
                     $('.messenger-listView-tabs a[data-view="users"]').trigger("click");
+
+                addChatUser = null;
             }
         });
     });
