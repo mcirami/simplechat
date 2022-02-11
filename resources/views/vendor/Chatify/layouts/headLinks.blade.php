@@ -1,7 +1,7 @@
 <title>{{ config('chatify.name') }}</title>
 
 {{-- Meta tags --}}
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
 <meta name="id" content="{{ $id }}">
 <meta name="type" content="{{ $type }}">
 <meta name="messenger-color" content="{{ $messengerColor }}">
