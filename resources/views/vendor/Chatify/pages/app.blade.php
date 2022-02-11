@@ -12,12 +12,6 @@
                     <a href="#" class="listView-x"><i class="fas fa-times"></i></a>
                 </nav>
             </nav>
-            {{-- Search input --}}
-            <form id="add_user_form" action="#" >
-                <input class="messenger-search" type="text"  placeholder="Enter User Name" />
-                <button type="submit">+ Add User</button>
-            </form>
-
 
             {{--React Component--}}
             {{--<div id="add_user"></div>--}}
@@ -26,9 +20,7 @@
             {{-- Tabs --}}
             <div class="messenger-listView-tabs">
                 <a href="#" @if($type == 'user') class="active-tab" @endif data-view="users">
-                    <span class="far fa-user"></span> People</a>
-                {{--<a href="#" @if($type == 'group') class="active-tab" @endif data-view="groups">
-                    <span class="fas fa-users"></span> Groups</a>--}}
+                </a>
             </div>
         </div>
         {{-- tabs and lists --}}

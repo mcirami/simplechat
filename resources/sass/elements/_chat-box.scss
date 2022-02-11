@@ -16,7 +16,7 @@
 }
 
 .m-header.m-header-messaging {
-    padding: 30px 20px;
+    padding: 28px 20px;
 
     .av-s {
         width: 40px;
@@ -228,12 +228,16 @@
     }
 }
 
-.message-hint span {
-    color: $darkGray;
-    background: rgba(69,15,24, .2);
-    border-radius: 8px;
-    -webkit-border-radius: 8px;
-    -moz-border-radius: 8px;
+.message-hint {
+    width: 100%;
+
+    span {
+        color: $darkGray;
+        background: rgba(69,15,24, .2);
+        border-radius: 8px;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+    }
 }
 
 .messages-container {

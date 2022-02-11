@@ -1161,7 +1161,7 @@ $(document).ready(function () {
             }
 
             if (addChatUser) {
-                $.trim(userValue).length > 0
+                $.trim(addChatUser).length > 0
                     ? $(".messenger-search").trigger("focus") + messengerSearch(addChatUser)
                     : $(".messenger-tab").hide() +
                     $('.messenger-listView-tabs a[data-view="users"]').trigger("click");
