@@ -79,14 +79,14 @@
                     <a href="#" class="add-to-favorite"><i class="fas fa-star"></i></a>
                     {{--<a href="/"><i class="fas fa-home"></i></a>--}}
                     <a href="#" class="show-infoSide"><i class="fas fa-info-circle"></i></a>
-                    <form method="POST" action="{{ route('logout') }}">
+                    {{--<form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <a href="{{route('logout')}}"
                                          onclick="event.preventDefault();
                                                 this.closest('form').submit();">
                             <i class="fas fa-sign-out-alt"></i>
                         </a>
-                    </form>
+                    </form>--}}
                 </nav>
 
             </nav>

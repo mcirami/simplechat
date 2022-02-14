@@ -13,6 +13,14 @@
             padding: 40px 25px;
         }
 
+        a {
+            color: $white;
+
+            &:hover {
+                color: $red;
+            }
+        }
+
         form {
             position: relative;
             max-width: 80%;
@@ -63,12 +71,25 @@
             z-index: 1;
         }
 
-        a {
-            color: $white;
+        &.alt {
 
-            &:hover {
-                color: $red;
+            h2 {
+                color: $darkGray;
+
+                span {
+                    color: $darkRed;
+                }
+            }
+
+            a {
+                color: $darkGray;
+            }
+
+            &:before {
+                background: none;
             }
         }
+
+
     }
 }

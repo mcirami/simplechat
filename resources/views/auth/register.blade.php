@@ -12,7 +12,7 @@
                 <!-- Validation Errors -->
                 <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-                <div class="form_wrap"
+                <div class="form_wrap {{ $addUser ? '' : 'alt' }}"
                      style="
                          background: url({{ asset('storage/agent-images/' . $addUser . '.jpg')}}) no-repeat;
                          background-size: cover;
