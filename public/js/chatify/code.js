@@ -29,6 +29,9 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 let addChatUser = urlParams.get('add_chat_user');
 
+if (addChatUser) {
+    messageInput.val("Hey " + addChatUser + "! I just joined and I'm ready to chat.");
+}
 /**
  *-------------------------------------------------------------
  * Re-usable methods
@@ -427,7 +430,7 @@ function sendMessage() {
     let tempID = "temp_" + temporaryMsgId;
     let hasFile = $(".upload-attachment").val() ? true : false;
 
-    if ($.trim(messageInput.val()).length > 0 || hasFile) {
+    if ($.trim(messageInput.val()).length > 0 || hasFile || addChatUser) {
         const formData = new FormData($("#message-form")[0]);
         formData.append("id", getMessengerId());
         formData.append("type", getMessengerType());
@@ -497,6 +500,7 @@ function sendMessage() {
             },
         });
     }
+
     return false;
 }
 
@@ -978,6 +982,11 @@ function messengerSearch(input) {
                     setTimeout( function() {
                         $('.search-records .messenger-list-item').trigger('click');
                     }, 1000)
+                    const userID = $('.search-records .messenger-list-item').data('contact');
+                    updateContatctItem(userID);
+                    setTimeout( function() {
+                        sendMessage();
+                    }, 1500);
                 } else {
                     $(".search-records").css('height', '100')
                 }
@@ -1165,7 +1174,6 @@ $(document).ready(function () {
                     ? $(".messenger-search").trigger("focus") + messengerSearch(addChatUser)
                     : $(".messenger-tab").hide() +
                     $('.messenger-listView-tabs a[data-view="users"]').trigger("click");
-
                 addChatUser = null;
             }
         });
