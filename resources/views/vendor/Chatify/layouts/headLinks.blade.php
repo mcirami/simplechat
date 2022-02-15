@@ -36,6 +36,35 @@
             notifyButton: {
                 enable: true,
             },
+            autoResubscribe: true,
+            promptOptions: {
+                slidedown: {
+                    prompts: [
+                        {
+                            type: "push",
+                            autoPrompt: true,
+                            text: {
+                                actionMessage: "Get notified when she messages you!",
+                                acceptButtonText: "ALLOW",
+                                cancelButtonText: "NO THANKS",
+                            },
+                            delay: {
+                                pageViews: 1,
+                                timeDelay: 20
+                            }
+                        },
+                    ]
+                }
+            }
         });
+        OneSignal.showSlidedownPrompt();
+        /*OneSignal.isPushNotificationsEnabled(function(isEnabled) {
+            if (isEnabled)
+                console.log("Push notifications are already enabled!");
+            else
+                console.log("Push notifications are not enabled yet.");
+            OneSignal.showHttpPrompt();
+        });*/
+
     });
 </script>
