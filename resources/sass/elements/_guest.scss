@@ -30,7 +30,7 @@
     h2 {
         text-align: center;
         color: $white;
-        font-size: 30px;
+        font-size: 28px;
 
         @media all and (max-width: 992px) {
             font-size: 26px;
@@ -61,8 +61,10 @@
         padding: 20px;
         position: relative;
 
-        @media all and (max-width: 550px) {
+        @media all and (max-width: 768px) {
             background-size: cover !important;
+            background-position: right !important;
+
         }
 
         &:before {

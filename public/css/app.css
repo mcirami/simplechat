@@ -11761,7 +11761,7 @@ img {
 .white_box h2, .white_box .h2 {
   text-align: center;
   color: #fff;
-  font-size: 30px;
+  font-size: 28px;
 }
 @media all and (max-width: 992px) {
   .white_box h2, .white_box .h2 {
@@ -11791,9 +11791,10 @@ img {
   padding: 20px;
   position: relative;
 }
-@media all and (max-width: 550px) {
+@media all and (max-width: 768px) {
   .white_box .form_wrap {
     background-size: cover !important;
+    background-position: right !important;
   }
 }
 .white_box .form_wrap:before {
