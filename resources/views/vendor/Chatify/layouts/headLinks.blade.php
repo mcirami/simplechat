@@ -25,3 +25,17 @@
 
 {{-- Messenger Color Style--}}
 @include('Chatify::layouts.messengerColor')
+
+<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+<script>
+    window.OneSignal = window.OneSignal || [];
+    OneSignal.push(function() {
+        OneSignal.init({
+            appId: "5c0a6e7a-810b-4df9-889f-72ea965b3a65",
+            safari_web_id: "",
+            notifyButton: {
+                enable: true,
+            },
+        });
+    });
+</script>
