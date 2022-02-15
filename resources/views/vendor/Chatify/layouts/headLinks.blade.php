@@ -33,9 +33,9 @@
         OneSignal.init({
             appId: "5c0a6e7a-810b-4df9-889f-72ea965b3a65",
             safari_web_id: "",
-            notifyButton: {
+            /*notifyButton: {
                 enable: true,
-            },
+            },*/
             autoResubscribe: true,
             promptOptions: {
                 slidedown: {
