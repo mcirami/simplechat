@@ -832,7 +832,7 @@ function getContacts() {
  *-------------------------------------------------------------
  */
 function updateContatctItem(user_id) {
-    if (user_id != auth_id) {
+    if (user_id !== auth_id) {
         let listItem = $("body")
         .find(".listOfContacts")
         .find(".messenger-list-item[data-contact=" + user_id + "]");
@@ -951,7 +951,7 @@ function setSearchLoading(loading = false) {
     searchLoading = loading;
 }
 function messengerSearch(input) {
-    if (input != searchTempVal) {
+    if (input !== searchTempVal) {
         searchPage = 1;
         noMoreDataSearch = false;
         searchLoading = false;
@@ -979,11 +979,12 @@ function messengerSearch(input) {
                     $('.listOfContacts').css('height', 'auto');
                     $('.message-hint').css('display', 'none');
                     $('.messenger-search').val("");
+                    /*const userID = $('.search-records .messenger-list-item').data('contact');
+                    updateContatctItem(userID);*/
+                    /*console.log(userID);*/
                     setTimeout( function() {
                         $('.search-records .messenger-list-item').trigger('click');
                     }, 1000)
-                    const userID = $('.search-records .messenger-list-item').data('contact');
-                    updateContatctItem(userID);
                     setTimeout( function() {
                         sendMessage();
                     }, 1500);

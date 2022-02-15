@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\TrackingController;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -50,10 +51,13 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
+        $ip = $request->ip();
+        $referral = $request->add_chat_user;
+
+        (New TrackingController)->store($user, $ip, $referral);
+
         Auth::login($user);
-
-
-        $chatUser = $request->add_chat_user ? "?add_chat_user=" . $request->add_chat_user : "";
+        $chatUser = $referral ? "?add_chat_user=" . $referral : "";
 
         return redirect(RouteServiceProvider::HOME . $chatUser);
     }

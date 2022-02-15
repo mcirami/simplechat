@@ -11831,6 +11831,10 @@ img {
 .white_box .form_wrap.alt form {
   max-width: unset;
 }
+.white_box .form_wrap.alt.password_page button {
+  max-width: unset;
+  width: 240px;
+}
 .white_box form {
   position: relative;
   max-width: 50%;
@@ -11841,6 +11845,20 @@ img {
   .white_box form {
     max-width: 65%;
   }
+}
+.white_box .session_text {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 18px;
+  margin-bottom: 0 !important;
+}
+.white_box .session_text p {
+  display: inline-block;
+  padding: 10px;
+  background: rgba(155, 155, 155, 0.2);
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
 }
 /*
 ! tailwindcss v3.0.18 | MIT License | https://tailwindcss.com
@@ -12543,6 +12561,9 @@ select {
 .-mr-2 {
   margin-right: -0.5rem;
 }
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
 .block {
   display: block;
 }
@@ -12685,6 +12706,9 @@ select {
 }
 .overflow-hidden {
   overflow: hidden;
+}
+.break-all {
+  word-break: break-all;
 }
 .rounded-md {
   border-radius: 0.375rem;

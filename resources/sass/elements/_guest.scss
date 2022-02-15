@@ -104,6 +104,13 @@
             form {
                 max-width: unset;
             }
+
+            &.password_page {
+                button {
+                    max-width: unset;
+                    width: 240px;
+                }
+            }
         }
     }
 
@@ -116,6 +123,22 @@
 
         @media all and (max-width: 550px) {
             max-width: 65%;
+        }
+    }
+
+    .session_text {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 18px;
+        margin-bottom: 0 !important;
+
+        p {
+            display: inline-block;
+            padding: 10px;
+            background: rgba(155,155,155,.2);
+            border-radius: 6px;
+            -webkit-border-radius: 6px;
+            -moz-border-radius: 6px;
         }
     }
 
