@@ -1,80 +1,90 @@
 .white_box {
-    max-width: 1000px;
+    max-width: 800px;
     border-radius: 6px;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     margin: auto;
 
-    .form_wrap {
-        padding: 50px;
+    .columns_wrap {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+    }
+
+    .content_wrap {
         position: relative;
+        z-index: 2;
+    }
+
+    .heading {
+        background: $black;
+        padding: 20px;
+    }
+
+    h2 {
+        text-align: center;
+        color: $white;
+        font-size: 30px;
 
         @media all and (max-width: 992px) {
-            padding: 40px 25px;
+            font-size: 26px;
         }
 
-        a {
-            color: $white;
-
-            &:hover {
-                color: $red;
-            }
+        @media all and (max-width: 768px) {
+            font-size: 22px;
         }
 
-        form {
-            position: relative;
-            max-width: 80%;
-            margin: 0 auto;
-            z-index: 2;
+        @media all and (max-width: 550px) {
+            font-size: 4.5vw;
+        }
 
-            @media all and (max-width: 992px) {
-                max-width: 92%;
-            }
+        span {
+            color: $darkRed;
+        }
+    }
 
-            @media all and (max-width: 768px) {
-                max-width: 100%;
-            }
+    a {
+        color: $white;
 
-            h2 {
-                text-align: center;
-                color: $white;
-                font-size: 30px;
-                margin-bottom: 40px;
+        &:hover {
+            color: $red;
+        }
+    }
 
-                @media all and (max-width: 992px) {
-                    font-size: 26px;
-                    margin-bottom: 30px;
-                }
+    .form_wrap {
+        padding: 20px;
+        position: relative;
 
-                @media all and (max-width: 768px) {
-                    font-size: 22px;
-                }
-
-                @media all and (max-width: 550px) {
-                    font-size: 4.5vw;
-                }
-
-                span {
-                    color: $red;
-                }
-            }
+        @media all and (max-width: 550px) {
+            background-size: cover !important;
         }
 
         &:before {
             content: '';
-            background: rgba(0,0,0,.7);
+            /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+50,000000+100&0.31+0,1+64 */
+            background: -moz-linear-gradient(left,  rgba(0,0,0,0.31) 0%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,1) 64%, rgba(0,0,0,1) 100%); /* FF3.6-15 */
+            background: -webkit-linear-gradient(left,  rgba(0,0,0,0.31) 0%,rgba(0,0,0,0.85) 50%,rgba(0,0,0,1) 64%,rgba(0,0,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(to right,  rgba(0,0,0,0.31) 0%,rgba(0,0,0,0.85) 50%,rgba(0,0,0,1) 64%,rgba(0,0,0,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4f000000', endColorstr='#000000',GradientType=1 ); /* IE6-9 */
             position: absolute;
             width: 100%;
             height: 100%;
             top: 0;
             left: 0;
-            z-index: 1;
         }
 
         &.alt {
+            padding: 40px;
 
             h2 {
                 color: $darkGray;
+                margin-bottom: 40px;
 
                 span {
                     color: $darkRed;
@@ -88,8 +98,23 @@
             &:before {
                 background: none;
             }
+
+            form {
+                max-width: unset;
+            }
         }
-
-
     }
+
+
+    form {
+        position: relative;
+        max-width: 50%;
+        margin-left: auto;
+        z-index: 2;
+
+        @media all and (max-width: 550px) {
+            max-width: 65%;
+        }
+    }
+
 }
