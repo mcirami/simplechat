@@ -28,9 +28,9 @@
 
 <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
 <script>
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    let chatUserName = urlParams.get('add_chat_user');
+    const searchQueryString = window.location.search;
+    const getUrlParams = new URLSearchParams(searchQueryString);
+    let chatUserName = getUrlParams.get('add_chat_user');
     window.OneSignal = window.OneSignal || [];
     OneSignal.push(function() {
         OneSignal.init({
