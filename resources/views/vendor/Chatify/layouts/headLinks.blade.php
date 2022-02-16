@@ -30,7 +30,7 @@
 <script>
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    let addChatUser = urlParams.get('add_chat_user');
+    let chatUserName = urlParams.get('add_chat_user');
     window.OneSignal = window.OneSignal || [];
     OneSignal.push(function() {
         OneSignal.init({
@@ -47,7 +47,7 @@
                             type: "push",
                             autoPrompt: true,
                             text: {
-                                actionMessage: "Get notified when " + addChatUser + " messages you!",
+                                actionMessage: "Get notified when " + chatUserName + " messages you!",
                                 acceptButtonText: "ALLOW",
                                 cancelButtonText: "NO THANKS",
                             },
@@ -61,7 +61,7 @@
             }
         });
         OneSignal.showSlidedownPrompt();
-        OneSignal.sendTag("agent", addChatUser);
+        OneSignal.sendTag("agent", chatUserName);
         /*OneSignal.isPushNotificationsEnabled(function(isEnabled) {
             if (isEnabled)
                 console.log("Push notifications are already enabled!");
