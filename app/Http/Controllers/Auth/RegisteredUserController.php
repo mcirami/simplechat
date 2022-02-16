@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 
 class RegisteredUserController extends Controller
 {
@@ -43,7 +44,10 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        $id = IdGenerator::generate(['table' => 'users', 'length' => 8, 'prefix' => random_int(100000, 999999)]);
+
         $user = User::create([
+            'id' => $id,
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -51,10 +55,13 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        $ip = $request->ip();
-        $referral = $request->add_chat_user;
+        $referral = null;
+        if( $request->add_chat_user) {
+            $ip = $request->ip();
+            $referral = $request->add_chat_user;
 
-        (New TrackingController)->store($user, $ip, $referral);
+            (New TrackingController)->store($user, $ip, $referral);
+        }
 
         Auth::login($user);
         $chatUser = $referral ? "?add_chat_user=" . $referral : "";

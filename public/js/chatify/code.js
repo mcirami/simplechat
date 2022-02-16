@@ -29,6 +29,10 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 let addChatUser = urlParams.get('add_chat_user');
 
+if (addChatUser) {
+    messageInput.val("Hey " + addChatUser + "! I just joined and I'm ready to chat.");
+}
+
 /**
  *-------------------------------------------------------------
  * Re-usable methods
@@ -976,17 +980,10 @@ function messengerSearch(input) {
                     $('.listOfContacts').css('height', 'auto');
                     $('.message-hint').css('display', 'none');
                     $('.messenger-search').val("");
+                    $('.search-records .messenger-list-item').trigger('click');
                     /*const userID = $('.search-records .messenger-list-item').data('contact');
                     updateContatctItem(userID);*/
                     /*console.log(userID);*/
-                    setTimeout( function() {
-                        $('.search-records .messenger-list-item').trigger('click');
-                    }, 1000)
-                    setTimeout( function() {
-                        messageInput.val("Hey " + addChatUser + "! I just joined and I'm ready to chat.");
-                        sendMessage();
-                        addChatUser = null;
-                    }, 1500);
                 } else {
                     $(".search-records").css('height', '100')
                 }
@@ -1170,10 +1167,24 @@ $(document).ready(function () {
             }
 
             if (addChatUser) {
-                $.trim(addChatUser).length > 0
+
+                if ( $.trim(addChatUser).length > 0) {
+                    $(".messenger-search").trigger("focus");
+                    try {
+                        console.log("try")
+                        messengerSearch(addChatUser);
+                    } finally {
+                        setTimeout(function() {
+                            messageInput.val("Hey " + addChatUser + "! I just joined and I'm ready to chat.");
+                            sendMessage();
+                            addChatUser = null;
+                        }, 1500)
+                    }
+                }
+               /* $.trim(addChatUser).length > 0
                     ? $(".messenger-search").trigger("focus") + messengerSearch(addChatUser)
                     : $(".messenger-tab").hide() +
-                    $('.messenger-listView-tabs a[data-view="users"]').trigger("click");
+                    $('.messenger-listView-tabs a[data-view="users"]').trigger("click");*/
             }
         });
     });
