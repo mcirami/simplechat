@@ -32,6 +32,12 @@
         svg {
             color: $darkRed;
         }
+
+        form {
+            @media all and (max-width: 992px) {
+                display: none;
+            }
+        }
     }
 }
 

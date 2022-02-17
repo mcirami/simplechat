@@ -11385,6 +11385,11 @@ img {
 .m-header.m-header-messaging .m-header-right svg {
   color: #b0273c;
 }
+@media all and (max-width: 992px) {
+  .m-header.m-header-messaging .m-header-right form {
+    display: none;
+  }
+}
 
 .messenger-listView .m-body {
   margin-top: 0;
@@ -11794,7 +11799,7 @@ img {
 @media all and (max-width: 768px) {
   .white_box .form_wrap {
     background-size: cover !important;
-    background-position: right !important;
+    background-position: 50% !important;
   }
 }
 .white_box .form_wrap:before {
