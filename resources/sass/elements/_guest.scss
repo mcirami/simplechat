@@ -62,9 +62,9 @@
         position: relative;
 
         @media all and (max-width: 768px) {
-            background-size: 150% !important;
+            /*background-size: 150% !important;*/
             background-position: top !important;
-            background-color: $black;
+            background-color: $black !important;
 
         }
 
@@ -82,6 +82,14 @@
             left: 0;
 
             @media all and (max-width: 768px) {
+                /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+50,000000+100&0.31+0,1+64 */
+                background: -moz-linear-gradient(-70deg,  rgba(0,0,0,0.31) 0%, rgba(0,0,0,0.75) 38%, rgba(0,0,0,1) 64%, rgba(0,0,0,1) 100%); /* FF3.6-15 */
+                background: -webkit-linear-gradient(-70deg,  rgba(0,0,0,0.31) 0%,rgba(0,0,0,0.75) 38%,rgba(0,0,0,1) 64%,rgba(0,0,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
+                background: linear-gradient(160deg,  rgba(0,0,0,0.31) 0%,rgba(0,0,0,0.75) 35%,rgba(0,0,0,1) 48%,rgba(0,0,0,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4f000000', endColorstr='#000000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+            }
+
+            @media all and (max-width: 550px) {
                 /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+50,000000+100&0.31+0,1+64 */
                 background: -moz-linear-gradient(-70deg,  rgba(0,0,0,0.31) 0%, rgba(0,0,0,0.85) 38%, rgba(0,0,0,1) 64%, rgba(0,0,0,1) 100%); /* FF3.6-15 */
                 background: -webkit-linear-gradient(-70deg,  rgba(0,0,0,0.31) 0%,rgba(0,0,0,0.85) 38%,rgba(0,0,0,1) 64%,rgba(0,0,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
@@ -118,6 +126,33 @@
                 button {
                     max-width: unset;
                     width: 240px;
+                }
+            }
+        }
+
+        &.register {
+
+            .button_row {
+                @media all and (max-width: 550px) {
+                    flex-wrap: wrap-reverse;
+                    -ms-flex-wrap: wrap-reverse;
+                    -webkit-flex-wrap: wrap-reverse;
+
+                };
+
+                a {
+                    @media all and (max-width: 550px) {
+                        width: 100%;
+                        text-align: center;
+                    }
+                }
+
+                button {
+                    @media all and (max-width: 550px) {
+                        width: 100%;
+                        max-width: unset;
+                        margin: 0 0 20px 0;
+                    }
                 }
             }
         }

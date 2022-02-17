@@ -16,7 +16,7 @@
                     <div class="heading">
                         <h2>Complete the form below to be instantly connected to <span>{{$addUser}}</span> and chat live <span>FREE!</span></h2>
                     </div>
-                    <div class="form_wrap {{ $addUser ? '' : 'alt' }}"
+                    <div class="form_wrap {{ $addUser ? '' : 'alt' }} register"
                          style="
                              background: url({{ asset('storage/agent-images/' . $addUser . '.jpg')}}) no-repeat;
                              background-size: contain;
@@ -62,7 +62,7 @@
                                 />
                             </div>
 
-                            <div class="flex items-center justify-end mt-4">
+                            <div class="flex items-center justify-end mt-4 button_row">
                                 <a class="underline text-sm" href="{{ route('login') }}">
                                     {{ __('Already registered?') }}
                                 </a>

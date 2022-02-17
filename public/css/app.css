@@ -11798,9 +11798,9 @@ img {
 }
 @media all and (max-width: 768px) {
   .white_box .form_wrap {
-    background-size: 150% !important;
+    /*background-size: 150% !important;*/
     background-position: top !important;
-    background-color: #000;
+    background-color: #000 !important;
   }
 }
 .white_box .form_wrap:before {
@@ -11819,6 +11819,17 @@ img {
   left: 0;
 }
 @media all and (max-width: 768px) {
+  .white_box .form_wrap:before {
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+50,000000+100&0.31+0,1+64 */
+    /* FF3.6-15 */
+    /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(160deg, rgba(0, 0, 0, 0.31) 0%, rgba(0, 0, 0, 0.75) 35%, black 48%, black 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#4f000000", endColorstr="#000000",GradientType=1 );
+    /* IE6-9 fallback on horizontal gradient */
+  }
+}
+@media all and (max-width: 550px) {
   .white_box .form_wrap:before {
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+50,000000+100&0.31+0,1+64 */
     /* FF3.6-15 */
@@ -11851,6 +11862,26 @@ img {
 .white_box .form_wrap.alt.password_page button {
   max-width: unset;
   width: 240px;
+}
+@media all and (max-width: 550px) {
+  .white_box .form_wrap.register .button_row {
+    flex-wrap: wrap-reverse;
+    -ms-flex-wrap: wrap-reverse;
+    -webkit-flex-wrap: wrap-reverse;
+  }
+}
+@media all and (max-width: 550px) {
+  .white_box .form_wrap.register .button_row a {
+    width: 100%;
+    text-align: center;
+  }
+}
+@media all and (max-width: 550px) {
+  .white_box .form_wrap.register .button_row button {
+    width: 100%;
+    max-width: unset;
+    margin: 0 0 20px 0;
+  }
 }
 .white_box form {
   position: relative;
