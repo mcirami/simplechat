@@ -13,6 +13,7 @@ var messenger,
     messages_page = 1;
 
 const messagesContainer = $(".messenger-messagingView .m-body"),
+    messageInnerContainer = $(".messages"),
     messengerTitleDefault = $(".messenger-headTitle").text(),
     messageInput = $("#message-form .m-send"),
     auth_id = $("meta[name=url]").attr("data-user"),
@@ -461,7 +462,7 @@ function sendMessage() {
                     .find(".messages")
                     .append(sendigCard(messageInput.text(), tempID));
                 // scroll to bottom
-                scrollBottom(messagesContainer);
+                scrollBottom(messageInnerContainer);
                 messageInput.css({ height: "42px" });
                 // form reset and focus
                 $("#message-form").trigger("reset");
@@ -478,20 +479,17 @@ function sendMessage() {
                     updateContatctItem(getMessengerId());
                     messagesContainer.find('.mc-sender[data-id="sending"]').remove();
 
-                    console.log(data);
-                    if (data.message) {
-                        // get message before the sending one [temporary]
-                        messagesContainer
-                        .find(".message-card[data-id=" + data.tempID + "]")
-                        .before(data.message);
-                        // delete the temporary one
-                        messagesContainer
-                        .find(".message-card[data-id=" + data.tempID + "]")
-                        .remove();
-                    }
+                    // get message before the sending one [temporary]
+                    messagesContainer
+                    .find(".message-card[data-id=" + data.tempID + "]")
+                    .before(data.message);
+                    // delete the temporary one
+                    messagesContainer
+                    .find(".message-card[data-id=" + data.tempID + "]")
+                    .remove();
 
                     // scroll to bottom
-                    scrollBottom(messagesContainer);
+                    scrollBottom(messageInnerContainer);
                     // send contact item updates
                     sendContactItemUpdates(true);
                 }
@@ -552,7 +550,7 @@ function fetchMessages(id, type, newFetch = false) {
                 setMessagesLoading(false);
                 if (messagesPage == 1) {
                     messagesElement.html(data.messages);
-                    scrollBottom(messagesContainer);
+                    scrollBottom(messageInnerContainer);
                 } else {
                     const lastMsg = messagesElement.find(
                         messagesElement.find(".message-card")[0]
@@ -616,7 +614,7 @@ channel.bind("messaging", function (data) {
     if (data.from_id == getMessengerId() && data.to_id == auth_id) {
         $(".messages").find(".message-hint").remove();
         messagesContainer.find(".messages").append(data.message);
-        scrollBottom(messagesContainer);
+        scrollBottom(messageInnerContainer);
         makeSeen(true);
         // remove unseen counter for the user from the contacts list
         $(".messenger-list-item[data-contact=" + getMessengerId() + "]")
@@ -633,7 +631,7 @@ channel.bind("client-typing", function (data) {
             : messagesContainer.find(".typing-indicator").hide();
     }
     // scroll to bottom
-    scrollBottom(messagesContainer);
+    scrollBottom(messageInnerContainer);
 });
 
 // listen to seen event
@@ -837,12 +835,37 @@ function getContacts() {
  * Update contact item
  *-------------------------------------------------------------
  */
-function updateContatctItem(user_id) {
-    if (user_id !== auth_id) {
+async function updateContatctItem(user_id) {
+    if (user_id != auth_id) {
         let listItem = $("body")
         .find(".listOfContacts")
         .find(".messenger-list-item[data-contact=" + user_id + "]");
-        $.ajax({
+
+        let result;
+
+        try {
+            result = await $.ajax({
+                url: url + "/updateContacts",
+                method: "POST",
+                data: {
+                    _token: access_token,
+                    user_id,
+                },
+                dataType: "JSON",
+            });
+
+            console.log(result);
+            listItem.remove();
+            $(".listOfContacts").prepend(result.contactItem);
+            // update data-action required with [responsive design]
+            cssMediaQueries();
+            updateSelectedContact(user_id);
+        } catch (error) {
+            console.error(error);
+        }
+
+
+        /*$.ajax({
             url: url + "/updateContacts",
             method: "POST",
             data: {
@@ -851,6 +874,7 @@ function updateContatctItem(user_id) {
             },
             dataType: "JSON",
             success: (data) => {
+                console.log(data);
                 listItem.remove();
                 $(".listOfContacts").prepend(data.contactItem);
                 // update data-action required with [responsive design]
@@ -860,7 +884,7 @@ function updateContatctItem(user_id) {
             error: () => {
                 console.error("Server error, check your response");
             },
-        });
+        });*/
     }
 }
 
