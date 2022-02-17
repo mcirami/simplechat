@@ -11800,6 +11800,7 @@ img {
   .white_box .form_wrap {
     background-size: 150% !important;
     background-position: top !important;
+    background-color: #000;
   }
 }
 .white_box .form_wrap:before {
@@ -11822,7 +11823,7 @@ img {
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+50,000000+100&0.31+0,1+64 */
     /* FF3.6-15 */
     /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(160deg, rgba(0, 0, 0, 0.31) 0%, rgba(0, 0, 0, 0.85) 50%, black 64%, black 100%);
+    background: linear-gradient(160deg, rgba(0, 0, 0, 0.31) 0%, rgba(0, 0, 0, 0.85) 35%, black 48%, black 100%);
     /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#4f000000", endColorstr="#000000",GradientType=1 );
     /* IE6-9 fallback on horizontal gradient */
@@ -11860,6 +11861,7 @@ img {
 @media all and (max-width: 768px) {
   .white_box form {
     max-width: 100%;
+    margin-top: 50vw;
   }
 }
 .white_box .session_text {
