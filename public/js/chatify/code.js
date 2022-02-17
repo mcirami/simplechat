@@ -1558,12 +1558,12 @@ $(document).ready(function () {
 
     const windowHeight = window.innerHeight;
     const messages = document.querySelector('.messages');
-    messages.style.maxHeight = (windowHeight - 160) + "px";
+    messages.style.maxHeight = (windowHeight - 180) + "px";
 
     $(window).on('resize', function() {
         const windowHeight = window.innerHeight;
         const messages = document.querySelector('.messages');
-        messages.style.maxHeight = (windowHeight - 160) + "px";
+        messages.style.maxHeight = (windowHeight - 180) + "px";
     })
 
 });
