@@ -5,7 +5,9 @@ require('./bootstrap');
 window.Alpine = Alpine;
 
 Alpine.start();*/
+/*require('./autosize');
+require('./custom');*/
 
-if (document.getElementById('add_user')) {
+/*if (document.getElementById('add_user')) {
     require('./Chat');
-}
+}*/

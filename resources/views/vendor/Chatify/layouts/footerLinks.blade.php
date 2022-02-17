@@ -14,4 +14,4 @@
     }
   });
 </script>
-<script src="{{ asset('js/chatify/code.js') }}"></script>
+<script src="{{ asset('js/chatify/code.js?v=1.1') }}"></script>
