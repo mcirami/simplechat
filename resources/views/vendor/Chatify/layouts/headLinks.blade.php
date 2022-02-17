@@ -20,7 +20,7 @@
 <link rel='stylesheet' href='https://unpkg.com/nprogress@0.2.0/nprogress.css'/>
 <link href="{{ asset('css/chatify/style.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/chatify/'.$dark_mode.'.mode.css') }}" rel="stylesheet" />
-<link href="{{ asset('css/app.css?version=1.1') }}" rel="stylesheet" />
+<link href="{{ asset('css/app.css?version=1.2') }}" rel="stylesheet" />
 <link rel="icon" href="{{ asset('images/favicon.ico') }}">
 
 {{-- Messenger Color Style--}}
