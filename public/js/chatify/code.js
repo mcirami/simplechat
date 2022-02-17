@@ -147,6 +147,7 @@ function avatarLoading(items) {
 
 // While sending a message, show this temporary message card.
 function sendigCard(message, id) {
+
     return (
         `
 <div class="message-card mc-sender" data-id="` +
@@ -161,7 +162,7 @@ function sendigCard(message, id) {
 }
 // upload image preview card.
 function attachmentTemplate(fileType, fileName, imgURL = null) {
-    if (fileType != "image") {
+    if (fileType !== "image") {
         return (
             `
 <div class="attachment-preview">
@@ -455,8 +456,7 @@ function sendMessage() {
                     sendigCard(
                         messageInput.text() + "\n" + loadingSVG("28px"),
                         tempID
-                    )
-                    )
+                    ))
                     : messagesContainer
                     .find(".messages")
                     .append(sendigCard(messageInput.text(), tempID));
@@ -477,14 +477,19 @@ function sendMessage() {
                     // update contact item
                     updateContatctItem(getMessengerId());
                     messagesContainer.find('.mc-sender[data-id="sending"]').remove();
-                    // get message before the sending one [temporary]
-                    messagesContainer
-                    .find(".message-card[data-id=" + data.tempID + "]")
-                    .before(data.message);
-                    // delete the temporary one
-                    messagesContainer
-                    .find(".message-card[data-id=" + data.tempID + "]")
-                    .remove();
+
+                    console.log(data);
+                    if (data.message) {
+                        // get message before the sending one [temporary]
+                        messagesContainer
+                        .find(".message-card[data-id=" + data.tempID + "]")
+                        .before(data.message);
+                        // delete the temporary one
+                        messagesContainer
+                        .find(".message-card[data-id=" + data.tempID + "]")
+                        .remove();
+                    }
+
                     // scroll to bottom
                     scrollBottom(messagesContainer);
                     // send contact item updates
@@ -1526,4 +1531,15 @@ $(document).ready(function () {
     actionOnScroll(".messenger-tab.search-tab", function () {
         messengerSearch($(".messenger-search").val());
     });
+
+    const windowHeight = window.innerHeight;
+    const messages = document.querySelector('.messages');
+    messages.style.maxHeight = (windowHeight - 160) + "px";
+
+    $(window).on('resize', function() {
+        const windowHeight = window.innerHeight;
+        const messages = document.querySelector('.messages');
+        messages.style.maxHeight = (windowHeight - 160) + "px";
+    })
+
 });

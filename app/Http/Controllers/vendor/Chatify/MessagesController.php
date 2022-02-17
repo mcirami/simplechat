@@ -144,7 +144,7 @@ class MessagesController extends Controller
             if ($file->getSize() < Chatify::getMaxUploadSize()) {
                 if (in_array($file->getClientOriginalExtension(), $allowed)) {
                     // get attachment name
-                    $attachment_title = $file->getClientOriginalName();
+                    $attachment_title = null; /*$file->getClientOriginalName();*/
                     // upload attachment and store the new name
                     $attachment = Str::uuid() . "." . $file->getClientOriginalExtension();
                     $file->storeAs("public/" . config('chatify.attachments.folder'), $attachment);

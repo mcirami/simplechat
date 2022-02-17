@@ -11553,6 +11553,14 @@ img {
   margin-top: 50px;
 }
 
+.messages {
+  overflow-y: scroll;
+}
+
+.messenger-messagingView .m-body {
+  overflow: hidden;
+}
+
 .home .top_section {
   background: url("/images/home-top-bg.jpg") no-repeat;
   background-size: 100% 100%;
