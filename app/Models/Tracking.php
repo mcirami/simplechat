@@ -18,5 +18,6 @@ class Tracking extends Model
         'user_id',
         'user_ip',
         'referral',
+        'src',
     ];
 }

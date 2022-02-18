@@ -26,8 +26,8 @@
 
                         <!-- UserName -->
 
-                            <input id="add_chat_user" class="block mt-1 w-full" type="hidden" name="add_chat_user" value="{{$addUser}}"  />
-
+                            <input id="add_chat_user" type="hidden" name="add_chat_user" value="{{$addUser}}"  />
+                            <input id="src" type="hidden" name="src" value="{{$src}}"  />
                             <!-- Name -->
                             <div>
                                 <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus placeholder="Name"/>

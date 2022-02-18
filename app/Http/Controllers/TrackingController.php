@@ -7,12 +7,20 @@ use Illuminate\Http\Request;
 
 class TrackingController extends Controller
 {
-    public function store($user, $ip, $referral) {
+
+    /**
+     * @param $user
+     * @param $ip
+     * @param $referral
+     * @param $src
+     */
+    public function store($user, $ip, $referral, $src) {
 
         Tracking::create([
             'user_id' => $user->id,
             'user_ip' => $ip,
-            'referral' => $referral
+            'referral' => $referral,
+            'src' => $src
         ]);
     }
 }

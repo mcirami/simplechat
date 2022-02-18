@@ -23,8 +23,9 @@ class RegisteredUserController extends Controller
     public function create(Request $request)
     {
 
-        $addUser = $request->query('add');
-        return view('auth.register')->with(['addUser' => $addUser]);
+        $addUser = $request->query('add') ? $request->query('add') : "";
+        $src = $request->query('src') ? $request->query('src') : "";
+        return view('auth.register')->with(['addUser' => $addUser, 'src' => $src]);
     }
 
     /**
@@ -56,11 +57,12 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         $referral = null;
-        if( $request->add_chat_user) {
+        if( $request->add_chat_user && $request->src) {
             $ip = $request->ip();
             $referral = $request->add_chat_user;
+            $src = $request->src;
 
-            (New TrackingController)->store($user, $ip, $referral);
+            (New TrackingController)->store($user, $ip, $referral, $src);
         }
 
         Auth::login($user);
