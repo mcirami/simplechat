@@ -61,14 +61,7 @@
             }
         });
         OneSignal.showSlidedownPrompt();
-        OneSignal.sendTag("agent", chatUserName);
-        /*OneSignal.isPushNotificationsEnabled(function(isEnabled) {
-            if (isEnabled)
-                console.log("Push notifications are already enabled!");
-            else
-                console.log("Push notifications are not enabled yet.");
-            OneSignal.showHttpPrompt();
-        });*/
+        /*OneSignal.sendTag("agent", chatUserName);*/
 
     });
 </script>

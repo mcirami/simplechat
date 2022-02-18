@@ -854,7 +854,6 @@ async function updateContatctItem(user_id) {
                 dataType: "JSON",
             });
 
-            console.log(result);
             listItem.remove();
             $(".listOfContacts").prepend(result.contactItem);
             // update data-action required with [responsive design]
