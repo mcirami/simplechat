@@ -4,6 +4,7 @@
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     margin: auto;
+    background: $white;
 
     .columns_wrap {
         display: -webkit-box;
@@ -24,7 +25,7 @@
 
     .heading {
         background: $black;
-        padding: 20px;
+        padding: 20px 20px 0;
     }
 
     h2 {
@@ -58,7 +59,7 @@
     }
 
     .form_wrap {
-        padding: 20px;
+        padding: 0 20px 20px;
         position: relative;
 
         &.alt {
@@ -86,19 +87,20 @@
         }
 
         &.register {
-            @media all and (max-width: 768px) {
+            background: $black;
+           /* @media all and (max-width: 768px) {
                 background-position: top !important;
                 background-color: $black !important;
 
-            }
+            }*/
 
-            &:before {
+            /*&:before {
                 content: '';
-                /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+50,000000+100&0.31+0,1+64 */
-                background: -moz-linear-gradient(left,  rgba(0,0,0,0.31) 0%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,1) 64%, rgba(0,0,0,1) 100%); /* FF3.6-15 */
-                background: -webkit-linear-gradient(left,  rgba(0,0,0,0.31) 0%,rgba(0,0,0,0.85) 50%,rgba(0,0,0,1) 64%,rgba(0,0,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
-                background: linear-gradient(to right,  rgba(0,0,0,0.31) 0%,rgba(0,0,0,0.85) 50%,rgba(0,0,0,1) 64%,rgba(0,0,0,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4f000000', endColorstr='#000000',GradientType=1 ); /* IE6-9 */
+                !* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+50,000000+100&0.31+0,1+64 *!
+                background: -moz-linear-gradient(left,  rgba(0,0,0,0.31) 0%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,1) 64%, rgba(0,0,0,1) 100%); !* FF3.6-15 *!
+                background: -webkit-linear-gradient(left,  rgba(0,0,0,0.31) 0%,rgba(0,0,0,0.85) 50%,rgba(0,0,0,1) 64%,rgba(0,0,0,1) 100%); !* Chrome10-25,Safari5.1-6 *!
+                background: linear-gradient(to right,  rgba(0,0,0,0.31) 0%,rgba(0,0,0,0.85) 50%,rgba(0,0,0,1) 64%,rgba(0,0,0,1) 100%); !* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ *!
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4f000000', endColorstr='#000000',GradientType=1 ); !* IE6-9 *!
                 position: absolute;
                 width: 100%;
                 height: 100%;
@@ -106,27 +108,27 @@
                 left: 0;
 
                 @media all and (max-width: 768px) {
-                    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+50,000000+100&0.31+0,1+64 */
-                    background: -moz-linear-gradient(-70deg,  rgba(0,0,0,0.31) 0%, rgba(0,0,0,0.75) 38%, rgba(0,0,0,1) 64%, rgba(0,0,0,1) 100%); /* FF3.6-15 */
-                    background: -webkit-linear-gradient(-70deg,  rgba(0,0,0,0.31) 0%,rgba(0,0,0,0.75) 38%,rgba(0,0,0,1) 64%,rgba(0,0,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
-                    background: linear-gradient(160deg,  rgba(0,0,0,0.31) 0%,rgba(0,0,0,0.75) 35%,rgba(0,0,0,1) 48%,rgba(0,0,0,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4f000000', endColorstr='#000000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+                    !* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+50,000000+100&0.31+0,1+64 *!
+                    background: -moz-linear-gradient(-70deg,  rgba(0,0,0,0.31) 0%, rgba(0,0,0,0.75) 38%, rgba(0,0,0,1) 64%, rgba(0,0,0,1) 100%); !* FF3.6-15 *!
+                    background: -webkit-linear-gradient(-70deg,  rgba(0,0,0,0.31) 0%,rgba(0,0,0,0.75) 38%,rgba(0,0,0,1) 64%,rgba(0,0,0,1) 100%); !* Chrome10-25,Safari5.1-6 *!
+                    background: linear-gradient(160deg,  rgba(0,0,0,0.31) 0%,rgba(0,0,0,0.75) 35%,rgba(0,0,0,1) 48%,rgba(0,0,0,1) 100%); !* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ *!
+                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4f000000', endColorstr='#000000',GradientType=1 ); !* IE6-9 fallback on horizontal gradient *!
                 }
 
                 @media all and (max-width: 550px) {
-                    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+50,000000+100&0.31+0,1+64 */
-                    background: -moz-linear-gradient(-70deg,  rgba(0,0,0,0.31) 0%, rgba(0,0,0,0.85) 38%, rgba(0,0,0,1) 64%, rgba(0,0,0,1) 100%); /* FF3.6-15 */
-                    background: -webkit-linear-gradient(-70deg,  rgba(0,0,0,0.31) 0%,rgba(0,0,0,0.85) 38%,rgba(0,0,0,1) 64%,rgba(0,0,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
-                    background: linear-gradient(160deg,  rgba(0,0,0,0.31) 0%,rgba(0,0,0,0.85) 35%,rgba(0,0,0,1) 48%,rgba(0,0,0,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4f000000', endColorstr='#000000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+                    !* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+50,000000+100&0.31+0,1+64 *!
+                    background: -moz-linear-gradient(-70deg,  rgba(0,0,0,0.31) 0%, rgba(0,0,0,0.85) 38%, rgba(0,0,0,1) 64%, rgba(0,0,0,1) 100%); !* FF3.6-15 *!
+                    background: -webkit-linear-gradient(-70deg,  rgba(0,0,0,0.31) 0%,rgba(0,0,0,0.85) 38%,rgba(0,0,0,1) 64%,rgba(0,0,0,1) 100%); !* Chrome10-25,Safari5.1-6 *!
+                    background: linear-gradient(160deg,  rgba(0,0,0,0.31) 0%,rgba(0,0,0,0.85) 35%,rgba(0,0,0,1) 48%,rgba(0,0,0,1) 100%); !* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ *!
+                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4f000000', endColorstr='#000000',GradientType=1 ); !* IE6-9 fallback on horizontal gradient *!
                 }
-            }
+            }*/
 
             form {
                 position: relative;
-                max-width: 50%;
+                /*max-width: 50%;
                 margin-left: auto;
-                z-index: 2;
+                z-index: 2;*/
 
                 @media all and (max-width: 768px) {
                     max-width: 100%;
@@ -175,5 +177,4 @@
             -moz-border-radius: 6px;
         }
     }
-
 }

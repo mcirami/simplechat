@@ -8,6 +8,7 @@ Alpine.start();*/
 /*require('./autosize');
 require('./custom');*/
 
-/*if (document.getElementById('add_user')) {
-    require('./Chat');
-}*/
+
+require('./Sliders/TopSlider');
+require('./Sliders/BottomSlider');
+
