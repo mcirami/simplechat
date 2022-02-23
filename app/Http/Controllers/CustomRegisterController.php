@@ -20,23 +20,7 @@ class CustomRegisterController extends Controller
      */
     public function show(Request $request) {
 
-        $modelArray = [
-            'alwazeBbad,',
-            'bangnteacher',
-            'brainsnboobs',
-            'cosplaymate',
-            'rawrach21',
-            'foxxamilie23',
-            'itssophia',
-            'krystalmadisson',
-            'mariahnichols28',
-            'nianxandruh',
-            'valentinawinter28',
-        ];
-
-        $index = rand(0, count($modelArray) - 1);
-        $addUser = $modelArray[$index];
-
+        $addUser = $request->query('add') ? $request->query('add') : null;
         $src = $request->query('src') ? $request->query('src') : null;
         return view('register-custom.register-chat')->with(['addUser' => $addUser, 'src' => $src]);
     }
