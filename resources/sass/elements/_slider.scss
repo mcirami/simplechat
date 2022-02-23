@@ -1,0 +1,43 @@
+.slide_wrapper {
+    margin-bottom: 12px;
+
+    .splide__arrow {
+        background: none;
+
+        svg {
+            fill: $white;
+            height: 2.2em;
+            width: 2.2em;
+        }
+    }
+
+    &.bottom {
+        margin-top: 12px;
+        margin-bottom: 0;
+    }
+
+    li {
+        @include box-shadow;
+        border-radius: 6px;
+        -webkit-border-radius: 6px;
+        -moz-border-radius: 6px;
+    }
+
+    .content_wrap {
+        height: 100%;
+
+        p {
+            position: absolute;
+            bottom: 0;
+            text-align: center;
+            width: 100%;
+            background: rgba(0,0,0,.6);
+            color: $white;
+            padding: 5px;
+
+            @media all and (max-width: 550px) {
+                font-size: 2.6vw;
+            }
+        }
+    }
+}

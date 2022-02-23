@@ -3,7 +3,7 @@
     border-radius: 6px;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
-    margin: auto;
+    margin: 0 auto 40px;
 
     .columns_wrap {
         display: -webkit-box;
@@ -20,140 +20,162 @@
     .content_wrap {
         position: relative;
         z-index: 2;
-    }
 
-    .heading {
-        background: $black;
-        padding: 20px;
-    }
-
-    h2 {
-        text-align: center;
-        color: $white;
-        font-size: 28px;
-
-        @media all and (max-width: 992px) {
-            font-size: 26px;
+        .heading {
+            background: $black;
+            padding: 20px;
         }
 
-        @media all and (max-width: 768px) {
-            font-size: 22px;
-        }
+        h2 {
+            text-align: center;
+            color: $white;
+            font-size: 28px;
 
-        @media all and (max-width: 550px) {
-            font-size: 4.5vw;
-        }
-
-        span {
-            color: $darkRed;
-        }
-    }
-
-    a {
-        color: $white;
-
-        &:hover {
-            color: $red;
-        }
-    }
-
-    .form_wrap {
-        padding: 20px;
-        position: relative;
-
-        &.alt {
-            padding: 40px;
-
-            h2 {
-                color: $darkGray;
-                margin-bottom: 40px;
-
-                span {
-                    color: $darkRed;
-                }
+            @media all and (max-width: 992px) {
+                font-size: 26px;
             }
 
-            a {
-                color: $darkGray;
-            }
-
-            &.password_page {
-                button {
-                    max-width: unset;
-                    width: 240px;
-                }
-            }
-        }
-
-        &.register {
             @media all and (max-width: 768px) {
-                background-position: top !important;
-                background-color: $black !important;
-
+                font-size: 22px;
             }
 
-            &:before {
-                content: '';
-                /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+50,000000+100&0.31+0,1+64 */
-                background: -moz-linear-gradient(left,  rgba(0,0,0,0.31) 0%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,1) 64%, rgba(0,0,0,1) 100%); /* FF3.6-15 */
-                background: -webkit-linear-gradient(left,  rgba(0,0,0,0.31) 0%,rgba(0,0,0,0.85) 50%,rgba(0,0,0,1) 64%,rgba(0,0,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
-                background: linear-gradient(to right,  rgba(0,0,0,0.31) 0%,rgba(0,0,0,0.85) 50%,rgba(0,0,0,1) 64%,rgba(0,0,0,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4f000000', endColorstr='#000000',GradientType=1 ); /* IE6-9 */
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                top: 0;
-                left: 0;
-
-                @media all and (max-width: 768px) {
-                    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+50,000000+100&0.31+0,1+64 */
-                    background: -moz-linear-gradient(-70deg,  rgba(0,0,0,0.31) 0%, rgba(0,0,0,0.75) 38%, rgba(0,0,0,1) 64%, rgba(0,0,0,1) 100%); /* FF3.6-15 */
-                    background: -webkit-linear-gradient(-70deg,  rgba(0,0,0,0.31) 0%,rgba(0,0,0,0.75) 38%,rgba(0,0,0,1) 64%,rgba(0,0,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
-                    background: linear-gradient(160deg,  rgba(0,0,0,0.31) 0%,rgba(0,0,0,0.75) 35%,rgba(0,0,0,1) 48%,rgba(0,0,0,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4f000000', endColorstr='#000000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-                }
-
-                @media all and (max-width: 550px) {
-                    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+50,000000+100&0.31+0,1+64 */
-                    background: -moz-linear-gradient(-70deg,  rgba(0,0,0,0.31) 0%, rgba(0,0,0,0.85) 38%, rgba(0,0,0,1) 64%, rgba(0,0,0,1) 100%); /* FF3.6-15 */
-                    background: -webkit-linear-gradient(-70deg,  rgba(0,0,0,0.31) 0%,rgba(0,0,0,0.85) 38%,rgba(0,0,0,1) 64%,rgba(0,0,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
-                    background: linear-gradient(160deg,  rgba(0,0,0,0.31) 0%,rgba(0,0,0,0.85) 35%,rgba(0,0,0,1) 48%,rgba(0,0,0,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4f000000', endColorstr='#000000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-                }
+            @media all and (max-width: 550px) {
+                font-size: 4.5vw;
             }
 
-            form {
-                position: relative;
-                max-width: 50%;
-                margin-left: auto;
-                z-index: 2;
-
-                @media all and (max-width: 768px) {
-                    max-width: 100%;
-                    margin-top: 50vw;
-                }
+            span {
+                color: $darkRed;
             }
+        }
 
-            .button_row {
-                @media all and (max-width: 550px) {
-                    flex-wrap: wrap-reverse;
-                    -ms-flex-wrap: wrap-reverse;
-                    -webkit-flex-wrap: wrap-reverse;
+        a {
+            color: $white;
 
-                };
+            &:hover {
+                color: $red;
+            }
+        }
 
-                a {
-                    @media all and (max-width: 550px) {
-                        width: 100%;
-                        text-align: center;
+        .form_wrap {
+            padding: 20px;
+            position: relative;
+
+            &.alt {
+                padding: 40px;
+
+                h2 {
+                    color: $darkGray;
+                    margin-bottom: 40px;
+
+                    span {
+                        color: $darkRed;
                     }
                 }
 
-                button {
-                    @media all and (max-width: 550px) {
-                        width: 100%;
+                a {
+                    color: $darkGray;
+                }
+
+                &.password_page {
+                    button {
                         max-width: unset;
-                        margin: 0 0 20px 0;
+                        width: 240px;
+                    }
+                }
+            }
+
+            &.register {
+                @media all and (max-width: 768px) {
+                    background-position: top !important;
+                    background-color: $black !important;
+
+                }
+
+                &:before {
+                    content: '';
+                    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+50,000000+100&0.31+0,1+64 */
+                    background: -moz-linear-gradient(left, rgba(0, 0, 0, 0.31) 0%, rgba(0, 0, 0, 0.85) 50%, rgba(0, 0, 0, 1) 64%, rgba(0, 0, 0, 1) 100%); /* FF3.6-15 */
+                    background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.31) 0%, rgba(0, 0, 0, 0.85) 50%, rgba(0, 0, 0, 1) 64%, rgba(0, 0, 0, 1) 100%); /* Chrome10-25,Safari5.1-6 */
+                    background: linear-gradient(to right, rgba(0, 0, 0, 0.31) 0%, rgba(0, 0, 0, 0.85) 50%, rgba(0, 0, 0, 1) 64%, rgba(0, 0, 0, 1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4f000000', endColorstr='#000000', GradientType=1); /* IE6-9 */
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    top: 0;
+                    left: 0;
+
+                    @media all and (max-width: 768px) {
+                        /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+50,000000+100&0.31+0,1+64 */
+                        background: -moz-linear-gradient(-70deg, rgba(0, 0, 0, 0.31) 0%, rgba(0, 0, 0, 0.75) 38%, rgba(0, 0, 0, 1) 64%, rgba(0, 0, 0, 1) 100%); /* FF3.6-15 */
+                        background: -webkit-linear-gradient(-70deg, rgba(0, 0, 0, 0.31) 0%, rgba(0, 0, 0, 0.75) 38%, rgba(0, 0, 0, 1) 64%, rgba(0, 0, 0, 1) 100%); /* Chrome10-25,Safari5.1-6 */
+                        background: linear-gradient(160deg, rgba(0, 0, 0, 0.31) 0%, rgba(0, 0, 0, 0.75) 35%, rgba(0, 0, 0, 1) 48%, rgba(0, 0, 0, 1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4f000000', endColorstr='#000000', GradientType=1); /* IE6-9 fallback on horizontal gradient */
+                    }
+
+                    @media all and (max-width: 550px) {
+                        /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+50,000000+100&0.31+0,1+64 */
+                        background: -moz-linear-gradient(-70deg, rgba(0, 0, 0, 0.31) 0%, rgba(0, 0, 0, 0.85) 38%, rgba(0, 0, 0, 1) 64%, rgba(0, 0, 0, 1) 100%); /* FF3.6-15 */
+                        background: -webkit-linear-gradient(-70deg, rgba(0, 0, 0, 0.31) 0%, rgba(0, 0, 0, 0.85) 38%, rgba(0, 0, 0, 1) 64%, rgba(0, 0, 0, 1) 100%); /* Chrome10-25,Safari5.1-6 */
+                        background: linear-gradient(160deg, rgba(0, 0, 0, 0.31) 0%, rgba(0, 0, 0, 0.85) 35%, rgba(0, 0, 0, 1) 48%, rgba(0, 0, 0, 1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4f000000', endColorstr='#000000', GradientType=1); /* IE6-9 fallback on horizontal gradient */
+                    }
+                }
+
+                form {
+                    position: relative;
+                    max-width: 50%;
+                    margin-left: auto;
+                    z-index: 2;
+
+                    @media all and (max-width: 768px) {
+                        max-width: 100%;
+                        margin-top: 50vw;
+                    }
+                }
+
+                .button_row {
+                    @media all and (max-width: 550px) {
+                        flex-wrap: wrap-reverse;
+                        -ms-flex-wrap: wrap-reverse;
+                        -webkit-flex-wrap: wrap-reverse;
+
+                    };
+
+                    a {
+                        @media all and (max-width: 550px) {
+                            width: 100%;
+                            text-align: center;
+                        }
+                    }
+
+                    button {
+                        @media all and (max-width: 550px) {
+                            width: 100%;
+                            max-width: unset;
+                            margin: 0 0 20px 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        &.custom_one {
+            .heading {
+                padding: 20px 20px 0;
+            }
+
+            .form_wrap {
+                padding: 0 20px 20px;
+
+                &.register {
+                    background: $black;
+
+                    form {
+                        max-width: 100%;
+
+                        @media all and (max-width: 768px) {
+                            margin-top: 0;
+                        }
                     }
                 }
             }

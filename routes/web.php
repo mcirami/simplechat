@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\CustomRegisterController;
+use App\Http\Controllers\MailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +19,9 @@ use App\Http\Controllers\ChatController;
 Route::get('/', function () {
     return view('home');
 });
+Route::get('register-two', [CustomRegisterController::class, 'show']);
+Route::post('register-two-store', [CustomRegisterController::class, 'store'])->name('register-two-store');
+Route::get('email', [MailController::class, 'email']);
 
 Route::group(['middleware' => 'auth'], function() {
 
@@ -24,6 +29,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('add-user/', [ChatController::class, 'addUser']);
 
 });
+
 /*Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
