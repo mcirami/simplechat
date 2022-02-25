@@ -8,7 +8,7 @@
             </a>
         </x-slot>
 
-        <div id="top_slider" class="my_row"></div>
+        {{--<div id="top_slider" class="my_row"></div>--}}
         <!-- Validation Errors -->
         <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
@@ -74,7 +74,7 @@
                 </form>
             </div>
         </div>
-        <div id="bottom_slider" class="my_row"></div>
+        <div id="bottom_slider" class="my_row bg-gray-100"></div>
 
     </x-auth-card>
 

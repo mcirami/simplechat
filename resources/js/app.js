@@ -8,5 +8,5 @@ Alpine.start();*/
 /*require('./autosize');
 require('./custom');*/
 
-require('./Sliders/TopSlider');
+/*require('./Sliders/TopSlider');*/
 require('./Sliders/BottomSlider');

@@ -4,7 +4,7 @@
     </div>
 
     <div class="container">
-    <div class="w-full mt-6 bg-white shadow-md overflow-hidden white_box">
+    <div class="w-full mt-6 bg-white overflow-hidden white_box">
         {{ $slot }}
     </div>
     </div>
