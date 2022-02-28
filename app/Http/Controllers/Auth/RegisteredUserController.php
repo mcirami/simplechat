@@ -58,7 +58,19 @@ class RegisteredUserController extends Controller
 
         $referral = null;
         if( $request->add_chat_user && $request->src) {
-            $ip = $request->ip();
+            if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+                $ip = $_SERVER['HTTP_CLIENT_IP'];
+            } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+                $ipOriginal = $_SERVER['HTTP_X_FORWARDED_FOR'];
+                if (strpos($ipOriginal, ',') !== false) {
+                    $ip = substr($ipOriginal, 0, strpos($ipOriginal, ","));
+                } else {
+                    $ip = $ipOriginal;
+                }
+            } else {
+                $ip = $_SERVER['REMOTE_ADDR'];
+            }
+            /*$ip = $request->ip();*/
             $referral = $request->add_chat_user;
             $src = $request->src;
 
