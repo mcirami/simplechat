@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
-use Symfony\Component\HttpFoundation\Request;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,9 +24,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Request::setTrustedProxies(
-            ['REMOTE_ADDR'],
-            Request::HEADER_X_FORWARDED_FOR
-        );
+        //
     }
 }

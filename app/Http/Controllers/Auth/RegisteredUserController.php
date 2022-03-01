@@ -70,6 +70,9 @@ class RegisteredUserController extends Controller
             } else {
                 $ip = $_SERVER['REMOTE_ADDR'];
             }*/
+            if (isset($_SERVER["HTTP_CF_CONNECTING_IP"])) {
+                $_SERVER['REMOTE_ADDR'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
+            }
             $ip = $request->ip();
             $referral = $request->add_chat_user;
             $src = $request->src;
