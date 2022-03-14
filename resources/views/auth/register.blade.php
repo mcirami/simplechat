@@ -20,7 +20,8 @@
                          style="
                              background: url({{ asset('storage/agent-images/' . $addUser . '.jpg')}}) no-repeat;
                              background-size: contain;
-                             background-position: left;">
+                             background-position: left;
+                             background-color: #000;">
                         <form method="POST" action="{{ route('register') }}">
                         @csrf
 
