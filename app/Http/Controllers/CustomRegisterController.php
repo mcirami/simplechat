@@ -9,6 +9,7 @@ use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 
 class CustomRegisterController extends Controller
@@ -18,13 +19,27 @@ class CustomRegisterController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function show(Request $request) {
+    public function showRegisterTwo(Request $request) {
 
         $addUser = $request->query('add') ? $request->query('add') : null;
         $src = $request->query('src') ? $request->query('src') : null;
-        return view('register-custom.register-chat')->with(['addUser' => $addUser, 'src' => $src]);
+        return view('register-custom.register-two')->with(['addUser' => $addUser, 'src' => $src]);
     }
 
+    public function showRegisterThree(Request $request) {
+
+        $images = File::glob(public_path('images/slider-bottom').'/*');
+        $imageArray = [];
+
+        foreach ($images as $image) {
+            array_push($imageArray, str_replace('/var/www/html/public/images/slider-bottom/', "", $image));
+        }
+
+
+        $addUser = $request->query('add') ? $request->query('add') : null;
+        $src = $request->query('src') ? $request->query('src') : null;
+        return view('register-custom.register-three')->with(['addUser' => $addUser, 'src' => $src, 'images' => $imageArray]);
+    }
     /**
      * Handle an incoming registration request.
      *

@@ -31107,10 +31107,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./public/images/slider-bottom/allparty99.jpg":
-/*!****************************************************!*\
-  !*** ./public/images/slider-bottom/allparty99.jpg ***!
-  \****************************************************/
+/***/ "./public/images/slider-bottom/ahegoluvin6.jpg":
+/*!*****************************************************!*\
+  !*** ./public/images/slider-bottom/ahegoluvin6.jpg ***!
+  \*****************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -31118,7 +31118,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/allparty99.jpg?b1160ceb57b7013c3b48a1c175c96601");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/ahegoluvin6.jpg?a329f6dd62c3fa98551f6a338960e604");
 
 /***/ }),
 
@@ -81157,7 +81157,7 @@ module.exports = function (list, options) {
 var map = {
 	"./KerryBella.jpg": "./public/images/slider-bottom/KerryBella.jpg",
 	"./SensualLust.jpg": "./public/images/slider-bottom/SensualLust.jpg",
-	"./allparty99.jpg": "./public/images/slider-bottom/allparty99.jpg",
+	"./ahegoluvin6.jpg": "./public/images/slider-bottom/ahegoluvin6.jpg",
 	"./alwazeBbad.jpg": "./public/images/slider-bottom/alwazeBbad.jpg",
 	"./bangnteacher.jpg": "./public/images/slider-bottom/bangnteacher.jpg",
 	"./bbblondie.jpg": "./public/images/slider-bottom/bbblondie.jpg",

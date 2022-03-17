@@ -19,8 +19,9 @@ use App\Http\Controllers\MailController;
 Route::get('/', function () {
     return view('home');
 });
-Route::get('register-two', [CustomRegisterController::class, 'show']);
-Route::post('register-two-store', [CustomRegisterController::class, 'store'])->name('register-two-store');
+Route::get('register-two', [CustomRegisterController::class, 'showRegisterTwo']);
+Route::get('register-three', [CustomRegisterController::class, 'showRegisterThree']);
+Route::post('custom-email-register', [CustomRegisterController::class, 'store'])->name('custom-email-register');
 Route::get('email', [MailController::class, 'email']);
 
 Route::group(['middleware' => 'auth'], function() {

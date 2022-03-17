@@ -197,5 +197,130 @@
             -moz-border-radius: 6px;
         }
     }
+}
+
+.register_three {
+    min-width: 1900px;
+    overflow: hidden;
+    max-height: 900px;
+
+    .images_wrap {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        -webkit-justify-content: flex-start;
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+
+        @media screen and (max-width: 992px) {
+            grid-template-columns: repeat(9, 1fr);
+        }
+
+        .column {
+            padding: 5px 5px 0;
+            text-align: center;
+
+            @supports not (display: grid) {
+                width: 12%;
+            }
+
+            p {
+                font-size: 12px;
+                font-weight: 700;
+            }
+        }
+    }
+
+    .form_section {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+
+        & > div {
+            background: none !important;
+            max-width: 550px;
+            margin: 0 auto;
+
+            @media screen and (max-width: 550px) {
+                padding: 0 20px;
+            }
+        }
+    }
+
+    .card_content {
+        background: rgba(255,255,255, .9);
+        border-radius: 8px;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border: 1px solid $darkGray;
+
+        img {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            border-bottom: 4px solid $darkGray;
+            height: 66px;
+            padding-top: 20px;
+            position: relative;
+            box-sizing: border-box;
+
+            a {
+                position: absolute;
+                right: 25%;
+            }
+        }
+    }
+
+    .white_box {
+        .content_wrap {
+
+            h2 {
+                color: $darkGray;
+                font-size: 26px;
+            }
+
+            .heading {
+                background: none;
+                padding-bottom: 0;
+            }
+
+            .form_wrap {
+
+                &.alt {
+                    padding-top: 0;
+                }
+
+                &.register {
+
+                    &:before {
+                        background: none;
+                    }
+
+                    @media screen and (max-width: 768px) {
+                        background-color: transparent !important;
+                    }
+
+                    form {
+                        max-width: 100%;
+
+                        @media screen and (max-width: 768px) {
+                            margin-top: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
 }

@@ -21,7 +21,7 @@
                     background: url({{ asset('storage/agent-images/' . $addUser . '.jpg')}}) no-repeat;
                     background-size: contain;
                     background-position: left;"--}}>
-                <form method="POST" action="{{ route('register-two-store') }}">
+                <form method="POST" action="{{ route('custom-email-register') }}">
                 @csrf
 
                 <!-- UserName -->
