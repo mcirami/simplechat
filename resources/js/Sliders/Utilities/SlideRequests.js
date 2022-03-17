@@ -5,7 +5,6 @@ export const getImages = (sliderPosition) => {
     let images = [];
     r.keys().map((item, index) => {
         images[index] = item.replace('./', '');
-        console.log( item.replace('./', ''))
     });
     return images;
 }

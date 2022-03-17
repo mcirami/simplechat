@@ -1,3 +1,12 @@
+.card_content {
+    .logo {
+        img {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+    }
+}
+
 .white_box {
     max-width: 800px;
     border-radius: 6px;
@@ -262,11 +271,6 @@
         -moz-border-radius: 8px;
         border: 1px solid $darkGray;
 
-        img {
-            max-width: 300px;
-            margin: 0 auto;
-        }
-
         .logo {
             border-bottom: 4px solid $darkGray;
             height: 66px;
@@ -321,6 +325,4 @@
             }
         }
     }
-
-
 }

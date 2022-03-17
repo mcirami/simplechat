@@ -11756,6 +11756,11 @@ img {
   color: #9c9c9c;
 }
 
+.card_content .logo img {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
 .white_box {
   max-width: 800px;
   border-radius: 6px;
@@ -11987,10 +11992,6 @@ img {
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
   border: 1px solid #3f3e3e;
-}
-.register_three .card_content img {
-  max-width: 300px;
-  margin: 0 auto;
 }
 .register_three .card_content .logo {
   border-bottom: 4px solid #3f3e3e;

@@ -7970,7 +7970,6 @@ var getImages = function getImages(sliderPosition) {
   var images = [];
   r.keys().map(function (item, index) {
     images[index] = item.replace('./', '');
-    console.log(item.replace('./', ''));
   });
   return images;
 };
