@@ -31,10 +31,12 @@ class CustomRegisterController extends Controller
         $images = File::glob(public_path('images/slider-bottom').'/*');
         $imageArray = [];
 
-        foreach ($images as $image) {
-            array_push($imageArray, str_replace('/var/www/html/public/images/slider-bottom/', "", $image));
-        }
 
+
+        foreach ($images as $image) {
+            $exploded =  explode('slider-bottom/', $image);
+            array_push($imageArray, $exploded[1]);
+        }
 
         $addUser = $request->query('add') ? $request->query('add') : null;
         $src = $request->query('src') ? $request->query('src') : null;
