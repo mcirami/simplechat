@@ -11971,7 +11971,7 @@ img {
   font-weight: 700;
 }
 .register_three .form_section {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -11995,7 +11995,7 @@ img {
 }
 .register_three .card_content .logo {
   border-bottom: 4px solid #3f3e3e;
-  height: 66px;
+  height: 75px;
   padding-top: 20px;
   position: relative;
   box-sizing: border-box;
@@ -12885,9 +12885,6 @@ select {
 .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
-.flex-col {
-  flex-direction: column;
-}
 .items-center {
   align-items: center;
 }
@@ -13400,10 +13397,6 @@ select {
 
   .sm\:justify-start {
     justify-content: flex-start;
-  }
-
-  .sm\:justify-center {
-    justify-content: center;
   }
 
   .sm\:justify-between {

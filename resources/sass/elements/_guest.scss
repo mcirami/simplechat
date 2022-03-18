@@ -248,7 +248,7 @@
     }
 
     .form_section {
-        position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
         width: 100%;
@@ -273,7 +273,7 @@
 
         .logo {
             border-bottom: 4px solid $darkGray;
-            height: 66px;
+            height: 75px;
             padding-top: 20px;
             position: relative;
             box-sizing: border-box;
