@@ -57,8 +57,9 @@ class ChatController extends Controller
     }*/
 
     public function testing() {
-        $user = User::where('name', 'Matteo')->get();
-        dd($user);
+        $agents = User::where('role', 'agent')->get();
+
+        dd($agents);
 
     }
 

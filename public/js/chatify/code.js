@@ -3,6 +3,69 @@
  * Global variables
  *-------------------------------------------------------------
  */
+
+require('../responses');
+
+const trigger = [
+//0
+    ["hi", "hey", "hello"],
+//1
+    ["how are you", "how are things"],
+//2
+    ["what is going on", "what is up"],
+//3
+    ["happy", "good", "well", "fantastic", "cool"],
+//4
+    ["bad", "bored", "tired", "sad"],
+//5
+    ["tell me story", "tell me joke"],
+//6
+    ["thanks", "thank you"],
+//7
+    ["bye", "good bye", "goodbye"]
+];
+
+const reply = [
+    //0
+    ["Hello!", "Hi!", "Hey!", "Hi there!"],
+//1
+    [
+        "Fine... how are you?",
+        "Pretty well, how are you?",
+        "Fantastic, how are you?"
+    ],
+//2
+    [
+        "Nothing much",
+        "Exciting things!"
+    ],
+//3
+    ["Glad to hear it"],
+//4
+    ["Why?", "Cheer up buddy"],
+//5
+    ["What about?", "Once upon a time..."],
+//6
+    ["You're welcome", "No problem"],
+//7
+    ["Goodbye", "See you later"]
+]
+
+const alternative = [
+    "Same",
+    "Go on...",
+    "Try again",
+    "I'm listening...",
+    "Bro..."
+];
+
+const robot = [
+    "How do you do, fellow human",
+    "I am not a bot",
+    "I hate bots! Of course not!",
+    "If I was a bot my circuits would explode right now I'm so wet!",
+];
+
 var messenger,
     typingTimeout,
     typingNow = 0,
@@ -26,13 +89,21 @@ const getMessengerType = () => $("meta[name=type]").attr("content");
 const setMessengerId = (id) => $("meta[name=id]").attr("content", id);
 const setMessengerType = (type) => $("meta[name=type]").attr("content", type);
 
+const getBotTo = () => $("meta[name=bot]").attr("data-to");
+const getBotFrom = () => $("meta[name=bot]").attr("data-from");
+const setBotTo = (id) => $("meta[name=bot]").attr("data-to", id);
+const setBotFrom = (id) => $("meta[name=bot]").attr("data-from", id);
+
+const setAuthId = (id) => $("meta[name=url]").attr("data-user", id);
+var botTyping = false;
+
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 let addChatUser = urlParams.get('add_chat_user');
 
-if (addChatUser) {
+/*if (addChatUser) {
     messageInput.val("Hey " + addChatUser + "! I just joined and I'm ready to chat.");
-}
+}*/
 
 /**
  *-------------------------------------------------------------
@@ -149,9 +220,16 @@ function avatarLoading(items) {
 // While sending a message, show this temporary message card.
 function sendigCard(message, id) {
 
+    let classes;
+    if (botTyping) {
+        classes = "message-card"
+    } else {
+        classes = "message-card mc-sender";
+    }
+
     return (
         `
-<div class="message-card mc-sender" data-id="` +
+<div class="` + classes + `" data-id="` +
         id +
         `">
 <p>` +
@@ -428,17 +506,21 @@ function IDinfo(id, type) {
  * Send message function
  *-------------------------------------------------------------
  */
-function sendMessage() {
+function sendMessage( sendTo = null, fromID = "false") {
     temporaryMsgId += 1;
     let tempID = "temp_" + temporaryMsgId;
     let hasFile = $(".upload-attachment").val() ? true : false;
 
+    let sendToUser = sendTo ? sendTo : getMessengerId();
+
     if ($.trim(messageInput.val()).length > 0 || hasFile || addChatUser) {
         const formData = new FormData($("#message-form")[0]);
-        formData.append("id", getMessengerId());
+        formData.append("id", sendToUser);
         formData.append("type", getMessengerType());
         formData.append("temporaryMsgId", tempID);
+        formData.append("from", fromID);
         formData.append("_token", access_token);
+
         $.ajax({
             url: $("#message-form").attr("action"),
             method: "POST",
@@ -458,7 +540,8 @@ function sendMessage() {
                         messageInput.text() + "\n" + loadingSVG("28px"),
                         tempID
                     ))
-                    : messagesContainer
+                    :
+                    messagesContainer
                     .find(".messages")
                     .append(sendigCard(messageInput.text(), tempID));
                 // scroll to bottom
@@ -470,13 +553,14 @@ function sendMessage() {
                 messageInput.focus();
             },
             success: (data) => {
+
                 if (data.error > 0) {
                     // message card error status
                     errorMessageCard(tempID);
                     console.error(data.error_msg);
                 } else {
                     // update contact item
-                    updateContatctItem(getMessengerId());
+                    updateContatctItem(sendToUser);
                     messagesContainer.find('.mc-sender[data-id="sending"]').remove();
 
                     // get message before the sending one [temporary]
@@ -492,6 +576,10 @@ function sendMessage() {
                     scrollBottom(messageInnerContainer);
                     // send contact item updates
                     sendContactItemUpdates(true);
+
+                    if(sendTo === null) {
+                        checkForAgentResponse(data.message);
+                    }
                 }
             },
             error: () => {
@@ -611,6 +699,13 @@ var channel = pusher.subscribe("private-chatify");
 
 // Listen to messages, and append if data received
 channel.bind("messaging", function (data) {
+
+    /*console.log("from: " + data.from_id);
+    console.log("to: " + data.to_id);
+    console.log("auth: " + auth_id);
+    console.log(getMessengerId());
+    console.log(data.message)*/
+
     if (data.from_id == getMessengerId() && data.to_id == auth_id) {
         $(".messages").find(".message-hint").remove();
         messagesContainer.find(".messages").append(data.message);
@@ -621,7 +716,81 @@ channel.bind("messaging", function (data) {
         .find("tr>td>b")
         .remove();
     }
+
+    setBotTo(data.from_id);
+    setBotFrom(data.to_id)
+    //const message = data.message
+    //const toID = data.to_id;
+
 });
+
+function checkForAgentResponse(message) {
+
+    let agents = $.ajax({
+        url: url + "/get-agents",
+        method: "POST",
+        data: {_token: access_token},
+        dataType: "JSON",
+        global: false,
+        async:false,
+        success: (data) => {
+            return data;
+        },
+        error: (error) => {
+            console.log(error);
+        },
+    }).responseJSON
+
+    const toID = getBotTo();
+    const fromID = getBotFrom();
+
+    const agent = agents['agents'].find(agent => agent.id == fromID);
+
+    if (agent !== undefined) {
+        const firstPart = message.split('<p>');
+        const secondPart = firstPart[1].split('<sub');
+        let final = secondPart[0].replaceAll('\n',' ');
+        final = final.replaceAll('<br />','');
+        getResponse(final, toID, fromID);
+    }
+}
+
+function getResponse(message, sendTo, fromID) {
+
+    let response;
+    let text = message.toLowerCase().replace(/[^\w\s\d]/gi, "");
+    text = text
+        .replace(/ a /g, " ")
+        .replace(/i feel /g, "")
+        .replace(/whats/g, "what is")
+        .replace(/please /g, "")
+        .replace(/ please/g, "");
+
+    if (compare(trigger, reply, text) ) {
+        response = compare(trigger, reply, text.trim());
+    } else if (text.match(/bot/gi)) {
+        response = robot[Math.floor(Math.random() * robot.length)];
+    }
+
+    setMessengerId(sendTo);
+    setAuthId(fromID);
+    botTyping = true;
+    const formInput = document.querySelector('#message-form .m-send');
+    formInput.dispatchEvent(new Event('focus'));
+    formInput.dispatchEvent(new KeyboardEvent('keydown', {'key' : 'a'}));
+
+    setTimeout(() => {
+        isTyping(true);
+    },5000)
+
+    setTimeout(() => {
+        isTyping(false);
+        messageInput.val(response);
+        sendMessage(sendTo, fromID);
+        setMessengerId(fromID);
+        setAuthId(sendTo);
+    },15000)
+}
 
 // listen to typing indicator
 channel.bind("client-typing", function (data) {
@@ -688,8 +857,8 @@ activeStatusChannel.bind("pusher:member_removed", function (member) {
  */
 function isTyping(status) {
     return channel.trigger("client-typing", {
-        from_id: auth_id, // Me
-        to_id: getMessengerId(), // Messenger
+        from_id: botTyping ? getMessengerId() : auth_id, // Me
+        to_id: botTyping ? auth_id : getMessengerId(), // Messenger
         typing: status,
     });
 }
@@ -1209,10 +1378,10 @@ $(document).ready(function () {
                         }, 1500)
                     }
                 }
-               /* $.trim(addChatUser).length > 0
-                    ? $(".messenger-search").trigger("focus") + messengerSearch(addChatUser)
-                    : $(".messenger-tab").hide() +
-                    $('.messenger-listView-tabs a[data-view="users"]').trigger("click");*/
+                /* $.trim(addChatUser).length > 0
+                     ? $(".messenger-search").trigger("focus") + messengerSearch(addChatUser)
+                     : $(".messenger-tab").hide() +
+                     $('.messenger-listView-tabs a[data-view="users"]').trigger("click");*/
             }
         });
     });
@@ -1566,3 +1735,27 @@ $(document).ready(function () {
     })
 
 });
+
+
+function compare(triggerArray, replyArray, text) {
+    let item;
+
+    for (let x = 0; x < triggerArray.length; x++) {
+        for (let y = 0; y < replyArray.length; y++) {
+
+            let triggeredText;
+            if (triggerArray[x][y] !== undefined) {
+                triggeredText = triggerArray[x][y].trim();
+            }
+
+            if(triggerArray[x][y] === text.trim()) {
+                items = replyArray[x];
+                item = items[Math.floor(Math.random() * items.length)];
+                console.log("trigger this");
+            }
+        }
+    }
+
+    console.log(item);
+    return item;
+}

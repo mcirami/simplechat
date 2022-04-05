@@ -10,3 +10,4 @@ require('./custom');*/
 
 /*require('./Sliders/TopSlider');*/
 require('./Sliders/BottomSlider');
+require('./custom');

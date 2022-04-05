@@ -47,11 +47,14 @@ class RegisteredUserController extends Controller
 
         $id = IdGenerator::generate(['table' => 'users', 'length' => 8, 'prefix' => random_int(100000, 999999)]);
 
+        $role = $request->role ?: "member";
+
         $user = User::create([
             'id' => $id,
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $role
         ]);
 
         event(new Registered($user));

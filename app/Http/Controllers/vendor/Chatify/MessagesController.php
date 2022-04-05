@@ -158,13 +158,16 @@ class MessagesController extends Controller
             }
         }
 
+
+        $fromID = $request['from'] != "false" ?  $request['from'] : Auth::user()->id;
+
         if (!$error->status) {
             // send to database
             $messageID = mt_rand(9, 999999999) + time();
             Chatify::newMessage([
                 'id' => $messageID,
                 'type' => $request['type'],
-                'from_id' => Auth::user()->id,
+                'from_id' => $fromID,
                 'to_id' => $request['id'],
                 'body' => htmlentities(trim($request['message']), ENT_QUOTES, 'UTF-8'),
                 'attachment' => ($attachment) ? json_encode((object)[
@@ -178,7 +181,7 @@ class MessagesController extends Controller
 
             // send to user using pusher
             Chatify::push('private-chatify', 'messaging', [
-                'from_id' => Auth::user()->id,
+                'from_id' => $fromID,
                 'to_id' => $request['id'],
                 'message' => Chatify::messageCard($messageData, 'default')
             ]);

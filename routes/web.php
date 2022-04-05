@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CustomRegisterController;
 use App\Http\Controllers\MailController;
-
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,6 +21,7 @@ Route::get('/', function () {
 });
 Route::get('register-two', [CustomRegisterController::class, 'showRegisterTwo']);
 Route::get('register-three', [CustomRegisterController::class, 'showRegisterThree']);
+Route::get('register-agent', [CustomRegisterController::class, 'showAgentRegister']);
 Route::post('custom-email-register', [CustomRegisterController::class, 'store'])->name('custom-email-register');
 Route::get('email', [MailController::class, 'email']);
 
@@ -28,6 +29,8 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::get('testing', [ChatController::class, 'testing']);
     Route::post('add-user/', [ChatController::class, 'addUser']);
+
+    Route::post('chat/get-agents', [UserController::class, 'getAgentUsers']);
 
 });
 

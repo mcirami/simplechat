@@ -4,6 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
 <meta name="id" content="{{ $id }}">
 <meta name="type" content="{{ $type }}">
+<meta name="bot" data-to="{{ null }}" data-from="{{ null }}">
 <meta name="messenger-color" content="{{ $messengerColor }}">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <meta name="url" content="{{ url('').'/'.config('chatify.routes.prefix') }}" data-user="{{ Auth::user()->id }}">
@@ -13,7 +14,7 @@
   src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{{ asset('js/chatify/font.awesome.min.js') }}"></script>
 <script src="{{ asset('js/chatify/autosize.js') }}"></script>
-{{--<script src="{{ asset('js/app.js') }}" defer></script>--}}
+<script src="{{ asset('js/app.js') }}" defer></script>
 <script src='https://unpkg.com/nprogress@0.2.0/nprogress.js'></script>
 
 {{-- styles --}}

@@ -1,6 +1,17 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./node_modules/@babel/runtime/regenerator/index.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
+  \**********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! regenerator-runtime */ "./node_modules/regenerator-runtime/runtime.js");
+
+
+/***/ }),
+
 /***/ "./node_modules/@popperjs/core/lib/createPopper.js":
 /*!*********************************************************!*\
   !*** ./node_modules/@popperjs/core/lib/createPopper.js ***!
@@ -8014,6 +8025,8 @@ require('./custom');*/
 
 __webpack_require__(/*! ./Sliders/BottomSlider */ "./resources/js/Sliders/BottomSlider/index.js");
 
+__webpack_require__(/*! ./custom */ "./resources/js/custom.js");
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -8049,6 +8062,1685 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/custom.js":
+/*!********************************!*\
+  !*** ./resources/js/custom.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _messages__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./messages */ "./resources/js/messages.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+/**
+ *-------------------------------------------------------------
+ * Global variables
+ *-------------------------------------------------------------
+ */
+
+var messenger,
+    typingTimeout,
+    typingNow = 0,
+    temporaryMsgId = 0,
+    defaultAvatarInSettings = null,
+    messengerColor,
+    dark_mode,
+    messages_page = 1;
+var messagesContainer = $(".messenger-messagingView .m-body"),
+    messageInnerContainer = $(".messages"),
+    messengerTitleDefault = $(".messenger-headTitle").text(),
+    messageInput = $("#message-form .m-send"),
+    auth_id = $("meta[name=url]").attr("data-user"),
+    url = $("meta[name=url]").attr("content"),
+    defaultMessengerColor = $("meta[name=messenger-color]").attr("content"),
+    access_token = $('meta[name="csrf-token"]').attr("content");
+
+var getMessengerId = function getMessengerId() {
+  return $("meta[name=id]").attr("content");
+};
+
+var getMessengerType = function getMessengerType() {
+  return $("meta[name=type]").attr("content");
+};
+
+var setMessengerId = function setMessengerId(id) {
+  return $("meta[name=id]").attr("content", id);
+};
+
+var setMessengerType = function setMessengerType(type) {
+  return $("meta[name=type]").attr("content", type);
+};
+
+var getBotTo = function getBotTo() {
+  return $("meta[name=bot]").attr("data-to");
+};
+
+var getBotFrom = function getBotFrom() {
+  return $("meta[name=bot]").attr("data-from");
+};
+
+var setBotTo = function setBotTo(id) {
+  return $("meta[name=bot]").attr("data-to", id);
+};
+
+var setBotFrom = function setBotFrom(id) {
+  return $("meta[name=bot]").attr("data-from", id);
+};
+
+var setAuthId = function setAuthId(id) {
+  return $("meta[name=url]").attr("data-user", id);
+};
+
+var botTyping = false;
+var queryString = window.location.search;
+var urlParams = new URLSearchParams(queryString);
+var addChatUser = urlParams.get('add_chat_user');
+/*if (addChatUser) {
+    messageInput.val("Hey " + addChatUser + "! I just joined and I'm ready to chat.");
+}*/
+
+/**
+ *-------------------------------------------------------------
+ * Re-usable methods
+ *-------------------------------------------------------------
+ */
+
+var escapeHtml = function escapeHtml(unsafe) {
+  return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+};
+
+function actionOnScroll(selector, callback) {
+  var topScroll = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+  $(selector).on("scroll", function () {
+    var element = $(this).get(0);
+    var condition = topScroll ? element.scrollTop == 0 : element.scrollTop + element.clientHeight >= element.scrollHeight;
+
+    if (condition) {
+      callback();
+    }
+  });
+}
+
+function routerPush(title, url) {
+  $("meta[name=url]").attr("content", url);
+  return window.history.pushState({}, title || document.title, url);
+}
+
+function updateSelectedContact(user_id) {
+  $(document).find(".messenger-list-item").removeClass("m-list-active");
+  $(document).find(".messenger-list-item[data-contact=" + (user_id || getMessengerId()) + "]").addClass("m-list-active");
+}
+/**
+ *-------------------------------------------------------------
+ * Global Templates
+ *-------------------------------------------------------------
+ */
+// Loading svg
+
+
+function loadingSVG() {
+  var w_h = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "25px";
+  var className = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+  var style = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
+  return "\n<svg style=\"".concat(style, "\" class=\"loadingSVG ").concat(className, "\" xmlns=\"http://www.w3.org/2000/svg\" width=\"").concat(w_h, "\" height=\"").concat(w_h, "\" viewBox=\"0 0 40 40\" stroke=\"").concat(defaultMessengerColor, "\">\n<g fill=\"none\" fill-rule=\"evenodd\">\n<g transform=\"translate(2 2)\" stroke-width=\"3\">\n<circle stroke-opacity=\".1\" cx=\"18\" cy=\"18\" r=\"18\"></circle>\n<path d=\"M36 18c0-9.94-8.06-18-18-18\" transform=\"rotate(349.311 18 18)\">\n    <animateTransform attributeName=\"transform\" type=\"rotate\" from=\"0 18 18\" to=\"360 18 18\" dur=\".8s\" repeatCount=\"indefinite\"></animateTransform>\n</path>\n</g>\n</g>\n</svg>\n");
+}
+
+function loadingWithContainer(className) {
+  return "<div class=\"".concat(className, "\" style=\"text-align:center;padding:15px\">").concat(loadingSVG("25px", "", "margin:auto"), "</div>");
+} // loading placeholder for users list item
+
+
+function listItemLoading(items) {
+  var template = "";
+
+  for (var i = 0; i < items; i++) {
+    template += "\n            <div class=\"loadingPlaceholder\">\n                <div class=\"loadingPlaceholder-wrapper\">\n                  <div class=\"loadingPlaceholder-body\">\n                      <table class=\"loadingPlaceholder-header\">\n                        <tr>\n                          <td style=\"width: 45px;\">\n                            <div class=\"loadingPlaceholder-avatar\"></div>\n                          </td>\n                          <td>\n                            <div class=\"loadingPlaceholder-name\"></div>\n                            <div class=\"loadingPlaceholder-date\"></div>\n                          </td>\n                        </tr>\n                      </table>\n                  </div>\n                </div>\n            </div>\n        ";
+  }
+
+  return template;
+} // loading placeholder for avatars
+
+
+function avatarLoading(items) {
+  var template = "";
+
+  for (var i = 0; i < items; i++) {
+    template += "\n<div class=\"loadingPlaceholder\">\n<div class=\"loadingPlaceholder-wrapper\">\n  <div class=\"loadingPlaceholder-body\">\n      <table class=\"loadingPlaceholder-header\">\n          <tr>\n              <td style=\"width: 45px;\">\n                  <div class=\"loadingPlaceholder-avatar\" style=\"margin: 2px;\"></div>\n              </td>\n          </tr>\n      </table>\n  </div>\n</div>\n</div>\n";
+  }
+
+  return template;
+} // While sending a message, show this temporary message card.
+
+
+function sendigCard(message, id) {
+  var classes;
+
+  if (botTyping) {
+    classes = "message-card";
+  } else {
+    classes = "message-card mc-sender";
+  }
+
+  return "\n<div class=\"" + classes + "\" data-id=\"" + id + "\">\n<p>" + message + "<sub><span class=\"far fa-clock\"></span></sub></p>\n</div>\n";
+} // upload image preview card.
+
+
+function attachmentTemplate(fileType, fileName) {
+  var imgURL = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+
+  if (fileType !== "image") {
+    return "\n<div class=\"attachment-preview\">\n  <span class=\"fas fa-times cancel\"></span>\n  <p style=\"padding:0px 30px;\"><span class=\"fas fa-file\"></span> " + escapeHtml(fileName) + "</p>\n</div>\n";
+  } else {
+    return "\n<div class=\"attachment-preview\">\n  <span class=\"fas fa-times cancel\"></span>\n  <div class=\"image-file chat-image\" style=\"background-image: url('" + imgURL + "');\"></div>\n  <p><span class=\"fas fa-file-image\"></span> " + escapeHtml(fileName) + "</p>\n</div>\n";
+  }
+} // Active Status Circle
+
+
+function activeStatusCircle() {
+  return "<span class=\"activeStatus\"></span>";
+}
+/**
+ *-------------------------------------------------------------
+ * Css Media Queries [For responsive design]
+ *-------------------------------------------------------------
+ */
+
+
+$(window).resize(function () {
+  cssMediaQueries();
+});
+
+function cssMediaQueries() {
+  if (window.matchMedia("(min-width: 980px)").matches) {
+    $(".messenger-listView").removeAttr("style");
+  }
+
+  if (window.matchMedia("(max-width: 980px)").matches) {
+    $("body").find(".messenger-list-item").find("tr[data-action]").attr("data-action", "1");
+    $("body").find(".favorite-list-item").find("div").attr("data-action", "1");
+  } else {
+    $("body").find(".messenger-list-item").find("tr[data-action]").attr("data-action", "0");
+    $("body").find(".favorite-list-item").find("div").attr("data-action", "0");
+  }
+}
+/**
+ *-------------------------------------------------------------
+ * App Modal
+ *-------------------------------------------------------------
+ */
+
+
+var app_modal = function app_modal(_ref) {
+  var _ref$show = _ref.show,
+      show = _ref$show === void 0 ? true : _ref$show,
+      name = _ref.name,
+      _ref$data = _ref.data,
+      data = _ref$data === void 0 ? 0 : _ref$data,
+      _ref$buttons = _ref.buttons,
+      buttons = _ref$buttons === void 0 ? true : _ref$buttons,
+      _ref$header = _ref.header,
+      header = _ref$header === void 0 ? null : _ref$header,
+      _ref$body = _ref.body,
+      body = _ref$body === void 0 ? null : _ref$body;
+  var modal = $(".app-modal[data-name=" + name + "]"); // header
+
+  header ? modal.find(".app-modal-header").html(header) : ""; // body
+
+  body ? modal.find(".app-modal-body").html(body) : ""; // buttons
+
+  buttons == true ? modal.find(".app-modal-footer").show() : modal.find(".app-modal-footer").hide(); // show / hide
+
+  if (show == true) {
+    modal.show();
+    $(".app-modal-card[data-name=" + name + "]").addClass("app-show-modal");
+    $(".app-modal-card[data-name=" + name + "]").attr("data-modal", data);
+  } else {
+    modal.hide();
+    $(".app-modal-card[data-name=" + name + "]").removeClass("app-show-modal");
+    $(".app-modal-card[data-name=" + name + "]").attr("data-modal", data);
+  }
+};
+/**
+ *-------------------------------------------------------------
+ * Slide to bottom on [action] - e.g. [message received, sent, loaded]
+ *-------------------------------------------------------------
+ */
+
+
+function scrollBottom(container) {
+  $(container).stop().animate({
+    scrollTop: $(container)[0].scrollHeight
+  });
+}
+/**
+ *-------------------------------------------------------------
+ * click and drag to scroll - function
+ *-------------------------------------------------------------
+ */
+
+
+function hScroller(scroller) {
+  var slider = document.querySelector(scroller);
+  var isDown = false;
+  var startX;
+  var scrollLeft;
+  slider.addEventListener("mousedown", function (e) {
+    isDown = true;
+    startX = e.pageX - slider.offsetLeft;
+    scrollLeft = slider.scrollLeft;
+  });
+  slider.addEventListener("mouseleave", function () {
+    isDown = false;
+  });
+  slider.addEventListener("mouseup", function () {
+    isDown = false;
+  });
+  slider.addEventListener("mousemove", function (e) {
+    if (!isDown) return;
+    e.preventDefault();
+    var x = e.pageX - slider.offsetLeft;
+    var walk = (x - startX) * 1;
+    slider.scrollLeft = scrollLeft - walk;
+  });
+}
+/**
+ *-------------------------------------------------------------
+ * Disable/enable message form fields, messaging container...
+ * on load info or if needed elsewhere.
+ *
+ * Default : true
+ *-------------------------------------------------------------
+ */
+
+
+function disableOnLoad() {
+  var action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+  if (action == true) {
+    // hide star button
+    $(".add-to-favorite").hide(); // hide send card
+
+    $(".messenger-sendCard").hide(); // add loading opacity to messages container
+
+    messagesContainer.css("opacity", ".5"); // disable message form fields
+
+    messageInput.attr("readonly", "readonly");
+    $("#message-form button").attr("disabled", "disabled");
+    $(".upload-attachment").attr("disabled", "disabled");
+  } else {
+    // show star button
+    if (getMessengerId() != auth_id) {
+      $(".add-to-favorite").show();
+    } // show send card
+
+
+    $(".messenger-sendCard").show(); // remove loading opacity to messages container
+
+    messagesContainer.css("opacity", "1"); // enable message form fields
+
+    messageInput.removeAttr("readonly");
+    $("#message-form button").removeAttr("disabled");
+    $(".upload-attachment").removeAttr("disabled");
+  }
+}
+/**
+ *-------------------------------------------------------------
+ * Error message card
+ *-------------------------------------------------------------
+ */
+
+
+function errorMessageCard(id) {
+  messagesContainer.find(".message-card[data-id=" + id + "]").addClass("mc-error");
+  messagesContainer.find(".message-card[data-id=" + id + "]").find("svg.loadingSVG").remove();
+  messagesContainer.find(".message-card[data-id=" + id + "] p").prepend('<span class="fas fa-exclamation-triangle"></span>');
+}
+/**
+ *-------------------------------------------------------------
+ * Fetch id data (user/group) and update the view
+ *-------------------------------------------------------------
+ */
+
+
+function IDinfo(id, type) {
+  // clear temporary message id
+  temporaryMsgId = 0; // clear typing now
+
+  typingNow = 0; // show loading bar
+
+  NProgress.start(); // disable message form
+
+  disableOnLoad();
+
+  if (messenger != 0) {
+    // get shared photos
+    getSharedPhotos(id); // Get info
+
+    $.ajax({
+      url: url + "/idInfo",
+      method: "POST",
+      data: {
+        _token: access_token,
+        id: id,
+        type: type
+      },
+      dataType: "JSON",
+      success: function success(data) {
+        // avatar photo
+        $(".messenger-infoView").find(".avatar").css("background-image", 'url("' + data.user_avatar + '")');
+        $(".header-avatar").css("background-image", 'url("' + data.user_avatar + '")'); // Show shared and actions
+
+        $(".messenger-infoView-btns .delete-conversation").show();
+        $(".messenger-infoView-shared").show(); // fetch messages
+
+        fetchMessages(id, type, true); // focus on messaging input
+
+        messageInput.focus(); // update info in view
+
+        $(".messenger-infoView .info-name").html(data.fetch.name);
+        $(".m-header-messaging .user-name").html(data.fetch.name); // Star status
+
+        data.favorite > 0 ? $(".add-to-favorite").addClass("favorite") : $(".add-to-favorite").removeClass("favorite"); // form reset and focus
+
+        $("#message-form").trigger("reset");
+        cancelAttachment();
+        messageInput.focus();
+      },
+      error: function error() {
+        console.error("Error, check server response!"); // remove loading bar
+
+        NProgress.done();
+        NProgress.remove();
+      }
+    });
+  } else {
+    // remove loading bar
+    NProgress.done();
+    NProgress.remove();
+  }
+}
+/**
+ *-------------------------------------------------------------
+ * Send message function
+ *-------------------------------------------------------------
+ */
+
+
+function sendMessage() {
+  var sendTo = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+  var fromID = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "false";
+  temporaryMsgId += 1;
+  var tempID = "temp_" + temporaryMsgId;
+  var hasFile = $(".upload-attachment").val() ? true : false;
+  var sendToUser = sendTo ? sendTo : getMessengerId();
+
+  if ($.trim(messageInput.val()).length > 0 || hasFile || addChatUser) {
+    var formData = new FormData($("#message-form")[0]);
+    formData.append("id", sendToUser);
+    formData.append("type", getMessengerType());
+    formData.append("temporaryMsgId", tempID);
+    formData.append("from", fromID);
+    formData.append("_token", access_token);
+    $.ajax({
+      url: $("#message-form").attr("action"),
+      method: "POST",
+      data: formData,
+      dataType: "JSON",
+      processData: false,
+      contentType: false,
+      beforeSend: function beforeSend() {
+        // remove message hint
+        $(".messages").find(".message-hint").remove(); // append message
+
+        hasFile ? messagesContainer.find(".messages").append(sendigCard(messageInput.text() + "\n" + loadingSVG("28px"), tempID)) : messagesContainer.find(".messages").append(sendigCard(messageInput.text(), tempID)); // scroll to bottom
+
+        scrollBottom(messageInnerContainer);
+        messageInput.css({
+          height: "42px"
+        }); // form reset and focus
+
+        $("#message-form").trigger("reset");
+        cancelAttachment();
+        messageInput.focus();
+      },
+      success: function success(data) {
+        if (data.error > 0) {
+          // message card error status
+          errorMessageCard(tempID);
+          console.error(data.error_msg);
+        } else {
+          // update contact item
+          updateContatctItem(sendToUser);
+          messagesContainer.find('.mc-sender[data-id="sending"]').remove(); // get message before the sending one [temporary]
+
+          messagesContainer.find(".message-card[data-id=" + data.tempID + "]").before(data.message); // delete the temporary one
+
+          messagesContainer.find(".message-card[data-id=" + data.tempID + "]").remove(); // scroll to bottom
+
+          scrollBottom(messageInnerContainer); // send contact item updates
+
+          sendContactItemUpdates(true);
+
+          if (sendTo === null) {
+            checkForAgentResponse(data.message);
+          }
+        }
+      },
+      error: function error() {
+        // message card error status
+        errorMessageCard(tempID); // error log
+
+        console.error("Failed sending the message! Please, check your server response");
+      }
+    });
+  }
+
+  return false;
+}
+/**
+ *-------------------------------------------------------------
+ * Fetch messages from database
+ *-------------------------------------------------------------
+ */
+
+
+var messagesPage = 1;
+var noMoreMessages = false;
+var messagesLoading = false;
+
+function setMessagesLoading() {
+  var loading = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+  if (!loading) {
+    messagesContainer.find(".messages").find(".loading-messages").remove();
+    NProgress.done();
+    NProgress.remove();
+  } else {
+    messagesContainer.find(".messages").prepend(loadingWithContainer("loading-messages"));
+  }
+
+  messagesLoading = loading;
+}
+
+function fetchMessages(id, type) {
+  var newFetch = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+  if (newFetch) {
+    messagesPage = 1;
+    noMoreMessages = false;
+  }
+
+  if (messenger != 0 && !noMoreMessages && !messagesLoading) {
+    var messagesElement = messagesContainer.find(".messages");
+    setMessagesLoading(true);
+    $.ajax({
+      url: url + "/fetchMessages",
+      method: "POST",
+      data: {
+        _token: access_token,
+        id: id,
+        type: type,
+        page: messagesPage
+      },
+      dataType: "JSON",
+      success: function success(data) {
+        setMessagesLoading(false);
+
+        if (messagesPage == 1) {
+          messagesElement.html(data.messages);
+          scrollBottom(messageInnerContainer);
+        } else {
+          var lastMsg = messagesElement.find(messagesElement.find(".message-card")[0]);
+          var curOffset = lastMsg.offset().top - messagesContainer.scrollTop();
+          messagesElement.prepend(data.messages);
+          messagesContainer.scrollTop(lastMsg.offset().top - curOffset);
+        } // trigger seen event
+
+
+        makeSeen(true); // Pagination lock & messages page
+
+        noMoreMessages = messagesPage >= (data === null || data === void 0 ? void 0 : data.last_page);
+        if (!noMoreMessages) messagesPage += 1; // Enable message form if messenger not = 0; means if data is valid
+
+        if (messenger != 0) {
+          disableOnLoad(false);
+        }
+      },
+      error: function error(_error) {
+        setMessagesLoading(false);
+        console.error(_error);
+      }
+    });
+  }
+}
+/**
+ *-------------------------------------------------------------
+ * Cancel file attached in the message.
+ *-------------------------------------------------------------
+ */
+
+
+function cancelAttachment() {
+  $(".messenger-sendCard").find(".attachment-preview").remove();
+  $(".upload-attachment").replaceWith($(".upload-attachment").val("").clone(true));
+}
+/**
+ *-------------------------------------------------------------
+ * Cancel updating avatar in settings
+ *-------------------------------------------------------------
+ */
+
+
+function cancelUpdatingAvatar() {
+  $(".upload-avatar-preview").css("background-image", defaultAvatarInSettings);
+  $(".upload-avatar").replaceWith($(".upload-avatar").val("").clone(true));
+}
+/**
+ *-------------------------------------------------------------
+ * Pusher channels and event listening..
+ *-------------------------------------------------------------
+ */
+// subscribe to the channel
+
+
+var channel = pusher.subscribe("private-chatify"); // Listen to messages, and append if data received
+
+channel.bind("messaging", function (data) {
+  /*console.log("from: " + data.from_id);
+  console.log("to: " + data.to_id);
+  console.log("auth: " + auth_id);
+  console.log(getMessengerId());
+  console.log(data.message)*/
+  if (data.from_id == getMessengerId() && data.to_id == auth_id) {
+    $(".messages").find(".message-hint").remove();
+    messagesContainer.find(".messages").append(data.message);
+    scrollBottom(messageInnerContainer);
+    makeSeen(true); // remove unseen counter for the user from the contacts list
+
+    $(".messenger-list-item[data-contact=" + getMessengerId() + "]").find("tr>td>b").remove();
+  }
+
+  setBotTo(data.from_id);
+  setBotFrom(data.to_id); //const message = data.message
+  //const toID = data.to_id;
+});
+
+function checkForAgentResponse(message) {
+  var agents = $.ajax({
+    url: url + "/get-agents",
+    method: "POST",
+    data: {
+      _token: access_token
+    },
+    dataType: "JSON",
+    global: false,
+    async: false,
+    success: function success(data) {
+      return data;
+    },
+    error: function error(_error2) {
+      console.log(_error2);
+    }
+  }).responseJSON;
+  var toID = getBotTo();
+  var fromID = getBotFrom();
+  var agent = agents['agents'].find(function (agent) {
+    return agent.id == fromID;
+  });
+
+  if (agent !== undefined) {
+    var firstPart = message.split('<p>');
+    var secondPart = firstPart[1].split('<sub');
+
+    var _final = secondPart[0].replaceAll('\n', ' ');
+
+    _final = _final.replaceAll('<br />', '');
+    getResponse(_final, toID, fromID);
+  }
+}
+
+function getResponse(message, sendTo, fromID) {
+  var response;
+  var text = message.toLowerCase().replace(/[^\w\s\d]/gi, "");
+  text = text.replace(/ a /g, " ").replace(/i feel /g, "").replace(/whats/g, "what is").replace(/please /g, "").replace(/ please/g, "");
+
+  if (compare(_messages__WEBPACK_IMPORTED_MODULE_1__.trigger, _messages__WEBPACK_IMPORTED_MODULE_1__.reply, text)) {
+    response = compare(_messages__WEBPACK_IMPORTED_MODULE_1__.trigger, _messages__WEBPACK_IMPORTED_MODULE_1__.reply, text.trim());
+  } else if (text.match(/bot/gi)) {
+    response = _messages__WEBPACK_IMPORTED_MODULE_1__.robot[Math.floor(Math.random() * _messages__WEBPACK_IMPORTED_MODULE_1__.robot.length)];
+  }
+
+  setMessengerId(sendTo);
+  setAuthId(fromID);
+  botTyping = true;
+  var formInput = document.querySelector('#message-form .m-send');
+  formInput.dispatchEvent(new Event('focus'));
+  formInput.dispatchEvent(new KeyboardEvent('keydown', {
+    'key': 'a'
+  }));
+  setTimeout(function () {
+    isTyping(true);
+  }, 5000);
+  setTimeout(function () {
+    isTyping(false);
+    messageInput.val(response);
+    sendMessage(sendTo, fromID);
+    setMessengerId(fromID);
+    setAuthId(sendTo);
+    botTyping = false;
+  }, 15000);
+} // listen to typing indicator
+
+
+channel.bind("client-typing", function (data) {
+  if (data.from_id == getMessengerId() && data.to_id == auth_id) {
+    data.typing == true ? messagesContainer.find(".typing-indicator").show() : messagesContainer.find(".typing-indicator").hide();
+  } // scroll to bottom
+
+
+  scrollBottom(messageInnerContainer);
+}); // listen to seen event
+
+channel.bind("client-seen", function (data) {
+  if (data.from_id == getMessengerId() && data.to_id == auth_id) {
+    if (data.seen == true) {
+      $(".message-time").find(".fa-check").before('<span class="fas fa-check-double seen"></span> ');
+      $(".message-time").find(".fa-check").remove();
+      console.info("[seen] triggered!");
+    } else {
+      console.error("[seen] event not triggered!");
+    }
+  }
+}); // listen to contact item updates event
+
+channel.bind("client-contactItem", function (data) {
+  if (data.update_for == auth_id) {
+    data.updating == true ? updateContatctItem(data.update_to) : console.error("[Contact Item updates] Updating failed!");
+  }
+}); // -------------------------------------
+// presence channel [User Active Status]
+
+var activeStatusChannel = pusher.subscribe("presence-activeStatus"); // Joined
+
+activeStatusChannel.bind("pusher:member_added", function (member) {
+  setActiveStatus(1, member.id);
+  $(".messenger-list-item[data-contact=" + member.id + "]").find(".activeStatus").remove();
+  $(".messenger-list-item[data-contact=" + member.id + "]").find(".avatar").before(activeStatusCircle());
+}); // Leaved
+
+activeStatusChannel.bind("pusher:member_removed", function (member) {
+  setActiveStatus(0, member.id);
+  $(".messenger-list-item[data-contact=" + member.id + "]").find(".activeStatus").remove();
+});
+/**
+ *-------------------------------------------------------------
+ * Trigger typing event
+ *-------------------------------------------------------------
+ */
+
+function isTyping(status) {
+  return channel.trigger("client-typing", {
+    from_id: botTyping ? getMessengerId() : auth_id,
+    // Me
+    to_id: botTyping ? auth_id : getMessengerId(),
+    // Messenger
+    typing: status
+  });
+}
+/**
+ *-------------------------------------------------------------
+ * Trigger seen event
+ *-------------------------------------------------------------
+ */
+
+
+function makeSeen(status) {
+  // remove unseen counter for the user from the contacts list
+  $(".messenger-list-item[data-contact=" + getMessengerId() + "]").find("tr>td>b").remove(); // seen
+
+  $.ajax({
+    url: url + "/makeSeen",
+    method: "POST",
+    data: {
+      _token: access_token,
+      id: getMessengerId()
+    },
+    dataType: "JSON"
+    /*success: data => {
+         console.log("[seen] Messages seen - " + getMessengerId());
+    }*/
+
+  });
+  return channel.trigger("client-seen", {
+    from_id: auth_id,
+    // Me
+    to_id: getMessengerId(),
+    // Messenger
+    seen: status
+  });
+}
+/**
+ *-------------------------------------------------------------
+ * Trigger contact item updates
+ *-------------------------------------------------------------
+ */
+
+
+function sendContactItemUpdates(status) {
+  return channel.trigger("client-contactItem", {
+    update_for: getMessengerId(),
+    // Messenger
+    update_to: auth_id,
+    // Me
+    updating: status
+  });
+}
+/**
+ *-------------------------------------------------------------
+ * Check internet connection using pusher states
+ *-------------------------------------------------------------
+ */
+
+
+function checkInternet(state, selector) {
+  var net_errs = 0;
+  var messengerTitle = $(".messenger-headTitle");
+
+  switch (state) {
+    case "connected":
+      if (net_errs < 1) {
+        messengerTitle.text(messengerTitleDefault);
+        selector.addClass("successBG-rgba");
+        selector.find("span").hide();
+        selector.slideDown("fast", function () {
+          selector.find(".ic-connected").show();
+        });
+        setTimeout(function () {
+          $(".internet-connection").slideUp("fast");
+        }, 3000);
+      }
+
+      break;
+
+    case "connecting":
+      messengerTitle.text($(".ic-connecting").text());
+      selector.removeClass("successBG-rgba");
+      selector.find("span").hide();
+      selector.slideDown("fast", function () {
+        selector.find(".ic-connecting").show();
+      });
+      net_errs = 1;
+      break;
+    // Not connected
+
+    default:
+      messengerTitle.text($(".ic-noInternet").text());
+      selector.removeClass("successBG-rgba");
+      selector.find("span").hide();
+      selector.slideDown("fast", function () {
+        selector.find(".ic-noInternet").show();
+      });
+      net_errs = 1;
+      break;
+  }
+}
+/**
+ *-------------------------------------------------------------
+ * Get contacts
+ *-------------------------------------------------------------
+ */
+
+
+var contactsPage = 1;
+var contactsLoading = false;
+var noMoreContacts = false;
+
+function setContactsLoading() {
+  var loading = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+  if (!loading) {
+    $(".listOfContacts").find(".loading-contacts").remove();
+  } else {
+    $(".listOfContacts").append("<div class=\"loading-contacts\">".concat(listItemLoading(4), "</div>"));
+  }
+
+  contactsLoading = loading;
+}
+
+function getContacts() {
+  if (!contactsLoading && !noMoreContacts) {
+    setContactsLoading(true);
+    $.ajax({
+      url: url + "/getContacts",
+      method: "GET",
+      data: {
+        _token: access_token,
+        page: contactsPage
+      },
+      dataType: "JSON",
+      success: function success(data) {
+        setContactsLoading(false);
+
+        if (contactsPage < 2) {
+          $(".listOfContacts").html(data.contacts);
+        } else {
+          $(".listOfContacts").append(data.contacts);
+        }
+
+        updateSelectedContact(); // update data-action required with [responsive design]
+
+        cssMediaQueries();
+
+        if (data.total > 0) {
+          $('.listOfContacts').css('height', 'auto');
+        } // Pagination lock & messages page
+
+
+        noMoreContacts = contactsPage >= (data === null || data === void 0 ? void 0 : data.last_page);
+        if (!noMoreContacts) contactsPage += 1;
+      },
+      error: function error(_error3) {
+        setContactsLoading(false);
+        console.error(_error3);
+      }
+    });
+  }
+}
+/**
+ *-------------------------------------------------------------
+ * Update contact item
+ *-------------------------------------------------------------
+ */
+
+
+function updateContatctItem(_x) {
+  return _updateContatctItem.apply(this, arguments);
+}
+/**
+ *-------------------------------------------------------------
+ * Star
+ *-------------------------------------------------------------
+ */
+
+
+function _updateContatctItem() {
+  _updateContatctItem = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(user_id) {
+    var listItem, result;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            if (!(user_id != auth_id)) {
+              _context.next = 15;
+              break;
+            }
+
+            listItem = $("body").find(".listOfContacts").find(".messenger-list-item[data-contact=" + user_id + "]");
+            _context.prev = 2;
+            _context.next = 5;
+            return $.ajax({
+              url: url + "/updateContacts",
+              method: "POST",
+              data: {
+                _token: access_token,
+                user_id: user_id
+              },
+              dataType: "JSON"
+            });
+
+          case 5:
+            result = _context.sent;
+            listItem.remove();
+            $(".listOfContacts").prepend(result.contactItem); // update data-action required with [responsive design]
+
+            cssMediaQueries();
+            updateSelectedContact(user_id);
+            _context.next = 15;
+            break;
+
+          case 12:
+            _context.prev = 12;
+            _context.t0 = _context["catch"](2);
+            console.error(_context.t0);
+
+          case 15:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, null, [[2, 12]]);
+  }));
+  return _updateContatctItem.apply(this, arguments);
+}
+
+function star(user_id) {
+  if (getMessengerId() != auth_id) {
+    $.ajax({
+      url: url + "/star",
+      method: "POST",
+      data: {
+        _token: access_token,
+        user_id: user_id
+      },
+      dataType: "JSON",
+      success: function success(data) {
+        data.status > 0 ? $(".add-to-favorite").addClass("favorite") : $(".add-to-favorite").removeClass("favorite");
+      },
+      error: function error() {
+        console.error("Server error, check your response");
+      }
+    });
+  }
+}
+/**
+ *-------------------------------------------------------------
+ * Get favorite list
+ *-------------------------------------------------------------
+ */
+
+
+function getFavoritesList() {
+  $(".messenger-favorites").html(avatarLoading(4));
+  $.ajax({
+    url: url + "/favorites",
+    method: "POST",
+    data: {
+      _token: access_token
+    },
+    dataType: "JSON",
+    success: function success(data) {
+      if (data.count > 0) {
+        $(".favorites-section").show();
+        $(".messenger-favorites").html(data.favorites);
+      } else {
+        $(".favorites-section").hide();
+      } // update data-action required with [responsive design]
+
+
+      cssMediaQueries();
+    },
+    error: function error() {
+      console.error("Server error, check your response");
+    }
+  });
+}
+/**
+ *-------------------------------------------------------------
+ * Get shared photos
+ *-------------------------------------------------------------
+ */
+
+
+function getSharedPhotos(user_id) {
+  $.ajax({
+    url: url + "/shared",
+    method: "POST",
+    data: {
+      _token: access_token,
+      user_id: user_id
+    },
+    dataType: "JSON",
+    success: function success(data) {
+      $(".shared-photos-list").html(data.shared);
+    },
+    error: function error() {
+      console.error("Server error, check your response");
+    }
+  });
+}
+/**
+ *-------------------------------------------------------------
+ * Search in messenger
+ *-------------------------------------------------------------
+ */
+
+
+var searchPage = 1;
+var noMoreDataSearch = false;
+var searchLoading = false;
+var searchTempVal = "";
+
+function setSearchLoading() {
+  var loading = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+  if (!loading) {
+    $(".search-records").find(".loading-search").remove();
+  } else {
+    $(".search-records").append("<div class=\"loading-search\">".concat(listItemLoading(4), "</div>"));
+  }
+
+  searchLoading = loading;
+}
+
+function messengerSearch(input) {
+  if (input !== searchTempVal) {
+    searchPage = 1;
+    noMoreDataSearch = false;
+    searchLoading = false;
+  }
+
+  searchTempVal = input;
+
+  if (!searchLoading && !noMoreDataSearch) {
+    if (searchPage < 2) {
+      $(".search-records").html("");
+    }
+
+    setSearchLoading(true);
+    $.ajax({
+      url: url + "/search",
+      method: "GET",
+      data: {
+        _token: access_token,
+        input: input,
+        page: searchPage
+      },
+      dataType: "JSON",
+      success: function success(data) {
+        setSearchLoading(false);
+
+        if (searchPage < 2) {
+          $(".search-records").html(data.records);
+        } else {
+          $(".search-records").append(data.records);
+        }
+
+        if (data.total > 0) {
+          $('.listOfContacts').css('height', 'auto');
+          $('.message-hint').css('display', 'none');
+          $('.messenger-search').val("");
+          $('.search-records .messenger-list-item').trigger('click');
+          /*const userID = $('.search-records .messenger-list-item').data('contact');
+          updateContatctItem(userID);*/
+
+          /*console.log(userID);*/
+        } else {
+          $(".search-records").css('height', '100');
+        } // update data-action required with [responsive design]
+
+
+        cssMediaQueries(); // Pagination lock & messages page
+
+        noMoreDataSearch = searchPage >= (data === null || data === void 0 ? void 0 : data.last_page);
+        if (!noMoreDataSearch) searchPage += 1;
+      },
+      error: function error(_error4) {
+        setSearchLoading(false);
+        console.error(_error4);
+      }
+    });
+  }
+}
+/**
+ *-------------------------------------------------------------
+ * Delete Conversation
+ *-------------------------------------------------------------
+ */
+
+
+function deleteConversation(id) {
+  $.ajax({
+    url: url + "/deleteConversation",
+    method: "POST",
+    data: {
+      _token: access_token,
+      id: id
+    },
+    dataType: "JSON",
+    beforeSend: function beforeSend() {
+      // hide delete modal
+      app_modal({
+        show: false,
+        name: "delete"
+      }); // Show waiting alert modal
+
+      app_modal({
+        show: true,
+        name: "alert",
+        buttons: false,
+        body: loadingSVG("32px", null, "margin:auto")
+      });
+    },
+    success: function success(data) {
+      // delete contact from the list
+      $(".listOfContacts").find(".messenger-list-item[data-contact=" + id + "]").remove(); // refresh info
+
+      IDinfo(id, getMessengerType());
+      data.deleted ? "" : console.error("Error occured!"); // Hide waiting alert modal
+
+      app_modal({
+        show: false,
+        name: "alert",
+        buttons: true,
+        body: ""
+      });
+    },
+    error: function error() {
+      console.error("Server error, check your response");
+    }
+  });
+}
+
+function updateSettings() {
+  var formData = new FormData($("#update-settings")[0]);
+
+  if (messengerColor) {
+    formData.append("messengerColor", messengerColor);
+  }
+
+  if (dark_mode) {
+    formData.append("dark_mode", dark_mode);
+  }
+
+  $.ajax({
+    url: url + "/updateSettings",
+    method: "POST",
+    data: formData,
+    dataType: "JSON",
+    processData: false,
+    contentType: false,
+    beforeSend: function beforeSend() {
+      // close settings modal
+      app_modal({
+        show: false,
+        name: "settings"
+      }); // Show waiting alert modal
+
+      app_modal({
+        show: true,
+        name: "alert",
+        buttons: false,
+        body: loadingSVG("32px", null, "margin:auto")
+      });
+    },
+    success: function success(data) {
+      if (data.error) {
+        // Show error message in alert modal
+        app_modal({
+          show: true,
+          name: "alert",
+          buttons: true,
+          body: data.msg
+        });
+      } else {
+        // Hide alert modal
+        app_modal({
+          show: false,
+          name: "alert",
+          buttons: true,
+          body: ""
+        }); // reload the page
+
+        location.reload(true);
+      }
+    },
+    error: function error() {
+      console.error("Server error, check your response");
+    }
+  });
+}
+/**
+ *-------------------------------------------------------------
+ * Set Active status
+ *-------------------------------------------------------------
+ */
+
+
+function setActiveStatus(status, user_id) {
+  $.ajax({
+    url: url + "/setActiveStatus",
+    method: "POST",
+    data: {
+      _token: access_token,
+      user_id: user_id,
+      status: status
+    },
+    dataType: "JSON",
+    success: function success(data) {// Nothing to do
+    },
+    error: function error() {
+      console.error("Server error, check your response");
+    }
+  });
+}
+/**
+ *-------------------------------------------------------------
+ * On DOM ready
+ *-------------------------------------------------------------
+ */
+
+
+$(document).ready(function () {
+  // get contacts list
+  getContacts(); // get contacts list
+
+  getFavoritesList(); // Clear typing timeout
+
+  clearTimeout(typingTimeout); // NProgress configurations
+
+  NProgress.configure({
+    showSpinner: false,
+    minimum: 0.7,
+    speed: 500
+  }); // make message input autosize.
+
+  autosize($(".m-send")); // check if pusher has access to the channel [Internet status]
+
+  pusher.connection.bind("state_change", function (states) {
+    var selector = $(".internet-connection");
+    checkInternet(states.current, selector); // listening for pusher:subscription_succeeded
+
+    channel.bind("pusher:subscription_succeeded", function () {
+      // On connection state change [Updating] and get [info & msgs]
+      if (getMessengerId() != 0) {
+        if ($(".messenger-list-item").find("tr[data-action]").attr("data-action") == "1") {
+          $(".messenger-listView").hide();
+        }
+
+        IDinfo(getMessengerId(), getMessengerType());
+      }
+
+      if (addChatUser) {
+        if ($.trim(addChatUser).length > 0) {
+          $(".messenger-search").trigger("focus");
+
+          try {
+            console.log("try");
+            messengerSearch(addChatUser);
+          } finally {
+            setTimeout(function () {
+              messageInput.val("Hey " + addChatUser + "! I just joined and I'm ready to chat.");
+              sendMessage();
+              addChatUser = null;
+            }, 1500);
+          }
+        }
+        /* $.trim(addChatUser).length > 0
+             ? $(".messenger-search").trigger("focus") + messengerSearch(addChatUser)
+             : $(".messenger-tab").hide() +
+             $('.messenger-listView-tabs a[data-view="users"]').trigger("click");*/
+
+      }
+    });
+  }); // tabs on click, show/hide...
+
+  $(".messenger-listView-tabs a").on("click", function () {
+    var dataView = $(this).attr("data-view");
+    $(".messenger-listView-tabs a").removeClass("active-tab");
+    $(this).addClass("active-tab");
+    $(".messenger-tab").hide();
+    $(".messenger-tab[data-view=" + dataView + "]").show();
+  }); // set item active on click
+
+  $("body").on("click", ".messenger-list-item", function () {
+    var dataView = $(".messenger-list-item").find("p[data-type]").attr("data-type");
+    $(".messenger-tab").hide();
+    $(".messenger-tab[data-view=" + dataView + "s]").show();
+    $(".messenger-list-item").removeClass("m-list-active");
+    $(this).addClass("m-list-active");
+    var userID = $(this).attr("data-contact");
+    routerPush(document.title, "".concat(url, "/").concat(userID));
+    updateSelectedContact(userID);
+
+    if ($(this).parent().hasClass('search-records')) {
+      var table = $(this);
+      table.appendTo('.listOfContacts');
+    }
+  }); // show info side button
+
+  $(".messenger-infoView nav a , .show-infoSide").on("click", function () {
+    $(".messenger-infoView").toggle();
+  }); // make favorites card dragable on click to slide.
+
+  hScroller(".messenger-favorites"); // click action for list item [user/group]
+
+  $("body").on("click", ".messenger-list-item", function () {
+    if ($(this).find("tr[data-action]").attr("data-action") == "1") {
+      $(".messenger-listView").hide();
+    }
+
+    var dataId = $(this).find("p[data-id]").attr("data-id");
+    var dataType = $(this).find("p[data-type]").attr("data-type");
+    setMessengerId(dataId);
+    setMessengerType(dataType);
+    IDinfo(dataId, dataType);
+  }); // click action for favorite button
+
+  $("body").on("click", ".favorite-list-item", function () {
+    if ($(this).find("div").attr("data-action") == "1") {
+      $(".messenger-listView").hide();
+    }
+
+    var uid = $(this).find("div.avatar").attr("data-id");
+    setMessengerId(uid);
+    setMessengerType("user");
+    IDinfo(uid, "user");
+    updateSelectedContact(uid);
+    routerPush(document.title, "".concat(url, "/").concat(uid));
+  }); // list view buttons
+
+  $(".listView-x").on("click", function () {
+    $(".messenger-listView").hide();
+  });
+  $(".show-listView").on("click", function () {
+    $(".messenger-listView").show();
+  }); // click action for [add to favorite] button.
+
+  $(".add-to-favorite").on("click", function () {
+    star(getMessengerId());
+  }); // calling Css Media Queries
+
+  cssMediaQueries(); // message form on submit.
+
+  $("#message-form").on("submit", function (e) {
+    e.preventDefault();
+    sendMessage();
+  }); // message input on keyup [Enter to send, Enter+Shift for new line]
+
+  $("#message-form .m-send").on("keyup", function (e) {
+    // if enter key pressed.
+    if (e.which == 13 || e.keyCode == 13) {
+      // if shift + enter key pressed, do nothing (new line).
+      // if only enter key pressed, send message.
+      var triggered;
+
+      if (!e.shiftKey) {
+        triggered = isTyping(false);
+        sendMessage();
+      }
+    }
+  }); // On [upload attachment] input change, show a preview of the image/file.
+
+  $("body").on("change", ".upload-attachment", function (e) {
+    var file = e.target.files[0];
+    if (!attachmentValidate(file)) return false;
+    var reader = new FileReader();
+    var sendCard = $(".messenger-sendCard");
+    reader.readAsDataURL(file);
+    reader.addEventListener("loadstart", function (e) {
+      $("#message-form").before(loadingSVG());
+    });
+    reader.addEventListener("load", function (e) {
+      $(".messenger-sendCard").find(".loadingSVG").remove();
+
+      if (!file.type.match("image.*")) {
+        // if the file not image
+        sendCard.find(".attachment-preview").remove(); // older one
+
+        sendCard.prepend(attachmentTemplate("file", file.name));
+      } else {
+        // if the file is an image
+        sendCard.find(".attachment-preview").remove(); // older one
+
+        sendCard.prepend(attachmentTemplate("image", file.name, e.target.result));
+      }
+    });
+  });
+
+  function attachmentValidate(file) {
+    var fileElement = $(".upload-attachment");
+    var allowedExtensions = ["jpg", "jpeg", "png", "gif", "zip", "rar", "txt"];
+    var sizeLimit = 5000000; // 5 megabyte
+
+    var fileName = file.name,
+        fileSize = file.size;
+    var fileExtension = fileName.split(".").pop();
+
+    if (!allowedExtensions.includes(fileExtension)) {
+      alert("file type not allowed");
+      fileElement.val("");
+      return false;
+    } // Validate file size.
+
+
+    if (fileSize > sizeLimit) {
+      alert("Please select file size less than 5 MiB");
+      return false;
+    }
+
+    return true;
+  } // Attachment preview cancel button.
+
+
+  $("body").on("click", ".attachment-preview .cancel", function () {
+    cancelAttachment();
+  }); // typing indicator on [input] keyDown
+
+  $("#message-form .m-send").on("keydown", function () {
+    if (typingNow < 1) {
+      // Trigger typing
+      var _triggered = isTyping(true);
+
+      _triggered ? console.info("[+] Triggered") : console.error("[+] Not triggered"); // Typing now
+
+      typingNow = 1;
+    } // Clear typing timeout
+
+
+    clearTimeout(typingTimeout); // Typing timeout
+
+    var triggered;
+    typingTimeout = setTimeout(function () {
+      triggered = isTyping(false);
+      triggered ? console.info("[-] Triggered") : console.error("[-] Not triggered"); // Clear typing now
+
+      typingNow = 0;
+    }, 1000);
+  }); // Image modal
+
+  $("body").on("click", ".chat-image", function () {
+    var src = $(this).css("background-image").split(/"/)[1];
+    $("#imageModalBox").show();
+    $("#imageModalBoxSrc").attr("src", src);
+  });
+  $(".imageModal-close").on("click", function () {
+    $("#imageModalBox").hide();
+  }); // Search input on focus
+
+  /*$(".messenger-search").on("focus", function () {
+    $(".messenger-tab").hide();
+    $('.messenger-tab[data-view="search"]').show();
+  });*/
+
+  /*$(".messenger-search").on("blur", function () {
+    setTimeout(function () {
+      $(".messenger-tab").hide();
+      $('.messenger-tab[data-view="users"]').show();
+    }, 200);
+  });*/
+  // Search action on keyup
+
+  /*$(".messenger-search").on("submit", function (e) {
+    $.trim($(this).val()).length > 0
+      ? $(".messenger-search").trigger("focus") + messengerSearch($(this).val())
+      : $(".messenger-tab").hide() +
+        $('.messenger-listView-tabs a[data-view="users"]').trigger("click");
+  });*/
+
+  $("#add_user_form").on("submit", function (e) {
+    e.preventDefault();
+    var userValue = $('.messenger-search').val();
+    $('.messenger-search').val = "";
+    $.trim(userValue).length > 0 ? $(".messenger-search").trigger("focus") + messengerSearch(userValue) : $(".messenger-tab").hide() + $('.messenger-listView-tabs a[data-view="users"]').trigger("click");
+  }); // Delete Conversation button
+
+  $(".messenger-infoView-btns .delete-conversation").on("click", function () {
+    app_modal({
+      name: "delete"
+    });
+  }); // delete modal [delete button]
+
+  $(".app-modal[data-name=delete]").find(".app-modal-footer .delete").on("click", function () {
+    deleteConversation(getMessengerId());
+    app_modal({
+      show: false,
+      name: "delete"
+    });
+  }); // delete modal [cancel button]
+
+  $(".app-modal[data-name=delete]").find(".app-modal-footer .cancel").on("click", function () {
+    app_modal({
+      show: false,
+      name: "delete"
+    });
+  }); // Settings button action to show settings modal
+
+  $("body").on("click", ".settings-btn", function (e) {
+    e.preventDefault();
+    app_modal({
+      show: true,
+      name: "settings"
+    });
+  }); // on submit settings' form
+
+  $("#update-settings").on("submit", function (e) {
+    e.preventDefault();
+    updateSettings();
+  }); // Settings modal [cancel button]
+
+  $(".app-modal[data-name=settings]").find(".app-modal-footer .cancel").on("click", function () {
+    app_modal({
+      show: false,
+      name: "settings"
+    });
+    cancelUpdatingAvatar();
+  }); // upload avatar on change
+
+  $("body").on("change", ".upload-avatar", function (e) {
+    // store the original avatar
+    if (defaultAvatarInSettings == null) {
+      defaultAvatarInSettings = $(".upload-avatar-preview").css("background-image");
+    }
+
+    var file = e.target.files[0];
+    if (!attachmentValidate(file)) return false;
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.addEventListener("loadstart", function (e) {
+      $(".upload-avatar-preview").append(loadingSVG("42px", "upload-avatar-loading"));
+    });
+    reader.addEventListener("load", function (e) {
+      $(".upload-avatar-preview").find(".loadingSVG").remove();
+
+      if (!file.type.match("image.*")) {
+        // if the file is not an image
+        console.error("File you selected is not an image!");
+      } else {
+        // if the file is an image
+        $(".upload-avatar-preview").css("background-image", 'url("' + e.target.result + '")');
+      }
+    });
+  }); // change messenger color button
+
+  $("body").on("click", ".update-messengerColor .color-btn", function () {
+    messengerColor = $(this).attr("data-color");
+    $(".update-messengerColor .color-btn").removeClass("m-color-active");
+    $(this).addClass("m-color-active");
+  }); // Switch to Dark/Light mode
+
+  $("body").on("click", ".dark-mode-switch", function () {
+    if ($(this).attr("data-mode") == "0") {
+      $(this).attr("data-mode", "1");
+      $(this).removeClass("far");
+      $(this).addClass("fas");
+      dark_mode = "dark";
+    } else {
+      $(this).attr("data-mode", "0");
+      $(this).removeClass("fas");
+      $(this).addClass("far");
+      dark_mode = "light";
+    }
+  }); //Messages pagination
+
+  actionOnScroll(".m-body.messages-container", function () {
+    fetchMessages(getMessengerId(), getMessengerType());
+  }, true); //Contacts (users) pagination
+
+  actionOnScroll(".messenger-tab.users-tab", function () {
+    getContacts();
+  }); //Search pagination
+
+  actionOnScroll(".messenger-tab.search-tab", function () {
+    messengerSearch($(".messenger-search").val());
+  });
+  var windowHeight = window.innerHeight;
+  var messages = document.querySelector('.messages');
+  messages.style.maxHeight = windowHeight - 180 + "px";
+  $(window).on('resize', function () {
+    var windowHeight = window.innerHeight;
+    var messages = document.querySelector('.messages');
+    messages.style.maxHeight = windowHeight - 180 + "px";
+  });
+});
+
+function compare(triggerArray, replyArray, text) {
+  var item;
+
+  for (var x = 0; x < triggerArray.length; x++) {
+    for (var y = 0; y < replyArray.length; y++) {
+      var triggeredText = void 0;
+
+      if (triggerArray[x][y] !== undefined) {
+        triggeredText = triggerArray[x][y].trim();
+      }
+
+      if (triggerArray[x][y] === text.trim()) {
+        var items = replyArray[x];
+        item = items[Math.floor(Math.random() * items.length)];
+        console.log("trigger this");
+      }
+    }
+  }
+
+  return item;
+}
+
+/***/ }),
+
+/***/ "./resources/js/messages.js":
+/*!**********************************!*\
+  !*** ./resources/js/messages.js ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "trigger": () => (/* binding */ trigger),
+/* harmony export */   "reply": () => (/* binding */ reply),
+/* harmony export */   "alternative": () => (/* binding */ alternative),
+/* harmony export */   "robot": () => (/* binding */ robot)
+/* harmony export */ });
+var trigger = [//0
+["hi", "hey", "hello"], //1
+["how are you", "how are things"], //2
+["what is going on", "what is up"], //3
+["happy", "good", "well", "fantastic", "cool"], //4
+["bad", "bored", "tired", "sad"], //5
+["tell me story", "tell me joke"], //6
+["thanks", "thank you"], //7
+["bye", "good bye", "goodbye"]];
+var reply = [//0
+["Hello!", "Hi!", "Hey!", "Hi there!"], //1
+["Fine... how are you?", "Pretty well, how are you?", "Fantastic, how are you?"], //2
+["Nothing much", "Exciting things!"], //3
+["Glad to hear it"], //4
+["Why?", "Cheer up buddy"], //5
+["What about?", "Once upon a time..."], //6
+["You're welcome", "No problem"], //7
+["Goodbye", "See you later"]];
+var alternative = ["Same", "Go on...", "Try again", "I'm listening...", "Bro..."];
+var robot = ["How do you do, fellow human", "I am not a bot", "I hate bots! Of course not!", "If I was a bot my circuits would explode right now I'm so wet!"];
 
 /***/ }),
 

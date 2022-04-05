@@ -31,8 +31,6 @@ class CustomRegisterController extends Controller
         $images = File::glob(public_path('images/slider-bottom').'/*');
         $imageArray = [];
 
-
-
         foreach ($images as $image) {
             $exploded =  explode('slider-bottom/', $image);
             array_push($imageArray, $exploded[1]);
@@ -42,6 +40,12 @@ class CustomRegisterController extends Controller
         $src = $request->query('src') ? $request->query('src') : null;
         return view('register-custom.register-three')->with(['addUser' => $addUser, 'src' => $src, 'images' => $imageArray]);
     }
+
+    public function showAgentRegister(Request $request) {
+
+        return view('register-custom.register-agent');
+    }
+
     /**
      * Handle an incoming registration request.
      *

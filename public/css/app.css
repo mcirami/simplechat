@@ -11886,6 +11886,12 @@ img {
     margin-top: 50vw;
   }
 }
+.white_box .content_wrap .form_wrap.register.agent:before {
+  background: #000;
+}
+.white_box .content_wrap .form_wrap.register.agent form {
+  max-width: unset;
+}
 @media all and (max-width: 550px) {
   .white_box .content_wrap .form_wrap.register .button_row {
     flex-wrap: wrap-reverse;

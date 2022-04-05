@@ -34,6 +34,7 @@
         "@splidejs/react-splide": "^0.6.20",
         "core-js": "^3.19.1",
         "prettier": "^2.3.2",
-        "pusher-js": "^7.0.4"
+        "pusher-js": "^7.0.4",
+        "requirejs": "^2.3.6"
     }
 }
