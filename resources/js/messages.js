@@ -15,7 +15,13 @@ export const trigger = [
 //6
     ["thanks", "thank you"],
 //7
-    ["bye", "good bye", "goodbye"]
+    ["bye", "good bye", "goodbye"],
+
+    ["fuck you"],
+
+    ["fuck off"]
+
+
 ];
 
 export const reply = [
@@ -41,7 +47,12 @@ export const reply = [
 //6
     ["You're welcome", "No problem"],
 //7
-    ["Goodbye", "See you later"]
+    ["Goodbye", "See you later"],
+
+    ["mhhm fuck me ;)", "you wanna fuck me ?? lolz", "yes let's do it!"],
+
+    ["No fuck me please!"],
+
 ]
 
 export const alternative = [

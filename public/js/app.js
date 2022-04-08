@@ -7977,7 +7977,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "slideOptions": () => (/* binding */ slideOptions)
 /* harmony export */ });
 var getImages = function getImages(sliderPosition) {
-  var r = sliderPosition === "top" ? __webpack_require__("./public/images/slider-top sync \\.(png%7Cjpe?g%7Csvg)$") : __webpack_require__("./public/images/slider-bottom sync \\.(png%7Cjpe?g%7Csvg)$");
+  var r = sliderPosition === "top" ? __webpack_require__("./public/images/slider-bottom sync \\.(png%7Cjpe?g%7Csvg)$") : __webpack_require__("./public/images/slider-bottom sync \\.(png%7Cjpe?g%7Csvg)$");
   var images = [];
   r.keys().map(function (item, index) {
     images[index] = item.replace('./', '');
@@ -8095,7 +8095,8 @@ var messenger,
     defaultAvatarInSettings = null,
     messengerColor,
     dark_mode,
-    messages_page = 1;
+    messages_page = 1,
+    sendPic = 0;
 var messagesContainer = $(".messenger-messagingView .m-body"),
     messageInnerContainer = $(".messages"),
     messengerTitleDefault = $(".messenger-headTitle").text(),
@@ -8484,13 +8485,14 @@ function sendMessage() {
   var hasFile = $(".upload-attachment").val() ? true : false;
   var sendToUser = sendTo ? sendTo : getMessengerId();
 
-  if ($.trim(messageInput.val()).length > 0 || hasFile || addChatUser) {
+  if ($.trim(messageInput.val()).length > 0 || hasFile || addChatUser || sendPic) {
     var formData = new FormData($("#message-form")[0]);
     formData.append("id", sendToUser);
     formData.append("type", getMessengerType());
     formData.append("temporaryMsgId", tempID);
     formData.append("from", fromID);
     formData.append("_token", access_token);
+    formData.append("sendPic", sendPic);
     $.ajax({
       url: $("#message-form").attr("action"),
       method: "POST",
@@ -8517,7 +8519,7 @@ function sendMessage() {
         if (data.error > 0) {
           // message card error status
           errorMessageCard(tempID);
-          console.error(data.error_msg);
+          console.error(data.error);
         } else {
           // update contact item
           updateContatctItem(sendToUser);
@@ -8525,7 +8527,13 @@ function sendMessage() {
 
           messagesContainer.find(".message-card[data-id=" + data.tempID + "]").before(data.message); // delete the temporary one
 
-          messagesContainer.find(".message-card[data-id=" + data.tempID + "]").remove(); // scroll to bottom
+          messagesContainer.find(".message-card[data-id=" + data.tempID + "]").remove();
+
+          if (sendTo) {
+            document.querySelector('[data-id="' + data.messageID + '"]').nextElementSibling.remove();
+            document.querySelector('[data-id="' + data.messageID + '"]').remove();
+          } // scroll to bottom
+
 
           scrollBottom(messageInnerContainer); // send contact item updates
 
@@ -8656,11 +8664,6 @@ function cancelUpdatingAvatar() {
 var channel = pusher.subscribe("private-chatify"); // Listen to messages, and append if data received
 
 channel.bind("messaging", function (data) {
-  /*console.log("from: " + data.from_id);
-  console.log("to: " + data.to_id);
-  console.log("auth: " + auth_id);
-  console.log(getMessengerId());
-  console.log(data.message)*/
   if (data.from_id == getMessengerId() && data.to_id == auth_id) {
     $(".messages").find(".message-hint").remove();
     messagesContainer.find(".messages").append(data.message);
@@ -8673,74 +8676,7 @@ channel.bind("messaging", function (data) {
   setBotTo(data.from_id);
   setBotFrom(data.to_id); //const message = data.message
   //const toID = data.to_id;
-});
-
-function checkForAgentResponse(message) {
-  var agents = $.ajax({
-    url: url + "/get-agents",
-    method: "POST",
-    data: {
-      _token: access_token
-    },
-    dataType: "JSON",
-    global: false,
-    async: false,
-    success: function success(data) {
-      return data;
-    },
-    error: function error(_error2) {
-      console.log(_error2);
-    }
-  }).responseJSON;
-  var toID = getBotTo();
-  var fromID = getBotFrom();
-  var agent = agents['agents'].find(function (agent) {
-    return agent.id == fromID;
-  });
-
-  if (agent !== undefined) {
-    var firstPart = message.split('<p>');
-    var secondPart = firstPart[1].split('<sub');
-
-    var _final = secondPart[0].replaceAll('\n', ' ');
-
-    _final = _final.replaceAll('<br />', '');
-    getResponse(_final, toID, fromID);
-  }
-}
-
-function getResponse(message, sendTo, fromID) {
-  var response;
-  var text = message.toLowerCase().replace(/[^\w\s\d]/gi, "");
-  text = text.replace(/ a /g, " ").replace(/i feel /g, "").replace(/whats/g, "what is").replace(/please /g, "").replace(/ please/g, "");
-
-  if (compare(_messages__WEBPACK_IMPORTED_MODULE_1__.trigger, _messages__WEBPACK_IMPORTED_MODULE_1__.reply, text)) {
-    response = compare(_messages__WEBPACK_IMPORTED_MODULE_1__.trigger, _messages__WEBPACK_IMPORTED_MODULE_1__.reply, text.trim());
-  } else if (text.match(/bot/gi)) {
-    response = _messages__WEBPACK_IMPORTED_MODULE_1__.robot[Math.floor(Math.random() * _messages__WEBPACK_IMPORTED_MODULE_1__.robot.length)];
-  }
-
-  setMessengerId(sendTo);
-  setAuthId(fromID);
-  botTyping = true;
-  var formInput = document.querySelector('#message-form .m-send');
-  formInput.dispatchEvent(new Event('focus'));
-  formInput.dispatchEvent(new KeyboardEvent('keydown', {
-    'key': 'a'
-  }));
-  setTimeout(function () {
-    isTyping(true);
-  }, 5000);
-  setTimeout(function () {
-    isTyping(false);
-    messageInput.val(response);
-    sendMessage(sendTo, fromID);
-    setMessengerId(fromID);
-    setAuthId(sendTo);
-    botTyping = false;
-  }, 15000);
-} // listen to typing indicator
-
+}); // listen to typing indicator
 
 channel.bind("client-typing", function (data) {
   if (data.from_id == getMessengerId() && data.to_id == auth_id) {
@@ -8949,9 +8885,9 @@ function getContacts() {
         noMoreContacts = contactsPage >= (data === null || data === void 0 ? void 0 : data.last_page);
         if (!noMoreContacts) contactsPage += 1;
       },
-      error: function error(_error3) {
+      error: function error(_error2) {
         setContactsLoading(false);
-        console.error(_error3);
+        console.error(_error2);
       }
     });
   }
@@ -9174,9 +9110,9 @@ function messengerSearch(input) {
         noMoreDataSearch = searchPage >= (data === null || data === void 0 ? void 0 : data.last_page);
         if (!noMoreDataSearch) searchPage += 1;
       },
-      error: function error(_error4) {
+      error: function error(_error3) {
         setSearchLoading(false);
-        console.error(_error4);
+        console.error(_error3);
       }
     });
   }
@@ -9683,27 +9619,111 @@ $(document).ready(function () {
   });
 });
 
+function checkForAgentResponse(message) {
+  var agents = $.ajax({
+    url: url + "/get-agents",
+    method: "POST",
+    data: {
+      _token: access_token
+    },
+    dataType: "JSON",
+    global: false,
+    async: false,
+    success: function success(data) {
+      return data;
+    },
+    error: function error(_error4) {
+      console.log(_error4);
+    }
+  }).responseJSON;
+  var toID = getBotTo();
+  var fromID = getBotFrom();
+  var agent = agents['agents'].find(function (agent) {
+    return agent.id == fromID;
+  });
+
+  if (agent !== undefined) {
+    var firstPart = message.split('<p>');
+    var secondPart = firstPart[1].split('<sub');
+
+    var _final = secondPart[0].replaceAll('\n', ' ');
+
+    _final = _final.replaceAll('<br />', '');
+    getResponse(_final, toID, fromID);
+  }
+}
+
+function getResponse(message, sendTo, fromID) {
+  var response = null;
+  var text = message.toLowerCase().replace(/[^\w\s\d]/gi, "");
+  text = text.replace(/ a /g, " ").replace(/i feel /g, "").replace(/whats/g, "what is").replace(/what[']s/g, "what is").replace(/please /g, "").replace(/ please/g, "");
+
+  if (text.match(/picture/gi) || text.match(/pic/gi)) {
+    sendPic = 1;
+  } else if (compare(_messages__WEBPACK_IMPORTED_MODULE_1__.trigger, _messages__WEBPACK_IMPORTED_MODULE_1__.reply, text)) {
+    response = compare(_messages__WEBPACK_IMPORTED_MODULE_1__.trigger, _messages__WEBPACK_IMPORTED_MODULE_1__.reply, text);
+  } else if (text.match(/bot/gi)) {
+    response = _messages__WEBPACK_IMPORTED_MODULE_1__.robot[Math.floor(Math.random() * _messages__WEBPACK_IMPORTED_MODULE_1__.robot.length)];
+  } else {
+    response = _messages__WEBPACK_IMPORTED_MODULE_1__.alternative[Math.floor(Math.random() * _messages__WEBPACK_IMPORTED_MODULE_1__.alternative.length)];
+  }
+
+  setMessengerId(sendTo);
+  setAuthId(fromID);
+  botTyping = true;
+  var typingIndicator = document.querySelector('.typing-indicator');
+  typingIndicator.style.display = "block";
+  setTimeout(function () {
+    messageInput.val(response);
+    sendMessage(sendTo, fromID);
+    setMessengerId(fromID);
+    setAuthId(sendTo);
+    botTyping = false;
+    isTyping(false);
+    typingIndicator.style.display = "none";
+  }, 5000);
+}
+
 function compare(triggerArray, replyArray, text) {
   var item;
 
   for (var x = 0; x < triggerArray.length; x++) {
     for (var y = 0; y < replyArray.length; y++) {
-      var triggeredText = void 0;
-
       if (triggerArray[x][y] !== undefined) {
-        triggeredText = triggerArray[x][y].trim();
-      }
-
-      if (triggerArray[x][y] === text.trim()) {
-        var items = replyArray[x];
-        item = items[Math.floor(Math.random() * items.length)];
-        console.log("trigger this");
+        if (text.trim().includes(triggerArray[x][y])) {
+          var items = replyArray[x];
+          item = items[Math.floor(Math.random() * items.length)];
+          console.log("trigger this");
+        }
       }
     }
   }
 
   return item;
 }
+/*
+function compareKeyword(triggerKeyword, triggerReply, text) {
+    let item;
+
+    for (let x = 0; x < triggerKeyword.length; x++) {
+
+        for (let y = 0; y < triggerReply.length; y++) {
+
+            if (triggerKeyword[x][y] !== undefined) {
+
+                if (text.trim().includes(triggerKeyword[x][y])) {
+
+                    let items = triggerReply[x];
+                    item = items[Math.floor(Math.random() * items.length)];
+                    console.log("trigger this");
+                }
+            }
+        }
+    }
+
+    return item;
+}
+*/
 
 /***/ }),
 
@@ -9729,7 +9749,7 @@ var trigger = [//0
 ["bad", "bored", "tired", "sad"], //5
 ["tell me story", "tell me joke"], //6
 ["thanks", "thank you"], //7
-["bye", "good bye", "goodbye"]];
+["bye", "good bye", "goodbye"], ["fuck you"], ["fuck off"]];
 var reply = [//0
 ["Hello!", "Hi!", "Hey!", "Hi there!"], //1
 ["Fine... how are you?", "Pretty well, how are you?", "Fantastic, how are you?"], //2
@@ -9738,7 +9758,7 @@ var reply = [//0
 ["Why?", "Cheer up buddy"], //5
 ["What about?", "Once upon a time..."], //6
 ["You're welcome", "No problem"], //7
-["Goodbye", "See you later"]];
+["Goodbye", "See you later"], ["mhhm fuck me ;)", "you wanna fuck me ?? lolz", "yes let's do it!"], ["No fuck me please!"]];
 var alternative = ["Same", "Go on...", "Try again", "I'm listening...", "Bro..."];
 var robot = ["How do you do, fellow human", "I am not a bot", "I hate bots! Of course not!", "If I was a bot my circuits would explode right now I'm so wet!"];
 
@@ -32795,21 +32815,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/SensualLust.jpg?77b286a17dfb826d7f8cb1e3330dc590");
-
-/***/ }),
-
-/***/ "./public/images/slider-bottom/ahegoluvin6.jpg":
-/*!*****************************************************!*\
-  !*** ./public/images/slider-bottom/ahegoluvin6.jpg ***!
-  \*****************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/ahegoluvin6.jpg?a329f6dd62c3fa98551f6a338960e604");
 
 /***/ }),
 
@@ -82848,7 +82853,6 @@ module.exports = function (list, options) {
 var map = {
 	"./KerryBella.jpg": "./public/images/slider-bottom/KerryBella.jpg",
 	"./SensualLust.jpg": "./public/images/slider-bottom/SensualLust.jpg",
-	"./ahegoluvin6.jpg": "./public/images/slider-bottom/ahegoluvin6.jpg",
 	"./alwazeBbad.jpg": "./public/images/slider-bottom/alwazeBbad.jpg",
 	"./bangnteacher.jpg": "./public/images/slider-bottom/bangnteacher.jpg",
 	"./bbblondie.jpg": "./public/images/slider-bottom/bbblondie.jpg",
@@ -82899,24 +82903,6 @@ webpackContext.keys = function webpackContextKeys() {
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
 webpackContext.id = "./public/images/slider-bottom sync \\.(png%7Cjpe?g%7Csvg)$";
-
-/***/ }),
-
-/***/ "./public/images/slider-top sync \\.(png%7Cjpe?g%7Csvg)$":
-/*!****************************************************************************!*\
-  !*** ./public/images/slider-top/ sync nonrecursive \.(png%7Cjpe?g%7Csvg)$ ***!
-  \****************************************************************************/
-/***/ ((module) => {
-
-function webpackEmptyContext(req) {
-	var e = new Error("Cannot find module '" + req + "'");
-	e.code = 'MODULE_NOT_FOUND';
-	throw e;
-}
-webpackEmptyContext.keys = () => ([]);
-webpackEmptyContext.resolve = webpackEmptyContext;
-webpackEmptyContext.id = "./public/images/slider-top sync \\.(png%7Cjpe?g%7Csvg)$";
-module.exports = webpackEmptyContext;
 
 /***/ }),
 

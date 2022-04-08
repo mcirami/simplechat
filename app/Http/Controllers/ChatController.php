@@ -7,7 +7,11 @@ use Illuminate\Http\Request;
 use App\Events\Message;
 use App\Models\Page;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 use Pusher\Pusher;
 
 
@@ -57,9 +61,14 @@ class ChatController extends Controller
     }*/
 
     public function testing() {
-        $agents = User::where('role', 'agent')->get();
 
-        dd($agents);
+        //$path = storage_path('app/public/agent-images/36327401/1/');
+        $path = Storage::disk('public')->path('agent-images/36327401/1/');
+        $files = File::files($path);
+        $image = Image::make($files[0]->getPathname());
+
+        $attachment = Str::uuid() . "." . $image->extension;
+        dd($image);
 
     }
 

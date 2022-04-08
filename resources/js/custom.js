@@ -5,7 +5,11 @@
  *-------------------------------------------------------------
  */
 
-import { trigger, reply, robot, alternative } from './messages';
+import {
+    trigger,
+    reply,
+    robot,
+    alternative } from './messages';
 
 var messenger,
     typingTimeout,
@@ -14,7 +18,8 @@ var messenger,
     defaultAvatarInSettings = null,
     messengerColor,
     dark_mode,
-    messages_page = 1;
+    messages_page = 1,
+    sendPic = 0;
 
 const messagesContainer = $(".messenger-messagingView .m-body"),
     messageInnerContainer = $(".messages"),
@@ -454,13 +459,14 @@ function sendMessage( sendTo = null, fromID = "false") {
 
     let sendToUser = sendTo ? sendTo : getMessengerId();
 
-    if ($.trim(messageInput.val()).length > 0 || hasFile || addChatUser) {
+    if ($.trim(messageInput.val()).length > 0 || hasFile || addChatUser || sendPic) {
         const formData = new FormData($("#message-form")[0]);
         formData.append("id", sendToUser);
         formData.append("type", getMessengerType());
         formData.append("temporaryMsgId", tempID);
         formData.append("from", fromID);
         formData.append("_token", access_token);
+        formData.append("sendPic", sendPic);
 
         $.ajax({
             url: $("#message-form").attr("action"),
@@ -498,10 +504,11 @@ function sendMessage( sendTo = null, fromID = "false") {
                 if (data.error > 0) {
                     // message card error status
                     errorMessageCard(tempID);
-                    console.error(data.error_msg);
+                    console.error(data.error);
                 } else {
                     // update contact item
                     updateContatctItem(sendToUser);
+
                     messagesContainer.find('.mc-sender[data-id="sending"]').remove();
 
                     // get message before the sending one [temporary]
@@ -513,12 +520,18 @@ function sendMessage( sendTo = null, fromID = "false") {
                     .find(".message-card[data-id=" + data.tempID + "]")
                     .remove();
 
+                    if (sendTo) {
+                        document.querySelector('[data-id="' + data.messageID + '"]').nextElementSibling.remove();
+                        document.querySelector('[data-id="' + data.messageID + '"]').remove();
+                    }
+
+
                     // scroll to bottom
                     scrollBottom(messageInnerContainer);
                     // send contact item updates
                     sendContactItemUpdates(true);
 
-                    if(sendTo === null) {
+                    if (sendTo === null) {
                         checkForAgentResponse(data.message);
                     }
                 }
@@ -641,12 +654,6 @@ var channel = pusher.subscribe("private-chatify");
 // Listen to messages, and append if data received
 channel.bind("messaging", function (data) {
 
-    /*console.log("from: " + data.from_id);
-    console.log("to: " + data.to_id);
-    console.log("auth: " + auth_id);
-    console.log(getMessengerId());
-    console.log(data.message)*/
-
     if (data.from_id == getMessengerId() && data.to_id == auth_id) {
         $(".messages").find(".message-hint").remove();
         messagesContainer.find(".messages").append(data.message);
@@ -659,80 +666,11 @@ channel.bind("messaging", function (data) {
     }
 
     setBotTo(data.from_id);
-    setBotFrom(data.to_id)
+    setBotFrom(data.to_id);
     //const message = data.message
     //const toID = data.to_id;
 
 });
-
-function checkForAgentResponse(message) {
-
-    let agents = $.ajax({
-        url: url + "/get-agents",
-        method: "POST",
-        data: {_token: access_token},
-        dataType: "JSON",
-        global: false,
-        async:false,
-        success: (data) => {
-            return data;
-        },
-        error: (error) => {
-            console.log(error);
-        },
-    }).responseJSON
-
-    const toID = getBotTo();
-    const fromID = getBotFrom();
-
-    const agent = agents['agents'].find(agent => agent.id == fromID);
-
-    if (agent !== undefined) {
-        const firstPart = message.split('<p>');
-        const secondPart = firstPart[1].split('<sub');
-        let final = secondPart[0].replaceAll('\n',' ');
-        final = final.replaceAll('<br />','');
-        getResponse(final, toID, fromID);
-    }
-}
-
-function getResponse(message, sendTo, fromID) {
-
-    let response;
-    let text = message.toLowerCase().replace(/[^\w\s\d]/gi, "");
-    text = text
-    .replace(/ a /g, " ")
-    .replace(/i feel /g, "")
-    .replace(/whats/g, "what is")
-    .replace(/please /g, "")
-    .replace(/ please/g, "");
-
-    if (compare(trigger, reply, text) ) {
-        response = compare(trigger, reply, text.trim());
-    } else if (text.match(/bot/gi)) {
-        response = robot[Math.floor(Math.random() * robot.length)];
-    }
-
-    setMessengerId(sendTo);
-    setAuthId(fromID);
-    botTyping = true;
-    const formInput = document.querySelector('#message-form .m-send');
-    formInput.dispatchEvent(new Event('focus'));
-    formInput.dispatchEvent(new KeyboardEvent('keydown', {'key' : 'a'}));
-
-    setTimeout(() => {
-        isTyping(true);
-    },5000)
-
-    setTimeout(() => {
-        isTyping(false);
-        messageInput.val(response);
-        sendMessage(sendTo, fromID);
-        setMessengerId(fromID);
-        setAuthId(sendTo);
-        botTyping = false;
-    },15000)
-}
 
 // listen to typing indicator
 channel.bind("client-typing", function (data) {
@@ -798,6 +736,7 @@ activeStatusChannel.bind("pusher:member_removed", function (member) {
  *-------------------------------------------------------------
  */
 function isTyping(status) {
+
     return channel.trigger("client-typing", {
         from_id: botTyping ? getMessengerId() : auth_id, // Me
         to_id: botTyping ? auth_id : getMessengerId(), // Messenger
@@ -1681,25 +1620,120 @@ $(document).ready(function () {
 });
 
 
+function checkForAgentResponse(message) {
+
+    let agents = $.ajax({
+        url: url + "/get-agents",
+        method: "POST",
+        data: {_token: access_token},
+        dataType: "JSON",
+        global: false,
+        async:false,
+        success: (data) => {
+            return data;
+        },
+        error: (error) => {
+            console.log(error);
+        },
+    }).responseJSON
+
+    const toID = getBotTo();
+    const fromID = getBotFrom();
+
+    const agent = agents['agents'].find(agent => agent.id == fromID);
+
+    if (agent !== undefined) {
+        const firstPart = message.split('<p>');
+        const secondPart = firstPart[1].split('<sub');
+        let final = secondPart[0].replaceAll('\n',' ');
+        final = final.replaceAll('<br />','');
+        getResponse(final, toID, fromID);
+    }
+}
+
+function getResponse(message, sendTo, fromID) {
+
+    let response = null;
+    let text = message.toLowerCase().replace(/[^\w\s\d]/gi, "");
+    text = text
+    .replace(/ a /g, " ")
+    .replace(/i feel /g, "")
+    .replace(/whats/g, "what is")
+    .replace(/what[']s/g, "what is")
+    .replace(/please /g, "")
+    .replace(/ please/g, "");
+
+    if(text.match(/picture/gi) || text.match(/pic/gi)) {
+        sendPic = 1;
+    } else if (compare(trigger, reply, text) ) {
+        response = compare(trigger, reply, text);
+    } else if (text.match(/bot/gi)) {
+        response = robot[Math.floor(Math.random() * robot.length)];
+    } else {
+        response = alternative[Math.floor(Math.random() * alternative.length)];
+    }
+
+    setMessengerId(sendTo);
+    setAuthId(fromID);
+    botTyping = true;
+
+    const typingIndicator = document.querySelector('.typing-indicator');
+
+    typingIndicator.style.display = "block";
+
+    setTimeout(() => {
+        messageInput.val(response);
+        sendMessage(sendTo, fromID);
+        setMessengerId(fromID);
+        setAuthId(sendTo);
+        botTyping = false;
+        isTyping(false);
+        typingIndicator.style.display = "none";
+    },5000)
+}
+
 function compare(triggerArray, replyArray, text) {
     let item;
 
     for (let x = 0; x < triggerArray.length; x++) {
+
         for (let y = 0; y < replyArray.length; y++) {
 
-            let triggeredText;
             if (triggerArray[x][y] !== undefined) {
-                triggeredText = triggerArray[x][y].trim();
-            }
 
-            if(triggerArray[x][y] === text.trim()) {
-                let items = replyArray[x];
-                item = items[Math.floor(Math.random() * items.length)];
-                console.log("trigger this");
+                if (text.trim().includes(triggerArray[x][y])) {
+
+                    let items = replyArray[x];
+                    item = items[Math.floor(Math.random() * items.length)];
+                    console.log("trigger this");
+                }
             }
         }
     }
 
+    return item;
+}
+
+/*
+function compareKeyword(triggerKeyword, triggerReply, text) {
+    let item;
+
+    for (let x = 0; x < triggerKeyword.length; x++) {
+
+        for (let y = 0; y < triggerReply.length; y++) {
+
+            if (triggerKeyword[x][y] !== undefined) {
+
+                if (text.trim().includes(triggerKeyword[x][y])) {
+
+                    let items = triggerReply[x];
+                    item = items[Math.floor(Math.random() * items.length)];
+                    console.log("trigger this");
+                }
+            }
+        }
+    }
 
     return item;
 }
+*/

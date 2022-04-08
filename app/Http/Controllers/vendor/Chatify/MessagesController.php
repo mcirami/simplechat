@@ -5,6 +5,7 @@ namespace App\Http\Controllers\vendor\Chatify;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 use App\Models\ChMessage as Message;
 use App\Models\ChFavorite as Favorite;
@@ -13,9 +14,12 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request as FacadesRequest;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Intervention\Image\Facades\Image;
 use Psy\Util\Json;
+
 
 class MessagesController extends Controller
 {
@@ -132,6 +136,20 @@ class MessagesController extends Controller
         $attachment = null;
         $attachment_title = null;
 
+        if ($request["sendPic"] == 1) {
+            $userID = $request['from'];
+            $path = Storage::disk('public')->path('/agent-images/' . $userID . '/1/');
+            $file = File::files($path);
+
+            $attachment = Str::uuid() . "." . $file[0]->getExtension();
+            $image = Image::make($file[0]->getRealPath())->encode('jpg',80);;//->save("/storage/app/pubic/" . config('chatify.attachments.folder') . "/" . $attachment);
+            Storage::disk('public')->put(config('chatify.attachments.folder') . "/" . $attachment, $image);
+
+            //Image::make($file[0]->getRealPath())->save('images/attachments/' . $attachment);
+            //$image->save(storage_path() . "/app/pubic/" . config('chatify.attachments.folder') . "/" . $attachment);
+
+        }
+
         // if there is attachment [file]
         if ($request->hasFile('file')) {
             // allowed extensions
@@ -193,6 +211,8 @@ class MessagesController extends Controller
             'error' => $error,
             'message' => Chatify::messageCard(@$messageData),
             'tempID' => $request['temporaryMsgId'],
+            'messageID' => $messageID,
+            'attachment' => $attachment
         ]);
     }
 
