@@ -11339,6 +11339,11 @@ img {
   margin-right: auto;
   padding: 0 20px;
 }
+.container:after {
+  content: "";
+  display: table;
+  clear: both;
+}
 
 .button {
   border-radius: 4px;
@@ -11569,31 +11574,31 @@ img {
   overflow: hidden;
 }
 
-.home .top_section {
+.home .top_section, .settings_page .top_section {
   background: url("/images/home-top-bg.jpg") no-repeat;
   background-size: 100% 100%;
   background-position: center 15%;
   min-height: 800px;
 }
 @media all and (max-width: 992px) {
-  .home .top_section {
+  .home .top_section, .settings_page .top_section {
     min-height: 700px;
   }
 }
 @media all and (max-width: 768px) {
-  .home .top_section {
+  .home .top_section, .settings_page .top_section {
     min-height: 650px;
   }
 }
 @media all and (max-width: 550px) {
-  .home .top_section {
+  .home .top_section, .settings_page .top_section {
     min-height: 550px;
   }
 }
-.home .top_section header {
+.home .top_section header, .settings_page .top_section header {
   padding: 20px 0;
 }
-.home .top_section header .my_row {
+.home .top_section header .my_row, .settings_page .top_section header .my_row {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -11602,68 +11607,68 @@ img {
   align-items: center;
   -webkit-align-items: center;
 }
-.home .top_section header .my_row img {
+.home .top_section header .my_row img, .settings_page .top_section header .my_row img {
   max-width: 300px;
 }
 @media all and (max-width: 550px) {
-  .home .top_section header .my_row img {
+  .home .top_section header .my_row img, .settings_page .top_section header .my_row img {
     max-width: 200px;
   }
 }
-.home .top_section .heading_section {
+.home .top_section .heading_section, .settings_page .top_section .heading_section {
   text-align: center;
 }
-.home .top_section .heading_section h2, .home .top_section .heading_section .h2 {
+.home .top_section .heading_section h2, .home .top_section .heading_section .h2, .settings_page .top_section .heading_section h2, .settings_page .top_section .heading_section .h2 {
   font-size: 48px;
   padding: 0 6%;
   margin-top: 12%;
 }
 @media screen and (max-width: 992px) {
-  .home .top_section .heading_section h2, .home .top_section .heading_section .h2 {
+  .home .top_section .heading_section h2, .home .top_section .heading_section .h2, .settings_page .top_section .heading_section h2, .settings_page .top_section .heading_section .h2 {
     font-size: 38px;
     margin-top: 8%;
   }
 }
 @media all and (max-width: 768px) {
-  .home .top_section .heading_section h2, .home .top_section .heading_section .h2 {
+  .home .top_section .heading_section h2, .home .top_section .heading_section .h2, .settings_page .top_section .heading_section h2, .settings_page .top_section .heading_section .h2 {
     font-size: 32px;
     margin-top: 8%;
   }
 }
 @media all and (max-width: 550px) {
-  .home .top_section .heading_section h2, .home .top_section .heading_section .h2 {
+  .home .top_section .heading_section h2, .home .top_section .heading_section .h2, .settings_page .top_section .heading_section h2, .settings_page .top_section .heading_section .h2 {
     font-size: 24px;
   }
 }
-.home .top_section .heading_section h2 span, .home .top_section .heading_section .h2 span {
+.home .top_section .heading_section h2 span, .home .top_section .heading_section .h2 span, .settings_page .top_section .heading_section h2 span, .settings_page .top_section .heading_section .h2 span {
   color: #b0273c;
 }
-.home .top_section .heading_section a {
+.home .top_section .heading_section a, .settings_page .top_section .heading_section a {
   display: inline-block;
   margin: 60px 0;
 }
 @media all and (max-width: 768px) {
-  .home .top_section .heading_section a {
+  .home .top_section .heading_section a, .settings_page .top_section .heading_section a {
     margin: 40px 0;
   }
 }
 @media all and (max-width: 550px) {
-  .home .top_section .heading_section a {
+  .home .top_section .heading_section a, .settings_page .top_section .heading_section a {
     margin: 30px 0;
   }
 }
-.home .top_section .heading_section a img {
+.home .top_section .heading_section a img, .settings_page .top_section .heading_section a img {
   width: 40px;
 }
 @media all and (max-width: 550px) {
-  .home .top_section .heading_section a img {
+  .home .top_section .heading_section a img, .settings_page .top_section .heading_section a img {
     width: 30px;
   }
 }
-.home .my_row.overlap {
+.home .my_row.overlap, .settings_page .my_row.overlap {
   margin-top: -200px;
 }
-.home .two_column_section {
+.home .two_column_section, .settings_page .two_column_section {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -11673,85 +11678,85 @@ img {
   -webkit-align-items: center;
 }
 @media all and (max-width: 550px) {
-  .home .two_column_section {
+  .home .two_column_section, .settings_page .two_column_section {
     flex-wrap: wrap;
     -ms-flex-wrap: wrap;
   }
 }
-.home .two_column_section.swap_mobile {
+.home .two_column_section.swap_mobile, .settings_page .two_column_section.swap_mobile {
   flex-wrap: wrap-reverse;
   -ms-flex-wrap: wrap-reverse;
 }
-.home .two_column_section .column {
+.home .two_column_section .column, .settings_page .two_column_section .column {
   width: 50%;
 }
 @media all and (max-width: 768px) {
-  .home .two_column_section .column {
+  .home .two_column_section .column, .settings_page .two_column_section .column {
     margin-bottom: 20px;
   }
 }
 @media all and (max-width: 550px) {
-  .home .two_column_section .column {
+  .home .two_column_section .column, .settings_page .two_column_section .column {
     width: 100%;
   }
 }
-.home .two_column_section .column:first-child {
+.home .two_column_section .column:first-child, .settings_page .two_column_section .column:first-child {
   padding-right: 20px;
 }
 @media all and (max-width: 550px) {
-  .home .two_column_section .column:first-child {
+  .home .two_column_section .column:first-child, .settings_page .two_column_section .column:first-child {
     padding: 0;
   }
 }
-.home .two_column_section .column:last-child {
+.home .two_column_section .column:last-child, .settings_page .two_column_section .column:last-child {
   padding-left: 20px;
 }
 @media all and (max-width: 550px) {
-  .home .two_column_section .column:last-child {
+  .home .two_column_section .column:last-child, .settings_page .two_column_section .column:last-child {
     padding: 0;
   }
 }
-.home .two_column_section .column h3, .home .two_column_section .column .h3 {
+.home .two_column_section .column h3, .home .two_column_section .column .h3, .settings_page .two_column_section .column h3, .settings_page .two_column_section .column .h3 {
   font-size: 34px;
   margin-bottom: 10px;
 }
 @media all and (max-width: 992px) {
-  .home .two_column_section .column h3, .home .two_column_section .column .h3 {
+  .home .two_column_section .column h3, .home .two_column_section .column .h3, .settings_page .two_column_section .column h3, .settings_page .two_column_section .column .h3 {
     font-size: 28px;
   }
 }
 @media all and (max-width: 992px) {
-  .home .two_column_section .column h3, .home .two_column_section .column .h3 {
+  .home .two_column_section .column h3, .home .two_column_section .column .h3, .settings_page .two_column_section .column h3, .settings_page .two_column_section .column .h3 {
     font-size: 22px;
   }
 }
-.home .two_column_section .column h3 span, .home .two_column_section .column .h3 span {
+.home .two_column_section .column h3 span, .home .two_column_section .column .h3 span, .settings_page .two_column_section .column h3 span, .settings_page .two_column_section .column .h3 span {
   color: #b0273c;
 }
-.home .two_column_section .column p {
+.home .two_column_section .column p, .settings_page .two_column_section .column p {
   line-height: 2;
 }
 @media all and (max-width: 992px) {
-  .home .two_column_section .column p {
+  .home .two_column_section .column p, .settings_page .two_column_section .column p {
     font-size: 14px;
   }
 }
 @media all and (max-width: 768px) {
-  .home .two_column_section .column p {
+  .home .two_column_section .column p, .settings_page .two_column_section .column p {
     font-size: 12px;
   }
 }
 @media all and (max-width: 550px) {
-  .home .two_column_section .column img {
+  .home .two_column_section .column img, .settings_page .two_column_section .column img {
     padding: 0 10%;
   }
 }
-.home footer {
+.home footer, .settings_page footer {
   padding: 50px 0;
   margin-top: 120px;
   border-top: 1px solid #9c9c9c;
 }
-.home footer p {
+.home footer p, .settings_page footer p {
   font-size: 12px;
   color: #9c9c9c;
 }
@@ -12074,6 +12079,52 @@ img {
   .slide_wrapper .content_wrap p {
     font-size: 2.6vw;
   }
+}
+
+.settings_page {
+  width: 100%;
+  display: inline-block;
+}
+.settings_page .top_section {
+  width: 100%;
+  display: inline-block;
+  min-height: unset;
+  background: rgba(155, 155, 155, 0.1);
+  padding-bottom: 20px;
+}
+.settings_page #settings {
+  width: 100%;
+  float: left;
+  padding: 40px 0;
+}
+.settings_page #settings .columns_wrap {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+.settings_page #settings .columns_wrap .column.side_nav {
+  width: 12%;
+}
+.settings_page #settings .columns_wrap .column.content {
+  width: 88%;
+}
+.settings_page #settings .input_box {
+  width: 100%;
+  padding: 40px;
+  box-shadow: 0px 0px 10px rgba(155, 155, 155, 0.4);
+  border-radius: 6px;
+}
+.settings_page #settings .input_box .cm-theme-light {
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  box-shadow: 0px 0px 10px -1px rgba(155, 155, 155, 0.2);
+  margin-bottom: 40px;
+}
+.settings_page #settings .input_box .cm-theme-light .ͼ1 .cm-editor, .settings_page #settings .input_box .cm-theme-light .ͼ1.cm-scroller {
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
 }
 /*
 ! tailwindcss v3.0.18 | MIT License | https://tailwindcss.com

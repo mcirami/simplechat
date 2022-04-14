@@ -1,0 +1,67 @@
+.settings_page {
+    width: 100%;
+    display: inline-block;
+
+    .top_section {
+        width: 100%;
+        display: inline-block;
+        min-height: unset;
+        background: rgba(155,155,155,.1);
+        padding-bottom: 20px;
+    }
+
+    #settings {
+        width: 100%;
+        float: left;
+        padding: 40px 0;
+
+        .columns_wrap {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+
+            .column {
+
+                &.side_nav {
+                    width: 12%;
+                }
+
+                &.content {
+                    width: 88%;
+                }
+            }
+        }
+
+        .input_box {
+            width: 100%;
+            padding: 40px;
+            box-shadow: 0px 0px 10px rgba(155, 155, 155, .4);
+            border-radius: 6px;
+
+            .cm-theme-light {
+                border-radius: 6px;
+                -webkit-border-radius: 6px;
+                -moz-border-radius: 6px;
+                box-shadow: 0px 0px 10px -1px rgba(155, 155, 155, .2);
+                margin-bottom: 40px;
+
+                .ͼ1 {
+                    .cm-editor, &.cm-scroller {
+                        border-radius: 6px;
+                        -webkit-border-radius: 6px;
+                        -moz-border-radius: 6px;
+                    }
+
+                }
+
+
+            }
+        }
+    }
+}

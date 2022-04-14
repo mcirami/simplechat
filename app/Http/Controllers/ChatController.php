@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Events\Message;
 use App\Models\Page;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -62,13 +63,11 @@ class ChatController extends Controller
 
     public function testing() {
 
-        //$path = storage_path('app/public/agent-images/36327401/1/');
-        $path = Storage::disk('public')->path('agent-images/36327401/1/');
-        $files = File::files($path);
-        $image = Image::make($files[0]->getPathname());
+        $user = Auth::user();
+        $userSettings = $user->userSettings()->first()->pluck('script');
 
-        $attachment = Str::uuid() . "." . $image->extension;
-        dd($image);
+       dd(json_decode($userSettings[0]));
+
 
     }
 

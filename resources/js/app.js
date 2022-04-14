@@ -10,4 +10,5 @@ require('./custom');*/
 
 /*require('./Sliders/TopSlider');*/
 require('./Sliders/BottomSlider');
+require('./Settings');
 require('./custom');

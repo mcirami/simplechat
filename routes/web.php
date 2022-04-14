@@ -5,6 +5,8 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CustomRegisterController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SettingController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,6 +33,10 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('add-user/', [ChatController::class, 'addUser']);
 
     Route::post('chat/get-agents', [UserController::class, 'getAgentUsers']);
+
+    Route::get('settings', [SettingController::class, 'showEditSettings']);
+    Route::post('store-setting', [SettingController::class, 'storeSetting']);
+    Route::post('get-setting', [SettingController::class, 'getSetting']);
 
 });
 
