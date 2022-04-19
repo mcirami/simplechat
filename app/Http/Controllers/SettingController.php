@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function showEditSettings() {
 
         return view('user.settings');
@@ -25,10 +28,20 @@ class SettingController extends Controller
     public function getSetting(Request $request, SettingsService $settingService) {
 
         $column = $request->get('column');
+        $userID = $request->get('userID') ?: null;
 
-        $setting = $settingService->getSetting($column);
+        $setting = $settingService->getSetting($column, $userID);
 
         return response()->json([$column => $setting]);
     }
 
+    public function getTracking(Request $request, SettingsService $settingService) {
+
+        $toID = $request->get('to_id');
+        $fromID = $request->get('from_id');
+
+        $index = $settingService->getScriptIndex($toID, $fromID);
+
+        return response()->json(['index' => $index]);
+    }
 }

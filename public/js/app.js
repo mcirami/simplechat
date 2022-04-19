@@ -9141,6 +9141,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _messages__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./messages */ "./resources/js/messages.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+function _toArray(arr) { return _arrayWithHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -9152,6 +9166,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
  * Global variables
  *-------------------------------------------------------------
  */
+
 
 var messenger,
     typingTimeout,
@@ -9289,6 +9304,7 @@ function avatarLoading(items) {
 
 
 function sendigCard(message, id) {
+  var link = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
   var classes;
 
   if (botTyping) {
@@ -9296,8 +9312,27 @@ function sendigCard(message, id) {
   } else {
     classes = "message-card mc-sender";
   }
+  /*  if (link) {
+        message = message.split("%s");
+        console.log(message);
+         return (
+            `<div class="` + classes + `" data-id="` +
+            id +
+            `">
+        <p>` +
+            message[0] + ` <a href="` + link + `" target="_blank">` + link + `</a>` + message[1] +
+            `<sub>
+            <span class="far fa-clock"> </span>
+        </sub>
+         </p>
+  </div>
+  `
+        )
+    } else {*/
+
 
   return "\n<div class=\"" + classes + "\" data-id=\"" + id + "\">\n<p>" + message + "<sub><span class=\"far fa-clock\"></span></sub></p>\n</div>\n";
+  /* }*/
 } // upload image preview card.
 
 
@@ -9545,10 +9580,11 @@ function IDinfo(id, type) {
 function sendMessage() {
   var sendTo = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
   var fromID = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "false";
+  var link = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
   temporaryMsgId += 1;
   var tempID = "temp_" + temporaryMsgId;
   var hasFile = $(".upload-attachment").val() ? true : false;
-  var sendToUser = sendTo ? sendTo : getMessengerId();
+  var sendToUser = sendTo ? sendTo : getMessengerId(); //console.log(messageInput.val());
 
   if ($.trim(messageInput.val()).length > 0 || hasFile || addChatUser || sendPic) {
     var formData = new FormData($("#message-form")[0]);
@@ -9569,7 +9605,7 @@ function sendMessage() {
         // remove message hint
         $(".messages").find(".message-hint").remove(); // append message
 
-        hasFile ? messagesContainer.find(".messages").append(sendigCard(messageInput.text() + "\n" + loadingSVG("28px"), tempID)) : messagesContainer.find(".messages").append(sendigCard(messageInput.text(), tempID)); // scroll to bottom
+        hasFile ? messagesContainer.find(".messages").append(sendigCard(messageInput.val() + "\n" + loadingSVG("28px"), tempID)) : messagesContainer.find(".messages").append(sendigCard(messageInput.val(), tempID, link)); // scroll to bottom
 
         scrollBottom(messageInnerContainer);
         messageInput.css({
@@ -9588,15 +9624,41 @@ function sendMessage() {
         } else {
           // update contact item
           updateContatctItem(sendToUser);
-          messagesContainer.find('.mc-sender[data-id="sending"]').remove(); // get message before the sending one [temporary]
+          messagesContainer.find('.mc-sender[data-id="sending"]').remove();
+          /*let sendMessage = data.message;
+           let container;
+           if (sendMessage.includes("http")) {
+              const firstString = sendMessage.split("http");
+              const secondString = firstString[1].slice(firstString[1].indexOf(' ') + 1);
+              const linkString = firstString[1].slice(0, firstString[1].indexOf(' '));
+               container = document.createElement('div');
+              container.setAttribute('data-id', data.messageID);
+              container.setAttribute('class', 'message-card');
+              let p = document.createElement('p');
+              let sub = document.createElement('sub');
+              p.appendChild(sub);
+              container.appendChild(p);
+               /!*let dom = document.createElement('a');
+              dom.innerHTML = link;
+              dom.setAttribute('href', linkString);
+              dom.setAttribute('target', "_blank");*!/
+               //sendMessage = firstString[0] + dom + secondString;
+              console.log(container);
+          }*/
+          // get message before the sending one [temporary]
 
           messagesContainer.find(".message-card[data-id=" + data.tempID + "]").before(data.message); // delete the temporary one
 
           messagesContainer.find(".message-card[data-id=" + data.tempID + "]").remove();
 
           if (sendTo) {
-            document.querySelector('[data-id="' + data.messageID + '"]').nextElementSibling.remove();
             document.querySelector('[data-id="' + data.messageID + '"]').remove();
+
+            if (sendPic) {
+              document.querySelector('[data-id="' + data.messageID + '"]').nextElementSibling.remove();
+            }
+
+            sendPic = 0;
           } // scroll to bottom
 
 
@@ -10719,28 +10781,188 @@ function checkForAgentResponse(message) {
 }
 
 function getResponse(message, sendTo, fromID) {
-  var response = null;
+  //let response = null;
   var text = message.toLowerCase().replace(/[^\w\s\d]/gi, "");
   text = text.replace(/ a /g, " ").replace(/i feel /g, "").replace(/whats/g, "what is").replace(/what[']s/g, "what is").replace(/please /g, "").replace(/ please/g, "");
 
-  if (text.match(/picture/gi) || text.match(/pic/gi)) {
+  if (text.match(/picture/gi) || text.match(/pic/gi) || text.match(/photo/gi) || text.match(/pics/gi) || text.match(/pix/gi)) {
     sendPic = 1;
-  } else if (compare(_messages__WEBPACK_IMPORTED_MODULE_1__.trigger, _messages__WEBPACK_IMPORTED_MODULE_1__.reply, text)) {
-    response = compare(_messages__WEBPACK_IMPORTED_MODULE_1__.trigger, _messages__WEBPACK_IMPORTED_MODULE_1__.reply, text);
-  } else if (text.match(/bot/gi)) {
-    response = _messages__WEBPACK_IMPORTED_MODULE_1__.robot[Math.floor(Math.random() * _messages__WEBPACK_IMPORTED_MODULE_1__.robot.length)];
+    sendBotMessage(sendTo, fromID, null);
   } else {
-    response = _messages__WEBPACK_IMPORTED_MODULE_1__.alternative[Math.floor(Math.random() * _messages__WEBPACK_IMPORTED_MODULE_1__.alternative.length)];
+    var keywordPackets = {
+      column: 'keywords',
+      userID: fromID
+    };
+    var scriptPackets = {
+      column: 'script',
+      userID: fromID
+    };
+    var trackingPackets = {
+      to_id: sendTo,
+      from_id: fromID
+    };
+    sendReply(scriptPackets, trackingPackets, keywordPackets, sendTo, fromID, text);
   }
+}
 
+function sendReply(_x2, _x3, _x4, _x5, _x6, _x7) {
+  return _sendReply.apply(this, arguments);
+}
+
+function _sendReply() {
+  _sendReply = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2(scriptPackets, trackingPackets, keywordPackets, sendTo, fromID, text) {
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.prev = 0;
+            _context2.next = 3;
+            return axios__WEBPACK_IMPORTED_MODULE_2___default().post('/get-setting', keywordPackets).then(function (keywordResponse) {
+              var triggers = [];
+              var replies = [];
+              keywordResponse.data.keywords.map(function (keywords) {
+                var _keywords$split = keywords.split('|'),
+                    _keywords$split2 = _toArray(_keywords$split),
+                    keyword = _keywords$split2[0],
+                    reply = _keywords$split2.slice(1);
+
+                triggers.push(keyword);
+                replies.push(reply);
+              });
+
+              if (compare(triggers, replies, text)) {
+                var botMessage = compare(triggers, replies, text);
+
+                if (botMessage.match(/%s/gi)) {
+                  var linksPackets = {
+                    column: 'links',
+                    userID: fromID
+                  };
+                  axios__WEBPACK_IMPORTED_MODULE_2___default().post('/get-setting', linksPackets).then(function (response) {
+                    var link = response.data.links[Math.floor(Math.random() * response.data.links.length)]; //const linkText = '<a target="_blank" href="' + link + '">' + link + '</a>';
+
+                    //const linkText = '<a target="_blank" href="' + link + '">' + link + '</a>';
+                    var dom = document.createElement('a');
+                    dom.innerHTML = link;
+                    dom.setAttribute('href', link);
+                    dom.setAttribute('target', "_blank"); //botMessage = botMessage.replace(/%s/g, linkText);
+
+                    //botMessage = botMessage.replace(/%s/g, linkText);
+                    var messageArray = botMessage.split("%s");
+                    botMessage = messageArray[0] + " " + dom + " " + messageArray[1];
+                    sendBotMessage(sendTo, fromID, botMessage, link);
+                  });
+                } else {
+                  sendBotMessage(sendTo, fromID, botMessage);
+                }
+              } else {
+                sendScript(scriptPackets, trackingPackets, sendTo, fromID);
+              }
+            });
+
+          case 3:
+            return _context2.abrupt("return", _context2.sent);
+
+          case 6:
+            _context2.prev = 6;
+            _context2.t0 = _context2["catch"](0);
+            console.error(_context2.t0);
+
+          case 9:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, null, [[0, 6]]);
+  }));
+  return _sendReply.apply(this, arguments);
+}
+
+function sendScript(_x8, _x9, _x10, _x11) {
+  return _sendScript.apply(this, arguments);
+}
+
+function _sendScript() {
+  _sendScript = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4(scriptPackets, trackingPackets, sendTo, fromID) {
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            _context4.next = 2;
+            return axios__WEBPACK_IMPORTED_MODULE_2___default().post('/get-setting', scriptPackets).then( /*#__PURE__*/function () {
+              var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3(response) {
+                var index, newIndex, botMessage, linksPackets;
+                return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+                  while (1) {
+                    switch (_context3.prev = _context3.next) {
+                      case 0:
+                        _context3.next = 2;
+                        return axios__WEBPACK_IMPORTED_MODULE_2___default().post('/script-tracking', trackingPackets);
+
+                      case 2:
+                        index = _context3.sent;
+                        newIndex = index.data.index;
+
+                        if (newIndex === 999) {
+                          botMessage = "You suck!";
+                          sendBotMessage(sendTo, fromID, botMessage);
+                        } else {
+                          botMessage = response.data.script[newIndex];
+
+                          if (botMessage.includes("%s")) {
+                            linksPackets = {
+                              column: 'links',
+                              userID: fromID
+                            };
+                            axios__WEBPACK_IMPORTED_MODULE_2___default().post('/get-setting', linksPackets).then(function (response) {
+                              var link = response.data.links[Math.floor(Math.random() * response.data.links.length)]; //const linkText = '<a href="' + link + '">' + link + '</a>';
+                              //botMessage = botMessage.replace("%s", link);
+
+                              //const linkText = '<a href="' + link + '">' + link + '</a>';
+                              //botMessage = botMessage.replace("%s", link);
+                              sendBotMessage(sendTo, fromID, botMessage, link);
+                            });
+                          } else {
+                            sendBotMessage(sendTo, fromID, botMessage);
+                          }
+                        }
+
+                      case 5:
+                      case "end":
+                        return _context3.stop();
+                    }
+                  }
+                }, _callee3);
+              }));
+
+              return function (_x12) {
+                return _ref2.apply(this, arguments);
+              };
+            }());
+
+          case 2:
+            return _context4.abrupt("return", _context4.sent);
+
+          case 3:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4);
+  }));
+  return _sendScript.apply(this, arguments);
+}
+
+function sendBotMessage(sendTo, fromID, botMessage) {
+  var link = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
   setMessengerId(sendTo);
   setAuthId(fromID);
   botTyping = true;
   var typingIndicator = document.querySelector('.typing-indicator');
   typingIndicator.style.display = "block";
   setTimeout(function () {
-    messageInput.val(response);
-    sendMessage(sendTo, fromID);
+    messageInput.val(botMessage);
+    sendMessage(sendTo, fromID, link);
     setMessengerId(fromID);
     setAuthId(sendTo);
     botTyping = false;
@@ -10754,11 +10976,10 @@ function compare(triggerArray, replyArray, text) {
 
   for (var x = 0; x < triggerArray.length; x++) {
     for (var y = 0; y < replyArray.length; y++) {
-      if (triggerArray[x][y] !== undefined) {
-        if (text.trim().includes(triggerArray[x][y])) {
+      if (triggerArray[x] !== undefined) {
+        if (text.trim().includes(triggerArray[x].trim())) {
           var items = replyArray[x];
           item = items[Math.floor(Math.random() * items.length)];
-          console.log("trigger this");
         }
       }
     }
@@ -10801,11 +11022,153 @@ function compareKeyword(triggerKeyword, triggerReply, text) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "getKeywords": () => (/* binding */ getKeywords),
 /* harmony export */   "trigger": () => (/* binding */ trigger),
 /* harmony export */   "reply": () => (/* binding */ reply),
 /* harmony export */   "alternative": () => (/* binding */ alternative),
 /* harmony export */   "robot": () => (/* binding */ robot)
 /* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
+/*
+
+const getAllScripts = async (scriptPackets) => {
+
+    try {
+        const response = await axios.post('/get-setting', scriptPackets);
+
+        return response.data;
+
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+const getScriptTracking = async (trackingPackets) => {
+
+    try {
+        const scriptTracking = await axios.post('/script-tracking', trackingPackets)
+        return scriptTracking.data;
+
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+export const getScript = async (scriptPackets, trackingPackets) => {
+
+    try {
+
+        return await axios.post('/get-setting', scriptPackets)
+        .then( async (response) => {
+            const index = await axios.post('/script-tracking', trackingPackets)
+
+            //console.log(response.data.script[index.data.index]);
+            return response.data.script[index.data.index]
+        })
+    } catch (err) {
+        console.error(err);
+    }
+}
+*/
+
+/*export const getScript = (scriptPackets, trackingPackets) {
+
+     return getAllScripts(scriptPackets).then(script => {
+
+         return getScriptTracking(trackingPackets).then(index => {
+
+             return script['script'][index['index']];
+
+        })
+    })*/
+
+/*try {
+    const response = await axios.post('/get-setting', scriptPackets);
+     if (response)  {
+        const script = response.data;
+         const response2 = await axios.post('/script-tracking', trackingPackets)
+         if (response2) {
+            const index = response2.data;
+             //console.log(script['script'][index['index']]);
+            return script['script'][index['index']]
+        }
+    }
+ } catch (err) {
+    console.error(err);
+}*/
+//}
+
+/*
+export const getScript = async (scriptPackets, trackingPackets) => {
+
+    const options = {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(
+            scriptPackets
+        )
+    }
+
+    const script = await fetch('/get-setting', options)
+    .then(response => response.json())
+        .then(() => {
+        console.log(script)
+            return script;
+    });
+
+    const options2 = {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(
+            trackingPackets
+        )
+    }
+
+    const index = await fetch('/script-tracking', options2)
+    .then(response => response.json())
+    .then(() => {
+        console.log(index)
+        return index;
+    });
+}
+
+*/
+
+var getKeywords = function getKeywords(packets, access_token) {
+  /*try {
+      const response = await axios.post('/get-setting', packets);
+       return response.data;
+   } catch (err) {
+      console.error(err);
+  }*/
+  var keywords = $.ajax({
+    url: "/get-setting",
+    method: "POST",
+    data: {
+      _token: access_token,
+      packets: packets
+    },
+    dataType: "JSON",
+    global: false,
+    async: false,
+    success: function success(data) {
+      console.log(data);
+      return data;
+    },
+    error: function error(_error) {
+      console.log(_error);
+    }
+  }).responseJSON;
+  return keywords;
+};
 var trigger = [//0
 ["hi", "hey", "hello"], //1
 ["how are you", "how are things"], //2

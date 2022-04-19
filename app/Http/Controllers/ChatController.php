@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ScriptTracking;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Events\Message;
@@ -63,10 +64,11 @@ class ChatController extends Controller
 
     public function testing() {
 
-        $user = Auth::user();
-        $userSettings = $user->userSettings()->first()->pluck('script');
 
-       dd(json_decode($userSettings[0]));
+        $user = User::where('id', 36327401)->first();
+        $setting = $user->settings()->first()->pluck('script');
+
+       dd(count(json_decode($setting[0])));
 
 
     }

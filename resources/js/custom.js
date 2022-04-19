@@ -8,8 +8,11 @@
 import {
     trigger,
     reply,
+    getKeywords,
+    getScript,
     robot,
     alternative } from './messages';
+import axios from 'axios';
 
 var messenger,
     typingTimeout,
@@ -164,7 +167,7 @@ function avatarLoading(items) {
 }
 
 // While sending a message, show this temporary message card.
-function sendigCard(message, id) {
+function sendigCard(message, id, link = null) {
 
     let classes;
     if (botTyping) {
@@ -173,17 +176,39 @@ function sendigCard(message, id) {
         classes = "message-card mc-sender";
     }
 
-    return (
-        `
-<div class="` + classes + `" data-id="` +
-        id +
-        `">
-<p>` +
-        message +
-        `<sub><span class="far fa-clock"></span></sub></p>
+  /*  if (link) {
+        message = message.split("%s");
+        console.log(message);
+
+        return (
+            `<div class="` + classes + `" data-id="` +
+            id +
+            `">
+        <p>` +
+            message[0] + ` <a href="` + link + `" target="_blank">` + link + `</a>` + message[1] +
+            `<sub>
+            <span class="far fa-clock"> </span>
+        </sub>
+
+        </p>
 </div>
 `
-    );
+        )
+    } else {*/
+
+        return (
+            `
+<div class="` + classes + `" data-id="` +
+            id +
+            `">
+<p>` +
+            message +
+            `<sub><span class="far fa-clock"></span></sub></p>
+</div>
+`
+        );
+
+   /* }*/
 }
 // upload image preview card.
 function attachmentTemplate(fileType, fileName, imgURL = null) {
@@ -452,12 +477,14 @@ function IDinfo(id, type) {
  * Send message function
  *-------------------------------------------------------------
  */
-function sendMessage( sendTo = null, fromID = "false") {
+function sendMessage( sendTo = null, fromID = "false", link = null) {
     temporaryMsgId += 1;
     let tempID = "temp_" + temporaryMsgId;
     let hasFile = $(".upload-attachment").val() ? true : false;
 
     let sendToUser = sendTo ? sendTo : getMessengerId();
+
+    //console.log(messageInput.val());
 
     if ($.trim(messageInput.val()).length > 0 || hasFile || addChatUser || sendPic) {
         const formData = new FormData($("#message-form")[0]);
@@ -478,19 +505,20 @@ function sendMessage( sendTo = null, fromID = "false") {
             beforeSend: () => {
                 // remove message hint
                 $(".messages").find(".message-hint").remove();
+
                 // append message
                 hasFile
                     ? messagesContainer
                     .find(".messages")
                     .append(
                     sendigCard(
-                        messageInput.text() + "\n" + loadingSVG("28px"),
+                        messageInput.val() + "\n" + loadingSVG("28px"),
                         tempID
                     ))
                     :
                     messagesContainer
                     .find(".messages")
-                    .append(sendigCard(messageInput.text(), tempID));
+                    .append(sendigCard(messageInput.val(), tempID, link));
                 // scroll to bottom
                 scrollBottom(messageInnerContainer);
                 messageInput.css({ height: "42px" });
@@ -511,6 +539,32 @@ function sendMessage( sendTo = null, fromID = "false") {
 
                     messagesContainer.find('.mc-sender[data-id="sending"]').remove();
 
+                    /*let sendMessage = data.message;
+
+                    let container;
+
+                    if (sendMessage.includes("http")) {
+                        const firstString = sendMessage.split("http");
+                        const secondString = firstString[1].slice(firstString[1].indexOf(' ') + 1);
+                        const linkString = firstString[1].slice(0, firstString[1].indexOf(' '));
+
+                        container = document.createElement('div');
+                        container.setAttribute('data-id', data.messageID);
+                        container.setAttribute('class', 'message-card');
+                        let p = document.createElement('p');
+                        let sub = document.createElement('sub');
+                        p.appendChild(sub);
+                        container.appendChild(p);
+
+                        /!*let dom = document.createElement('a');
+                        dom.innerHTML = link;
+                        dom.setAttribute('href', linkString);
+                        dom.setAttribute('target', "_blank");*!/
+
+                        //sendMessage = firstString[0] + dom + secondString;
+                        console.log(container);
+                    }*/
+
                     // get message before the sending one [temporary]
                     messagesContainer
                     .find(".message-card[data-id=" + data.tempID + "]")
@@ -521,10 +575,12 @@ function sendMessage( sendTo = null, fromID = "false") {
                     .remove();
 
                     if (sendTo) {
-                        document.querySelector('[data-id="' + data.messageID + '"]').nextElementSibling.remove();
                         document.querySelector('[data-id="' + data.messageID + '"]').remove();
+                        if(sendPic) {
+                            document.querySelector('[data-id="' + data.messageID + '"]').nextElementSibling.remove();
+                        }
+                        sendPic = 0;
                     }
-
 
                     // scroll to bottom
                     scrollBottom(messageInnerContainer);
@@ -1653,7 +1709,7 @@ function checkForAgentResponse(message) {
 
 function getResponse(message, sendTo, fromID) {
 
-    let response = null;
+    //let response = null;
     let text = message.toLowerCase().replace(/[^\w\s\d]/gi, "");
     text = text
     .replace(/ a /g, " ")
@@ -1663,15 +1719,139 @@ function getResponse(message, sendTo, fromID) {
     .replace(/please /g, "")
     .replace(/ please/g, "");
 
-    if(text.match(/picture/gi) || text.match(/pic/gi)) {
+    if(text.match(/picture/gi) || text.match(/pic/gi) || text.match(/photo/gi) || text.match(/pics/gi) || text.match(/pix/gi)) {
         sendPic = 1;
-    } else if (compare(trigger, reply, text) ) {
-        response = compare(trigger, reply, text);
-    } else if (text.match(/bot/gi)) {
-        response = robot[Math.floor(Math.random() * robot.length)];
+
+        sendBotMessage(sendTo, fromID, null);
+
     } else {
-        response = alternative[Math.floor(Math.random() * alternative.length)];
+
+        const keywordPackets = {
+            column: 'keywords',
+            userID: fromID
+        }
+
+        const scriptPackets = {
+            column: 'script',
+            userID: fromID
+        }
+
+        const trackingPackets = {
+            to_id: sendTo,
+            from_id: fromID
+        }
+
+        sendReply(
+            scriptPackets,
+            trackingPackets,
+            keywordPackets,
+            sendTo,
+            fromID,
+            text
+        );
     }
+}
+
+async function sendReply(
+    scriptPackets,
+    trackingPackets,
+    keywordPackets,
+    sendTo,
+    fromID,
+    text
+) {
+
+    try {
+
+        return await axios.post('/get-setting', keywordPackets)
+            .then( (keywordResponse) => {
+
+            let triggers = [];
+            let replies = [];
+            keywordResponse.data.keywords.map((keywords) => {
+                const [keyword, ...reply] = keywords.split('|');
+                triggers.push(keyword);
+                replies.push(reply);
+            })
+
+            if(compare(triggers, replies, text)) {
+                let botMessage = compare(triggers, replies, text);
+
+                if (botMessage.match(/%s/gi)) {
+
+                    const linksPackets = {
+                        column: 'links',
+                        userID: fromID
+                    }
+
+                    axios.post('/get-setting', linksPackets)
+                    .then((response) => {
+                        const link = response.data.links[Math.floor(Math.random() * response.data.links.length)];
+                        //const linkText = '<a target="_blank" href="' + link + '">' + link + '</a>';
+
+                        let dom = document.createElement('a');
+                        dom.innerHTML = link;
+                        dom.setAttribute('href', link);
+                        dom.setAttribute('target', "_blank");
+
+                        //botMessage = botMessage.replace(/%s/g, linkText);
+                        const messageArray = botMessage.split("%s");
+
+                        botMessage = messageArray[0] + " " + dom + " " + messageArray[1];
+
+                        sendBotMessage(sendTo, fromID, botMessage, link);
+                    });
+                } else {
+                    sendBotMessage(sendTo, fromID, botMessage);
+                }
+
+            } else {
+                sendScript(scriptPackets, trackingPackets, sendTo, fromID);
+            }
+
+        })
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+async function sendScript(scriptPackets, trackingPackets, sendTo, fromID) {
+
+    return await axios.post('/get-setting', scriptPackets)
+    .then( async (response) => {
+        const index = await axios.post('/script-tracking', trackingPackets)
+
+        const newIndex = index.data.index;
+        let botMessage;
+        if (newIndex === 999) {
+            botMessage = "You suck!";
+            sendBotMessage(sendTo, fromID, botMessage)
+        } else {
+            botMessage = response.data.script[newIndex];
+
+            if (botMessage.includes("%s")) {
+
+                const linksPackets = {
+                    column: 'links',
+                    userID: fromID
+                }
+                axios.post('/get-setting', linksPackets)
+                .then((response) => {
+                    const link = response.data.links[Math.floor(Math.random() * response.data.links.length)];
+                    //const linkText = '<a href="' + link + '">' + link + '</a>';
+
+                    //botMessage = botMessage.replace("%s", link);
+
+                    sendBotMessage(sendTo, fromID, botMessage, link)
+                });
+            } else {
+                sendBotMessage(sendTo, fromID, botMessage)
+            }
+        }
+    })
+}
+
+function sendBotMessage(sendTo, fromID, botMessage, link = null) {
 
     setMessengerId(sendTo);
     setAuthId(fromID);
@@ -1682,8 +1862,8 @@ function getResponse(message, sendTo, fromID) {
     typingIndicator.style.display = "block";
 
     setTimeout(() => {
-        messageInput.val(response);
-        sendMessage(sendTo, fromID);
+        messageInput.val(botMessage);
+        sendMessage(sendTo, fromID, link);
         setMessengerId(fromID);
         setAuthId(sendTo);
         botTyping = false;
@@ -1699,13 +1879,11 @@ function compare(triggerArray, replyArray, text) {
 
         for (let y = 0; y < replyArray.length; y++) {
 
-            if (triggerArray[x][y] !== undefined) {
+            if (triggerArray[x] !== undefined) {
 
-                if (text.trim().includes(triggerArray[x][y])) {
-
+                if (text.trim().includes(triggerArray[x].trim())) {
                     let items = replyArray[x];
                     item = items[Math.floor(Math.random() * items.length)];
-                    console.log("trigger this");
                 }
             }
         }
@@ -1713,6 +1891,7 @@ function compare(triggerArray, replyArray, text) {
 
     return item;
 }
+
 
 /*
 function compareKeyword(triggerKeyword, triggerReply, text) {

@@ -4,6 +4,8 @@
 namespace App\Services;
 
 
+use App\Models\ScriptTracking;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class SettingsService {
@@ -32,63 +34,45 @@ class SettingsService {
         }
     }
 
-    public function getSetting( $column ) {
+    public function getSetting( $column, $userID ) {
 
-        $setting = $this->user->settings()->first()->pluck($column);
+        if ($userID != null) {
+            $user = User::where('id', $userID)->first();
+            $setting = $user->settings()->first()->pluck($column);
+        } else {
+            $setting = $this->user->settings()->first()->pluck($column);
+        }
 
         return json_decode($setting[0]);
     }
 
-    public function saveScript($script) {
+    public function getScriptIndex ($toID, $fromID) {
 
-        $userSettings = $this->user->settings()->first();
+        $tracking = ScriptTracking::where('to_id', $toID)->where('from_id', $fromID)->first();
 
-        if($userSettings == null) {
-            $this->user->settings()->create([
-                'script' => $script
+
+        if ($tracking == null) {
+            ScriptTracking::create([
+                'to_id' => $toID,
+                'from_id' => $fromID,
+                'script_index' => 0
             ]);
+            $newIndex = 0;
         } else {
-            $userSettings->update(['script' => $script]);
-        }
-    }
 
-    public function getScript() {
+            $script = $this->getSetting('script', $fromID);
 
-        $scripts = $this->user->settings()->first()->pluck('script');
+            $newIndex = $tracking->script_index + 1;
 
-        return json_decode($scripts[0]);
-    }
+            if ($newIndex > count($script) - 1) {
+                $newIndex = 999;
+            }
 
-    public function saveKeywords($keywords) {
-
-        $userSettings = $this->user->settings()->first();
-
-        if($userSettings == null) {
-            $this->user->settings()->create([
-                'keywords' => $keywords
+            $tracking->update([
+                'script_index' => $newIndex
             ]);
-        } else {
-            $userSettings->update(['keywords' => $keywords]);
         }
-    }
 
-    public function getKeywords() {
-
-        $keywords = $this->user->settings()->first()->pluck('keywords');
-
-        return json_decode($keywords[0]);
-    }
-
-    public function saveLinks($links) {
-
-        $userSettings = $this->user->settings()->first();
-
-        if($userSettings == null) {
-            $this->user->settings()->create([
-                'links' => $links
-            ]);
-        } else {
-            $userSettings->update(['links' => $links]);
-        }
+        return $newIndex;
     }
 }

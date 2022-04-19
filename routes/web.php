@@ -38,6 +38,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('store-setting', [SettingController::class, 'storeSetting']);
     Route::post('get-setting', [SettingController::class, 'getSetting']);
 
+    Route::post('script-tracking', [SettingController::class, 'getTracking']);
+
 });
 
 /*Route::get('/dashboard', function () {
