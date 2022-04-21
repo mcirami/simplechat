@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\SettingsService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SettingController extends Controller
 {
@@ -43,5 +44,12 @@ class SettingController extends Controller
         $index = $settingService->getScriptIndex($toID, $fromID);
 
         return response()->json(['index' => $index]);
+    }
+
+    public function storeImage(Request $request, SettingsService $settingService) {
+
+         $settingService->saveImage($request);
+
+        return response()->json(['message' => 'Image(s) Saved']);
     }
 }

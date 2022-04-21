@@ -8704,12 +8704,155 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Services_SettingsRequests__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Services/SettingsRequests */ "./resources/js/Settings/Services/SettingsRequests.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
 
 
 
 var Pictures = function Pictures() {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {});
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+      _useState2 = _slicedToArray(_useState, 2),
+      imageArray = _useState2[0],
+      setImageArray = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({}),
+      _useState4 = _slicedToArray(_useState3, 2),
+      imagePreviewArray = _useState4[0],
+      setImagePreviewArray = _useState4[1];
+
+  var count = 0;
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    var packets = {
+      column: 'images'
+    };
+    (0,_Services_SettingsRequests__WEBPACK_IMPORTED_MODULE_1__.getSetting)(packets).then(function (data) {
+      var imageArray = data["images"];
+      var objArray = {};
+
+      for (var i in imageArray) {
+        var objKey = Object.keys(imageArray[i]);
+        objArray[objKey[0]] = imageArray[i][objKey[0]];
+      }
+
+      setImagePreviewArray(objArray);
+    });
+  }, []);
+
+  var onSelectFile = function onSelectFile(e, picNumber) {
+    var files = e.target.files || e.dataTransfer.files;
+
+    if (!files.length) {
+      return;
+    }
+
+    var key = "image_" + picNumber;
+    createImage(files[0], key);
+    setImagePreviewArray(_objectSpread(_objectSpread({}, imagePreviewArray), {}, _defineProperty({}, key, URL.createObjectURL(files[0]))));
+  };
+
+  var createImage = function createImage(file, key) {
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+      setImageArray(_objectSpread(_objectSpread({}, imageArray), {}, _defineProperty({}, key, e.target.result)));
+    };
+
+    reader.readAsDataURL(file);
+  };
+
+  var handleSubmit = function handleSubmit(e) {
+    e.preventDefault();
+
+    if (imageArray) {
+      var packets = {
+        files: imageArray
+      };
+      (0,_Services_SettingsRequests__WEBPACK_IMPORTED_MODULE_1__.saveImages)(packets).then(function (data) {
+        if (data.success) {
+          console.log(data.message);
+          setImageArray(null);
+        }
+      });
+    } else {
+      console.log("nope");
+    }
+  };
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h3", {
+      children: "Outgoing Pictures"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      className: "help_text",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
+        children: "Pictures will be sent in the order they are uploaded here, if chatter asks for a picture."
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("form", {
+      onSubmit: handleSubmit,
+      className: "image_form",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        className: "inputs_wrap",
+        children: _toConsumableArray(Array(6)).map(function (e, index) {
+          var picNumber = index + 1;
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+            className: "input_column",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("h3", {
+              children: ["Picture ", picNumber]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+              className: "".concat(imagePreviewArray["image_" + picNumber] === undefined ? "img_placeholder" : ""),
+              htmlFor: 'image_' + picNumber + '_upload',
+              style: {
+                backgroundImage: "url(\"".concat(imagePreviewArray["image_" + picNumber] ? imagePreviewArray["image_" + picNumber] : '/images/pic-placeholder.png', "\")"),
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "cover",
+                backgroundPosition: "center"
+              }
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+              className: "custom",
+              name: 'image_' + picNumber,
+              id: 'image_' + picNumber + '_upload',
+              type: "file",
+              accept: "image/png, image/jpeg, image/jpg, image/gif",
+              onChange: function onChange(e) {
+                return onSelectFile(e, picNumber);
+              }
+            })]
+          }, index);
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+        type: "submit",
+        className: "button red",
+        children: "Submit"
+      })]
+    })]
+  });
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Pictures);
@@ -8831,7 +8974,8 @@ var Script = function Script() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "saveSetting": () => (/* binding */ saveSetting),
-/* harmony export */   "getSetting": () => (/* binding */ getSetting)
+/* harmony export */   "getSetting": () => (/* binding */ getSetting),
+/* harmony export */   "saveImages": () => (/* binding */ saveImages)
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
@@ -8900,6 +9044,38 @@ var getSetting = /*#__PURE__*/function () {
 
   return function getSetting(_x2) {
     return _ref2.apply(this, arguments);
+  };
+}();
+var saveImages = /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3(packets) {
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.next = 2;
+            return axios__WEBPACK_IMPORTED_MODULE_1___default().post('/store-image', packets).then(function (response) {
+              var message = JSON.stringify(response.data.message);
+              return {
+                success: true,
+                message: message
+              };
+            })["catch"](function (error) {
+              console.error(error);
+            });
+
+          case 2:
+            return _context3.abrupt("return", _context3.sent);
+
+          case 3:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3);
+  }));
+
+  return function saveImages(_x3) {
+    return _ref3.apply(this, arguments);
   };
 }();
 

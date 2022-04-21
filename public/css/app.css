@@ -12126,6 +12126,42 @@ img {
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
 }
+.settings_page #settings .image_form .inputs_wrap {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  grid-gap: 20px;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+}
+.settings_page #settings .image_form .inputs_wrap input[type=file] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+.settings_page #settings .image_form .inputs_wrap label {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  box-shadow: 0 0 15px -5px rgba(155, 155, 155, 0.4);
+  border-radius: 8px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+}
+.settings_page #settings .image_form .inputs_wrap label.img_placeholder {
+  background-size: 80px !important;
+}
 /*
 ! tailwindcss v3.0.18 | MIT License | https://tailwindcss.com
 *//*

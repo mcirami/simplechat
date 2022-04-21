@@ -142,7 +142,7 @@ class MessagesController extends Controller
             $file = File::files($path);
 
             $attachment = Str::uuid() . "." . $file[0]->getExtension();
-            $image = Image::make($file[0]->getRealPath())->encode('jpg',80);;//->save("/storage/app/pubic/" . config('chatify.attachments.folder') . "/" . $attachment);
+            $image = Image::make($file[0]->getRealPath())->encode('jpg',80);//->save("/storage/app/pubic/" . config('chatify.attachments.folder') . "/" . $attachment);
             Storage::disk('public')->put(config('chatify.attachments.folder') . "/" . $attachment, $image);
 
             //Image::make($file[0]->getRealPath())->save('images/attachments/' . $attachment);

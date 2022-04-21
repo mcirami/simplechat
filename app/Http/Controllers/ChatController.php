@@ -66,10 +66,16 @@ class ChatController extends Controller
 
 
         $user = User::where('id', 36327401)->first();
-        $setting = $user->settings()->first()->pluck('script');
 
-       dd(count(json_decode($setting[0])));
+        $userSettings = $user->settings()->first();
+        $currentImages = json_decode($userSettings->images);
 
+        foreach ($currentImages as $index => $name) {
+             print_r(key($name));
+        }
+
+        $path = Storage::path('public/agent-images/' . '36327401' . '/image_4-1650569891.jpeg');
+        dd($path);
 
     }
 

@@ -21,7 +21,7 @@ class Setting extends Model
         'keywords',
         'keep_alive',
         'links',
-        'images,'
+        'images',
     ];
 
     public function users(){

@@ -59,8 +59,63 @@
                     }
 
                 }
+            }
+        }
+
+        .image_form {
+
+            .inputs_wrap {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-orient: horizontal;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: row;
+                flex-direction: row;
+                -ms-flex-wrap: nowrap;
+                flex-wrap: nowrap;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+                grid-gap: 20px;
+                grid-column-gap: 20px;
+                grid-row-gap: 20px;
+
+                input[type="file"] {
+                    position: absolute;
+                    width: 1px;
+                    height: 1px;
+                    padding: 0;
+                    margin: -1px;
+                    overflow: hidden;
+                    clip: rect(0, 0, 0, 0);
+                    border: 0;
+                }
+
+                label {
+                    display: -webkit-box;
+                    display: -ms-flexbox;
+                    display: flex;
+                    -webkit-box-orient: horizontal;
+                    -webkit-box-direction: normal;
+                    -ms-flex-direction: row;
+                    flex-direction: row;
+                    -ms-flex-wrap: nowrap;
+                    flex-wrap: nowrap;
+                    justify-content: center;
+                    align-items: center;
+                    min-height: 300px;
+                    box-shadow: 0 0 15px -5px rgba(155, 155, 155, .4);
+                    border-radius: 8px;
+                    -webkit-border-radius: 8px;
+                    -moz-border-radius: 8px;
 
 
+                    &.img_placeholder {
+                        background-size: 80px !important;
+                    }
+
+                }
             }
         }
     }

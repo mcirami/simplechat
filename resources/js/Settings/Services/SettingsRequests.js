@@ -17,3 +17,20 @@ export const getSetting = async (packets) => {
 
     return script["data"];
 }
+
+export const saveImages = async (packets) => {
+
+    return await axios.post('/store-image', packets)
+        .then(
+        (response) => {
+            const message = JSON.stringify(response.data.message);
+
+            return {
+                success: true,
+                message: message
+            }
+        }
+    ).catch(error => {
+        console.error(error);
+    });
+}

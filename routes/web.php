@@ -37,9 +37,10 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('settings', [SettingController::class, 'showEditSettings']);
     Route::post('store-setting', [SettingController::class, 'storeSetting']);
     Route::post('get-setting', [SettingController::class, 'getSetting']);
+    Route::post('store-image', [SettingController::class, 'storeImage']);
 
     Route::post('script-tracking', [SettingController::class, 'getTracking']);
-
+    Route::view('/settings/{path?}', 'user.settings');
 });
 
 /*Route::get('/dashboard', function () {

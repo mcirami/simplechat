@@ -7,6 +7,10 @@ namespace App\Services;
 use App\Models\ScriptTracking;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 
 class SettingsService {
 
@@ -74,5 +78,59 @@ class SettingsService {
         }
 
         return $newIndex;
+    }
+
+    public function saveImage($request) {
+
+        $imageObjects = $request->get('files');
+        $picNameObjects = [];
+
+        foreach($imageObjects as $key => $image) {
+
+            $name = $key . '-' . time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+            $imageFile = Image::make($image)->encode('jpg',80);
+
+            Storage::put('/public/agent-images/' . $request->user()->id . "/" . $name, $imageFile);
+
+            $path = '/storage/agent-images/' . $request->user()->id . '/' . $name;
+
+            $newObject = [
+                $key => $path
+            ];
+
+            array_push($picNameObjects, $newObject);
+        }
+
+        $userSettings = $this->user->settings()->first();
+
+        if($userSettings == null) {
+            $this->user->settings()->create([
+                'images '=> json_encode($picNameObjects)
+            ]);
+        } else {
+            $currentImages = json_decode($userSettings->images);
+
+            if ($currentImages) {
+
+                foreach ($picNameObjects as $path) {
+                    $found = false;
+
+                    foreach ($currentImages as $innerIndex => $innerName) {
+                        if (key($innerName) === key($path)) {
+                            $currentImages[$innerIndex] = $path;
+                            $found = true;
+                        }
+                    }
+
+                    if ($found == false) {
+                        array_push($currentImages, $path);
+                    }
+                }
+
+                $userSettings->update(['images' => json_encode($currentImages)]);
+            } else {
+                $userSettings->update(['images' => json_encode($picNameObjects)]);
+            }
+        }
     }
 }
