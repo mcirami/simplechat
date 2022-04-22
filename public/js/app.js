@@ -8323,11 +8323,6 @@ var Menu = function Menu() {
         to: "pictures",
         children: "Pictures"
       })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("li", {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
-        to: "keepalive",
-        children: "Keep-Alive"
-      })
     })]
   });
 };
@@ -9760,7 +9755,8 @@ function sendMessage() {
   temporaryMsgId += 1;
   var tempID = "temp_" + temporaryMsgId;
   var hasFile = $(".upload-attachment").val() ? true : false;
-  var sendToUser = sendTo ? sendTo : getMessengerId(); //console.log(messageInput.val());
+  var sendToUser = sendTo ? sendTo : getMessengerId();
+  console.log(fromID);
 
   if ($.trim(messageInput.val()).length > 0 || hasFile || addChatUser || sendPic) {
     var formData = new FormData($("#message-form")[0]);

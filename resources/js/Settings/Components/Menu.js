@@ -17,9 +17,9 @@ const Menu = () => {
             <li>
                 <Link to='pictures'>Pictures</Link>
             </li>
-            <li>
+            {/*<li>
                 <Link to='keepalive'>Keep-Alive</Link>
-            </li>
+            </li>*/}
         </ul>
     );
 };

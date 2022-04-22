@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\vendor\Chatify;
 
+use App\Models\Page;
+use App\Models\ScriptTracking;
+use App\Models\Setting;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -138,16 +141,47 @@ class MessagesController extends Controller
 
         if ($request["sendPic"] == 1) {
             $userID = $request['from'];
-            $path = Storage::disk('public')->path('/agent-images/' . $userID . '/1/');
-            $file = File::files($path);
+            $settings = Setting::where('user_id', $userID)->pluck('images');
+            $images = json_decode($settings[0], true);
+            $tracking = ScriptTracking::where('from_id', $userID)->where('to_id', $request['id'])->first();
+            $index = $tracking->image_index;
 
-            $attachment = Str::uuid() . "." . $file[0]->getExtension();
-            $image = Image::make($file[0]->getRealPath())->encode('jpg',80);//->save("/storage/app/pubic/" . config('chatify.attachments.folder') . "/" . $attachment);
+            $imagePath = "";
+            $imageKey = "";
+            if ($index == null) {
+                foreach ($images as $index => $image) {
+                    $key = key($image);
+                    if ($key == "image_1") {
+                        $imageKey = "image_1";
+                        $imagePath = str_replace("/storage", "", $images[$index][$key]);
+                        break;
+                    }
+                }
+            } else {
+
+                $imageNum = explode("_", $index);
+                $newNumb = $imageNum[1] + 1;
+                if ($newNumb > 6) {
+                    $imageKey = "image_1";
+                } else {
+                    $imageKey = "image_" . $newNumb;
+                }
+
+                foreach ($images as $index => $image) {
+                    $key = key($image);
+                    if ($key == $imageKey) {
+                        $imagePath = str_replace("/storage", "", $images[$index][$key]);
+                        break;
+                    }
+                }
+            }
+
+            $file = Storage::disk('public')->get($imagePath);
+            $attachment = Str::uuid() . ".jpg";
+            $image = Image::make($file)->encode('jpg',80);
             Storage::disk('public')->put(config('chatify.attachments.folder') . "/" . $attachment, $image);
 
-            //Image::make($file[0]->getRealPath())->save('images/attachments/' . $attachment);
-            //$image->save(storage_path() . "/app/pubic/" . config('chatify.attachments.folder') . "/" . $attachment);
-
+            $tracking->update(['image_index' => $imageKey]);
         }
 
         // if there is attachment [file]

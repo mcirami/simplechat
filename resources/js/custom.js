@@ -484,7 +484,7 @@ function sendMessage( sendTo = null, fromID = "false", link = null) {
 
     let sendToUser = sendTo ? sendTo : getMessengerId();
 
-    //console.log(messageInput.val());
+    console.log(fromID);
 
     if ($.trim(messageInput.val()).length > 0 || hasFile || addChatUser || sendPic) {
         const formData = new FormData($("#message-form")[0]);
