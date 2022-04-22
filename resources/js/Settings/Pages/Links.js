@@ -40,12 +40,7 @@ const Links = () => {
             links: array
         }
 
-        saveSetting(packets)
-        .then((data) => {
-            if (data.message) {
-                console.log(data.message)
-            }
-        })
+        saveSetting(packets);
 
     }
 

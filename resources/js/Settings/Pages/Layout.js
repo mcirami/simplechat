@@ -1,25 +1,29 @@
 import React from 'react';
 import {Outlet} from 'react-router-dom';
+import {Flash} from '../Flash';
 
 import Menu from '../Components/Menu';
 
 const Layout = () => {
 
     return (
-        <div className="columns_wrap">
-            <section className="column side_nav">
+        <>
+            <Flash />
+            <div className="columns_wrap">
+                <section className="column side_nav">
 
-                <Menu />
+                    <Menu />
 
-            </section>
-            <section className="column content">
-                <div className="input_box">
+                </section>
+                <section className="column content">
+                    <div className="input_box">
 
-                   <Outlet />
+                       <Outlet />
 
-                </div>
-            </section>
-        </div>
+                    </div>
+                </section>
+            </div>
+        </>
     );
 };
 

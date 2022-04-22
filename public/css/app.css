@@ -12162,6 +12162,37 @@ img {
 .settings_page #settings .image_form .inputs_wrap label.img_placeholder {
   background-size: 80px !important;
 }
+.settings_page .success_message_wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  background: #b0273c;
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  -webkit-transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  -o-transition: opacity 1s ease-in-out;
+}
+.settings_page .success_message_wrap.active {
+  opacity: 1;
+}
+.settings_page .success_message_wrap p {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 24px;
+}
+.settings_page .success_message_wrap p svg {
+  margin-right: 8px;
+  margin-top: 2px;
+}
 /*
 ! tailwindcss v3.0.18 | MIT License | https://tailwindcss.com
 *//*

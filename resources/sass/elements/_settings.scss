@@ -119,4 +119,46 @@
             }
         }
     }
+
+    .success_message_wrap {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        background: $darkRed;
+        z-index: 999;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        -webkit-transition: opacity 1s ease-in-out;
+        -moz-transition: opacity 1s ease-in-out;
+        -o-transition: opacity 1s ease-in-out;
+
+        &.active {
+            opacity: 1;
+        }
+
+        p {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            color: $white;
+            text-transform: uppercase;
+            font-size: 24px;
+
+            svg {
+                margin-right: 8px;
+                margin-top: 2px;
+            }
+
+        }
+    }
 }
