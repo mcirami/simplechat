@@ -27,6 +27,13 @@ Route::get('register-agent', [CustomRegisterController::class, 'showAgentRegiste
 Route::post('custom-email-register', [CustomRegisterController::class, 'store'])->name('custom-email-register');
 Route::get('email', [MailController::class, 'email']);
 
+Route::group(['middleware' => ['auth', 'role']], function() {
+    Route::get('settings', [SettingController::class, 'showEditSettings']);
+    Route::post('store-setting', [SettingController::class, 'storeSetting']);
+    Route::post('get-setting', [SettingController::class, 'getSetting']);
+    Route::post('store-image', [SettingController::class, 'storeImage']);
+});
+
 Route::group(['middleware' => 'auth'], function() {
 
     Route::get('testing', [ChatController::class, 'testing']);
@@ -34,21 +41,10 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::post('chat/get-agents', [UserController::class, 'getAgentUsers']);
 
-    Route::get('settings', [SettingController::class, 'showEditSettings']);
-    Route::post('store-setting', [SettingController::class, 'storeSetting']);
-    Route::post('get-setting', [SettingController::class, 'getSetting']);
-    Route::post('store-image', [SettingController::class, 'storeImage']);
-
     Route::post('script-tracking', [SettingController::class, 'getTracking']);
     Route::view('/settings/{path?}', 'user.settings');
 });
 
-/*Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
 
-Route::group(['prefix' => 'chat'], function() {
-    Route::get('{slug}', [ChatController::class, 'showChat']);
-});*/
 
 require __DIR__.'/auth.php';

@@ -65,35 +65,20 @@ class ChatController extends Controller
 
     public function testing() {
 
-
         $user = User::where('id', 36327401)->first();
-        $settings = Setting::where('user_id', 36327401)->pluck('images');
-        $images = json_decode($settings[0], true);
-        $tracking = ScriptTracking::where('from_id', 36327401)->where('to_id', 79191805)->first();
-        $index = $tracking->image_index;
-
-        $imageKey = "";
-        if ($index == null) {
-            foreach ($images as $index => $path) {
-                $key = key($path);
-                if ($key == "image_1") {
-                    $imageKey = "image_1";
-                    $imagePath = str_replace("/storage", "", $images[$index][$key]);
-                    break;
-                }
-            }
+        //$getSettings = $user->settings->findOrFail();
+        if (Setting::where('user_id', 36327401 )->exists()) {
+            $settings = $user->settings->first()->pluck('active');
+        } else {
+            $settings = "null";
         }
+       /* if (!empty($getSettings)){
+            $setting = $getSettings->pluck('active');
+        } else {
+            $setting = "empty";
+        }*/
 
-        $tracking->update(['image_index' => $imageKey]);
-
-        dd($imagePath);
-        $file = Storage::disk('public')->get($imagePath);
-        //$path = Storage::url('agent-images/36327401/image_5-1650575969.jpeg');
-        //$file = File::isFile($path);
-        $attachment = Str::uuid() . ".jpg";
-        $image = Image::make($file)->encode('jpg',80);
-        Storage::disk('public')->put(config('chatify.attachments.folder') . "/" . $attachment, $image);
-        //dd($image);
+        dd($settings);
 
     }
 

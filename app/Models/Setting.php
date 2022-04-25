@@ -22,6 +22,7 @@ class Setting extends Model
         'keep_alive',
         'links',
         'images',
+        'active'
     ];
 
     public function users(){

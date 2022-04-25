@@ -484,8 +484,6 @@ function sendMessage( sendTo = null, fromID = "false", link = null) {
 
     let sendToUser = sendTo ? sendTo : getMessengerId();
 
-    console.log(fromID);
-
     if ($.trim(messageInput.val()).length > 0 || hasFile || addChatUser || sendPic) {
         const formData = new FormData($("#message-form")[0]);
         formData.append("id", sendToUser);
@@ -1676,9 +1674,9 @@ $(document).ready(function () {
 });
 
 
-function checkForAgentResponse(message) {
+async function checkForAgentResponse(message) {
 
-    let agents = $.ajax({
+    /*let agents = $.ajax({
         url: url + "/get-agents",
         method: "POST",
         data: {_token: access_token},
@@ -1691,20 +1689,31 @@ function checkForAgentResponse(message) {
         error: (error) => {
             console.log(error);
         },
-    }).responseJSON
+    }).responseJSON*/
 
     const toID = getBotTo();
     const fromID = getBotFrom();
 
-    const agent = agents['agents'].find(agent => agent.id == fromID);
-
-    if (agent !== undefined) {
-        const firstPart = message.split('<p>');
-        const secondPart = firstPart[1].split('<sub');
-        let final = secondPart[0].replaceAll('\n',' ');
-        final = final.replaceAll('<br />','');
-        getResponse(final, toID, fromID);
+    const statusPackets = {
+        column: 'active',
+        userID: fromID
     }
+
+    //const agent = agents['agents'].find(agent => agent.id == fromID);
+
+    return await axios.post('/get-setting', statusPackets)
+    .then( (status) => {
+
+        if (status.data.active) {
+            const firstPart = message.split('<p>');
+            const secondPart = firstPart[1].split('<sub');
+            let final = secondPart[0].replaceAll('\n',' ');
+            final = final.replaceAll('<br />','');
+            getResponse(final, toID, fromID);
+        }
+    });
+
+
 }
 
 function getResponse(message, sendTo, fromID) {

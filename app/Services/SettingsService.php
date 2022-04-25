@@ -5,6 +5,7 @@ namespace App\Services;
 
 
 use App\Models\ScriptTracking;
+use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -40,14 +41,24 @@ class SettingsService {
 
     public function getSetting( $column, $userID ) {
 
+        $setting = null;
         if ($userID != null) {
-            $user = User::where('id', $userID)->first();
-            $setting = $user->settings()->first()->pluck($column);
+            if (Setting::where('user_id', $userID )->exists()) {
+                $user = User::where('id', $userID)->first();
+                $setting = $user->settings->first()->pluck($column);
+            }
         } else {
-            $setting = $this->user->settings()->first()->pluck($column);
+
+            if (Setting::where('user_id', $this->user->id )->exists()) {
+                $setting = $this->user->settings()->first()->pluck($column);
+            }
         }
 
-        return json_decode($setting[0]);
+        if ($setting != null) {
+            return json_decode($setting[0]);
+        }
+
+       return $setting;
     }
 
     public function getScriptIndex ($toID, $fromID) {

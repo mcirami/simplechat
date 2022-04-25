@@ -14,15 +14,24 @@ class SettingController extends Controller
     public function showEditSettings() {
 
         return view('user.settings');
+
     }
 
     public function storeSetting(Request $request, SettingsService $settingService) {
 
         $column = $request->get('column');
+        $value = json_encode($request->get($column));
 
-        $settingService->saveSetting($column, json_encode($request->get($column)));
+        $settingService->saveSetting($column, $value);
 
-        return response()->json(['message' => $column . " Saved"]);
+        if($column == 'active') {
+            $status = $value == 0 ? "Disabled" : "Enabled";
+            $message = "Bot " . $status;
+        } else {
+            $message = $column . " Saved";
+        }
+
+        return response()->json(['message' => $message]);
 
     }
 

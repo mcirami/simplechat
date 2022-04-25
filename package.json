@@ -38,6 +38,7 @@
         "pusher-js": "^7.0.4",
         "react-icons": "^4.3.1",
         "react-router-dom": "^6.3.0",
+        "react-switch": "^6.0.0",
         "requirejs": "^2.3.6"
     }
 }
