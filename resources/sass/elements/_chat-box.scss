@@ -151,6 +151,14 @@
 
 .message-card {
 
+    a {
+        text-decoration: underline;
+
+        &:hover {
+            color: $darkRed;
+        }
+    }
+
     p {
         background: $red;
         color: $white;

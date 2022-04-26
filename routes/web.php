@@ -30,7 +30,6 @@ Route::get('email', [MailController::class, 'email']);
 Route::group(['middleware' => ['auth', 'role']], function() {
     Route::get('settings', [SettingController::class, 'showEditSettings']);
     Route::post('store-setting', [SettingController::class, 'storeSetting']);
-    Route::post('get-setting', [SettingController::class, 'getSetting']);
     Route::post('store-image', [SettingController::class, 'storeImage']);
 });
 
@@ -40,7 +39,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('add-user/', [ChatController::class, 'addUser']);
 
     Route::post('chat/get-agents', [UserController::class, 'getAgentUsers']);
-
+    Route::post('get-setting', [SettingController::class, 'getSetting']);
     Route::post('script-tracking', [SettingController::class, 'getTracking']);
     Route::view('/settings/{path?}', 'user.settings');
 });

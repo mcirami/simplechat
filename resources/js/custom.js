@@ -50,10 +50,6 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 let addChatUser = urlParams.get('add_chat_user');
 
-/*if (addChatUser) {
-    messageInput.val("Hey " + addChatUser + "! I just joined and I'm ready to chat.");
-}*/
-
 /**
  *-------------------------------------------------------------
  * Re-usable methods
@@ -87,6 +83,24 @@ function updateSelectedContact(user_id) {
         ".messenger-list-item[data-contact=" + (user_id || getMessengerId()) + "]"
     )
     .addClass("m-list-active");
+}
+
+function makeLinksClickable() {
+
+
+    const messageCards = document.querySelectorAll('.message-card p');
+    console.log(messageCards);
+    messageCards.forEach((card) => {
+        const text = card.innerText;
+        if(text.includes('http')) {
+            const firstString = text.split("http");
+            const myLink = firstString[1].split(' ');
+            const secondString = firstString[1].slice(firstString[1].indexOf(' ') + 1);
+
+            card.innerHTML = firstString[0] + ' <a target="_blank" href="http' + myLink[0] + '">' + "http" + myLink[0] + '</a> ' +  secondString;
+
+        }
+    })
 }
 /**
  *-------------------------------------------------------------
@@ -167,7 +181,7 @@ function avatarLoading(items) {
 }
 
 // While sending a message, show this temporary message card.
-function sendigCard(message, id, link = null) {
+function sendigCard(message, id) {
 
     let classes;
     if (botTyping) {
@@ -175,26 +189,6 @@ function sendigCard(message, id, link = null) {
     } else {
         classes = "message-card mc-sender";
     }
-
-  /*  if (link) {
-        message = message.split("%s");
-        console.log(message);
-
-        return (
-            `<div class="` + classes + `" data-id="` +
-            id +
-            `">
-        <p>` +
-            message[0] + ` <a href="` + link + `" target="_blank">` + link + `</a>` + message[1] +
-            `<sub>
-            <span class="far fa-clock"> </span>
-        </sub>
-
-        </p>
-</div>
-`
-        )
-    } else {*/
 
         return (
             `
@@ -208,7 +202,7 @@ function sendigCard(message, id, link = null) {
 `
         );
 
-   /* }*/
+
 }
 // upload image preview card.
 function attachmentTemplate(fileType, fileName, imgURL = null) {
@@ -477,7 +471,7 @@ function IDinfo(id, type) {
  * Send message function
  *-------------------------------------------------------------
  */
-function sendMessage( sendTo = null, fromID = "false", link = null) {
+function sendMessage( sendTo = null, fromID = "false") {
     temporaryMsgId += 1;
     let tempID = "temp_" + temporaryMsgId;
     let hasFile = $(".upload-attachment").val() ? true : false;
@@ -516,7 +510,7 @@ function sendMessage( sendTo = null, fromID = "false", link = null) {
                     :
                     messagesContainer
                     .find(".messages")
-                    .append(sendigCard(messageInput.val(), tempID, link));
+                    .append(sendigCard(messageInput.val(), tempID));
                 // scroll to bottom
                 scrollBottom(messageInnerContainer);
                 messageInput.css({ height: "42px" });
@@ -536,32 +530,6 @@ function sendMessage( sendTo = null, fromID = "false", link = null) {
                     updateContatctItem(sendToUser);
 
                     messagesContainer.find('.mc-sender[data-id="sending"]').remove();
-
-                    /*let sendMessage = data.message;
-
-                    let container;
-
-                    if (sendMessage.includes("http")) {
-                        const firstString = sendMessage.split("http");
-                        const secondString = firstString[1].slice(firstString[1].indexOf(' ') + 1);
-                        const linkString = firstString[1].slice(0, firstString[1].indexOf(' '));
-
-                        container = document.createElement('div');
-                        container.setAttribute('data-id', data.messageID);
-                        container.setAttribute('class', 'message-card');
-                        let p = document.createElement('p');
-                        let sub = document.createElement('sub');
-                        p.appendChild(sub);
-                        container.appendChild(p);
-
-                        /!*let dom = document.createElement('a');
-                        dom.innerHTML = link;
-                        dom.setAttribute('href', linkString);
-                        dom.setAttribute('target', "_blank");*!/
-
-                        //sendMessage = firstString[0] + dom + secondString;
-                        console.log(container);
-                    }*/
 
                     // get message before the sending one [temporary]
                     messagesContainer
@@ -584,6 +552,8 @@ function sendMessage( sendTo = null, fromID = "false", link = null) {
                     scrollBottom(messageInnerContainer);
                     // send contact item updates
                     sendContactItemUpdates(true);
+
+                    makeLinksClickable();
 
                     if (sendTo === null) {
                         checkForAgentResponse(data.message);
@@ -665,6 +635,8 @@ function fetchMessages(id, type, newFetch = false) {
                 if (messenger != 0) {
                     disableOnLoad(false);
                 }
+
+                makeLinksClickable();
             },
             error: (error) => {
                 setMessagesLoading(false);
@@ -1284,6 +1256,7 @@ $(document).ready(function () {
     pusher.connection.bind("state_change", function (states) {
         let selector = $(".internet-connection");
         checkInternet(states.current, selector);
+
         // listening for pusher:subscription_succeeded
         channel.bind("pusher:subscription_succeeded", function () {
             // On connection state change [Updating] and get [info & msgs]
@@ -1313,10 +1286,7 @@ $(document).ready(function () {
                         }, 1500)
                     }
                 }
-                /* $.trim(addChatUser).length > 0
-                     ? $(".messenger-search").trigger("focus") + messengerSearch(addChatUser)
-                     : $(".messenger-tab").hide() +
-                     $('.messenger-listView-tabs a[data-view="users"]').trigger("click");*/
+
             }
         });
     });
@@ -1712,8 +1682,6 @@ async function checkForAgentResponse(message) {
             getResponse(final, toID, fromID);
         }
     });
-
-
 }
 
 function getResponse(message, sendTo, fromID) {
@@ -1847,11 +1815,10 @@ async function sendScript(scriptPackets, trackingPackets, sendTo, fromID) {
                 axios.post('/get-setting', linksPackets)
                 .then((response) => {
                     const link = response.data.links[Math.floor(Math.random() * response.data.links.length)];
-                    //const linkText = '<a href="' + link + '">' + link + '</a>';
 
-                    //botMessage = botMessage.replace("%s", link);
+                    botMessage = botMessage.replace("%s", link);
 
-                    sendBotMessage(sendTo, fromID, botMessage, link)
+                    sendBotMessage(sendTo, fromID, botMessage)
                 });
             } else {
                 sendBotMessage(sendTo, fromID, botMessage)
@@ -1860,7 +1827,7 @@ async function sendScript(scriptPackets, trackingPackets, sendTo, fromID) {
     })
 }
 
-function sendBotMessage(sendTo, fromID, botMessage, link = null) {
+function sendBotMessage(sendTo, fromID, botMessage) {
 
     setMessengerId(sendTo);
     setAuthId(fromID);
@@ -1872,7 +1839,7 @@ function sendBotMessage(sendTo, fromID, botMessage, link = null) {
 
     setTimeout(() => {
         messageInput.val(botMessage);
-        sendMessage(sendTo, fromID, link);
+        sendMessage(sendTo, fromID);
         setMessengerId(fromID);
         setAuthId(sendTo);
         botTyping = false;
@@ -1900,7 +1867,6 @@ function compare(triggerArray, replyArray, text) {
 
     return item;
 }
-
 
 /*
 function compareKeyword(triggerKeyword, triggerReply, text) {

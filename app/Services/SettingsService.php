@@ -66,7 +66,7 @@ class SettingsService {
         $tracking = ScriptTracking::where('to_id', $toID)->where('from_id', $fromID)->first();
 
 
-        if ($tracking == null) {
+        /*if ($tracking == null) {
             ScriptTracking::create([
                 'to_id' => $toID,
                 'from_id' => $fromID,
@@ -86,8 +86,9 @@ class SettingsService {
             $tracking->update([
                 'script_index' => $newIndex
             ]);
-        }
+        }*/
 
+        $newIndex = 0;
         return $newIndex;
     }
 
