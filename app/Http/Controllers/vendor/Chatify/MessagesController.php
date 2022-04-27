@@ -65,6 +65,9 @@ class MessagesController extends Controller
      */
     public function index( $id = null)
     {
+        $user = Auth::user();
+        $userRole = $user->role;
+
         $routeName= FacadesRequest::route()->getName();
         $type = in_array($routeName, ['user','group'])
             ? $routeName
@@ -75,6 +78,7 @@ class MessagesController extends Controller
             'type' => $type ?? 'user',
             'messengerColor' => Auth::user()->messenger_color ?? $this->messengerFallbackColor,
             'dark_mode' => Auth::user()->dark_mode < 1 ? 'light' : 'dark',
+            'userRole' => $userRole
         ]);
     }
 

@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import CodeMirror from '@uiw/react-codemirror';
-import {getSetting, saveSetting} from '../Services/SettingsRequests';
+import {getSetting} from '../Services/SettingsRequests';
+import SubmitButton from '../Components/SubmitButton';
 
 const Script = () => {
 
@@ -31,23 +32,11 @@ const Script = () => {
 
     },[])
 
-    const handleSubmit = () => {
-        const array = script.split("\n");
-
-        const packets = {
-            column: 'script',
-            script: array
-        }
-
-        saveSetting(packets);
-
-    }
-
     return (
-        <div>
+        <>
             <h3>Script</h3>
             <div className="help_text">
-                <p>One reply per line.</p>
+                <p>One reply per line. Use %s token to insert a link from your Links settings</p>
             </div>
             <CodeMirror
                 id="script"
@@ -61,10 +50,9 @@ const Script = () => {
                     setScript(value);
                 }}
             />
-            <a className="button red" href="#" onClick={handleSubmit}>
-                Submit
-            </a>
-        </div>
+
+            <SubmitButton value={script} column={"script"}/>
+        </>
     );
 };
 

@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {getSetting, saveSetting} from '../Services/SettingsRequests';
+import {getSetting} from '../Services/SettingsRequests';
 import CodeMirror from '@uiw/react-codemirror';
+import SubmitButton from '../Components/SubmitButton';
 
 const KeepAlive = () => {
     const [keepAlive, setKeepAlive] = useState("");
@@ -30,19 +31,6 @@ const KeepAlive = () => {
 
     },[])
 
-    const handleSubmit = () => {
-
-        const array = keepAlive.split("\n");
-
-        const packets = {
-            column: 'keep_alive',
-            keep_alive: array
-        }
-
-        saveSetting(packets);
-
-    }
-
     return (
         <div>
             <h3>Keep Alive</h3>
@@ -64,9 +52,9 @@ const KeepAlive = () => {
                     setKeepAlive(value);
                 }}
             />
-            <a className="button red" href="#" onClick={handleSubmit}>
-                Submit
-            </a>
+
+            <SubmitButton value={keepAlive} column={"keepAlive"}/>
+
         </div>
     );
 };

@@ -28,7 +28,7 @@ Route::post('custom-email-register', [CustomRegisterController::class, 'store'])
 Route::get('email', [MailController::class, 'email']);
 
 Route::group(['middleware' => ['auth', 'role']], function() {
-    Route::get('settings', [SettingController::class, 'showEditSettings']);
+    Route::get('settings', [SettingController::class, 'showEditSettings'])->name('botSettings');
     Route::post('store-setting', [SettingController::class, 'storeSetting']);
     Route::post('store-image', [SettingController::class, 'storeImage']);
 });

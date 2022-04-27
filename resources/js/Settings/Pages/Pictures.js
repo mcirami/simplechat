@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {getSetting, saveImages} from '../Services/SettingsRequests';
+import {getSetting} from '../Services/SettingsRequests';
+import SubmitButton from '../Components/SubmitButton';
 
 const Pictures = () => {
 
@@ -55,29 +56,8 @@ const Pictures = () => {
         reader.readAsDataURL(file);
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        if (imageArray) {
-
-            const packets = {
-                files: imageArray
-            }
-
-            saveImages(packets)
-                .then((data) => {
-
-                    if(data.success) {
-                        setImageArray(null);
-                    }
-            })
-        } else {
-            console.log("nope");
-        }
-    };
-
     return (
-        <div>
+        <>
             <h3>Outgoing Pictures</h3>
             <div className="help_text">
                 <p>
@@ -85,49 +65,42 @@ const Pictures = () => {
                     Pictures will be sent in the order they are uploaded here, if chatter asks for a picture.
                 </p>
             </div>
-            <form onSubmit={handleSubmit} className="image_form">
-                <div className="inputs_wrap">
 
-                    {[...Array(6)].map((e, index) => {
+            <div className="inputs_wrap">
 
-                        const picNumber = index + 1;
-                        return (
-                            <div className="input_column" key={index}>
-                                <h3>Picture {picNumber}</h3>
-                                <label className={ `${imagePreviewArray["image_" + picNumber] === undefined ? "img_placeholder" : ""}` }
-                                       htmlFor={'image_' + picNumber + '_upload'}
-                                       style={{
-                                           backgroundImage: `url("${ imagePreviewArray["image_" + picNumber] ? imagePreviewArray["image_" + picNumber] : '/images/pic-placeholder.png' }")`,
-                                           backgroundRepeat: `no-repeat`,
-                                           backgroundSize: `cover`,
-                                           backgroundPosition: `center`
-                                       }}
-                                >
-                                    {/*<img className={ `${imagePreviewArray["image_" + picNumber] === undefined ? "img_placeholder" : ""}` }
-                                         src={ imagePreviewArray["image_" + picNumber] ? imagePreviewArray["image_" + picNumber] : '/images/pic-placeholder.png'}
-                                         alt=""
-                                    />*/}
-                                </label>
-                                <input
-                                    className="custom"
-                                    name={'image_' + picNumber}
-                                    id={'image_' + picNumber + '_upload'}
-                                    type="file"
-                                    accept="image/png, image/jpeg, image/jpg, image/gif"
-                                    onChange={(e) => onSelectFile(e, picNumber)}
-                                />
-                            </div>
-                        )
+                {[...Array(6)].map((e, index) => {
 
-                    })}
-                </div>
+                    const picNumber = index + 1;
+                    return (
+                        <div className="input_column" key={index}>
+                            <h3>Picture {picNumber}</h3>
+                            <label className={ `${imagePreviewArray["image_" + picNumber] === undefined ? "img_placeholder" : ""}` }
+                                   htmlFor={'image_' + picNumber + '_upload'}
+                                   style={{
+                                       backgroundImage: `url("${ imagePreviewArray["image_" + picNumber] ? imagePreviewArray["image_" + picNumber] : '/images/pic-placeholder.png' }")`,
+                                       backgroundRepeat: `no-repeat`,
+                                       backgroundSize: `cover`,
+                                       backgroundPosition: `center`
+                                   }}
+                            >
+                            </label>
+                            <input
+                                className="custom"
+                                name={'image_' + picNumber}
+                                id={'image_' + picNumber + '_upload'}
+                                type="file"
+                                accept="image/png, image/jpeg, image/jpg, image/gif"
+                                onChange={(e) => onSelectFile(e, picNumber)}
+                            />
+                        </div>
+                    )
 
-                <button type="submit" className="button red">
-                    Submit
-                </button>
+                })}
+            </div>
 
-            </form>
-        </div>
+            <SubmitButton value={imageArray} column={"images"} setImageArray={setImageArray}/>
+
+        </>
     );
 };
 

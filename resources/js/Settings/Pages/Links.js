@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import CodeMirror from '@uiw/react-codemirror';
-import {getSetting, saveSetting} from '../Services/SettingsRequests';
+import {getSetting} from '../Services/SettingsRequests';
+import SubmitButton from '../Components/SubmitButton';
 
 const Links = () => {
 
@@ -31,26 +32,13 @@ const Links = () => {
 
     },[])
 
-    const handleSubmit = () => {
-
-        const array = links.split("\n");
-
-        const packets = {
-            column: 'links',
-            links: array
-        }
-
-        saveSetting(packets);
-
-    }
-
     return (
-        <div>
+        <>
             <h3>Links</h3>
             <div className="help_text">
                 <p>
                     TOKEN: %s <br />
-                    If more than 1, Will be used in random order unless you specify which link (see example).
+                    If more than 1, Will be used in random order.
                 </p>
             </div>
             <CodeMirror
@@ -65,10 +53,10 @@ const Links = () => {
                     setLinks(value);
                 }}
             />
-            <a className="button red" href="#" onClick={handleSubmit}>
-                Submit
-            </a>
-        </div>
+
+            <SubmitButton value={links} column={"links"}/>
+
+        </>
     );
 };
 

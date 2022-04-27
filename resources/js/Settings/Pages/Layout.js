@@ -10,11 +10,12 @@ const Layout = () => {
     return (
         <>
             <Flash />
-            <section className="status">
-                <Status />
-            </section>
+
             <div className="columns_wrap">
                 <section className="column side_nav">
+                    <div className="status">
+                        <Status />
+                    </div>
 
                     <Menu />
 

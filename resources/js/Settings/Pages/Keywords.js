@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import CodeMirror from '@uiw/react-codemirror';
-import {saveSetting, getSetting} from '../Services/SettingsRequests';
+import {getSetting} from '../Services/SettingsRequests';
+import SubmitButton from '../Components/SubmitButton';
 
 const Keywords = () => {
 
@@ -30,20 +31,8 @@ const Keywords = () => {
 
     },[])
 
-    const handleSubmit = () => {
-        const array = keywords.split("\n");
-
-        const packets = {
-            column: 'keywords',
-            keywords: array,
-        }
-
-        saveSetting(packets);
-
-    }
-
     return (
-        <div>
+        <>
             <h3>Keywords</h3>
             <div className="help_text">
                 <p>Keywords make conversations seem more realistic by responding in a way the script normally would not.<br />
@@ -63,10 +52,8 @@ const Keywords = () => {
                     setKeywords(value);
                 }}
             />
-            <a className="button red" href="#" onClick={handleSubmit}>
-                Submit
-            </a>
-        </div>
+            <SubmitButton value={keywords} column={"keywords"} />
+        </>
     );
 };
 

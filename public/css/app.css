@@ -11334,7 +11334,7 @@ img {
 }
 
 .container {
-  max-width: 1200px !important;
+  max-width: 1500px !important;
   margin-left: auto;
   margin-right: auto;
   padding: 0 20px;
@@ -11361,6 +11361,13 @@ img {
 .button.red:hover {
   background: #801c2c;
 }
+.button.red.alt {
+  padding: 2px 0 5px 10px;
+  max-width: unset;
+  font-size: 12px;
+  text-transform: uppercase;
+  margin-left: 10px;
+}
 
 .message_section {
   min-height: 300px;
@@ -11378,23 +11385,35 @@ img {
 }
 
 .m-header.m-header-messaging {
-  padding: 28px 20px;
+  padding: 20px;
+  width: 100%;
+  display: inline-block;
 }
 .m-header.m-header-messaging .av-s {
   width: 40px;
   height: 40px;
 }
 .m-header.m-header-messaging .user-name {
-  color: #3f3e3e;
   font-size: 20px;
+}
+.m-header.m-header-messaging .m-header-right {
+  align-items: center;
+  -webkit-align-items: center;
 }
 .m-header.m-header-messaging .m-header-right svg {
   color: #b0273c;
+}
+.m-header.m-header-messaging .m-header-right form {
+  margin: auto;
 }
 @media all and (max-width: 992px) {
   .m-header.m-header-messaging .m-header-right form {
     display: none;
   }
+}
+.m-header.m-header-messaging .m-header-right .button svg {
+  color: #fff;
+  font-size: 12px;
 }
 
 .messenger-listView .m-body {
@@ -12095,24 +12114,94 @@ img {
   width: 100%;
   display: inline-block;
   min-height: unset;
-  background: rgba(155, 155, 155, 0.1);
   padding-bottom: 20px;
+  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#e0e0e0+1,ededed+43,ffffff+92 */
+  background: #e0e0e0;
+  /* Old browsers */
+  /* FF3.6-15 */
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #e0e0e0 1%, #ededed 43%, white 92%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#e0e0e0", endColorstr="#ffffff",GradientType=0 );
+  /* IE6-9 */
 }
 .settings_page #settings {
   width: 100%;
   float: left;
   padding: 40px 0;
 }
+.settings_page #settings .status {
+  margin-bottom: 20px;
+}
 .settings_page #settings .columns_wrap {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
 }
+@media screen and (max-width: 992px) {
+  .settings_page #settings .columns_wrap {
+    flex-wrap: wrap;
+  }
+}
 .settings_page #settings .columns_wrap .column.side_nav {
-  width: 12%;
+  width: 15%;
+}
+@media all and (max-width: 992px) {
+  .settings_page #settings .columns_wrap .column.side_nav {
+    width: 100%;
+  }
+}
+@media all and (max-width: 992px) {
+  .settings_page #settings .columns_wrap .column.side_nav ul {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 5%;
+    -moz-column-gap: 5%;
+         column-gap: 5%;
+    margin-bottom: 20px;
+  }
+}
+.settings_page #settings .columns_wrap .column.side_nav a {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  -moz-column-gap: 10px;
+       column-gap: 10px;
+  gap: 10px;
+  row-gap: 10px;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+@media all and (max-width: 768px) {
+  .settings_page #settings .columns_wrap .column.side_nav a {
+    font-size: 16px;
+  }
+}
+.settings_page #settings .columns_wrap .column.side_nav a span {
+  font-size: 28px;
+}
+@media all and (max-width: 768px) {
+  .settings_page #settings .columns_wrap .column.side_nav a span {
+    font-size: 24px;
+  }
+}
+.settings_page #settings .columns_wrap .column.side_nav a:hover {
+  color: #b0273c;
 }
 .settings_page #settings .columns_wrap .column.content {
-  width: 88%;
+  width: 85%;
+}
+@media all and (max-width: 992px) {
+  .settings_page #settings .columns_wrap .column.content {
+    width: 100%;
+  }
+}
+.settings_page #settings .columns_wrap .column .help_text {
+  background: rgba(211, 113, 113, 0.4);
+  padding: 10px 20px;
+  margin: 10px 0 20px;
+  border-radius: 6px;
 }
 .settings_page #settings .input_box {
   width: 100%;
@@ -12125,14 +12214,23 @@ img {
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   box-shadow: 0px 0px 10px -1px rgba(155, 155, 155, 0.2);
-  margin-bottom: 40px;
 }
 .settings_page #settings .input_box .cm-theme-light .ͼ1 .cm-editor, .settings_page #settings .input_box .cm-theme-light .ͼ1.cm-scroller {
   border-radius: 6px;
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
 }
-.settings_page #settings .image_form .inputs_wrap {
+.settings_page #settings .input_box .button_wrap {
+  width: 100%;
+  display: inline-block;
+  margin-top: 40px;
+  text-align: right;
+}
+.settings_page #settings .input_box .button_wrap .button {
+  display: inline-block;
+  min-width: 100px;
+}
+.settings_page #settings .inputs_wrap {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -12143,7 +12241,7 @@ img {
   grid-column-gap: 20px;
   grid-row-gap: 20px;
 }
-.settings_page #settings .image_form .inputs_wrap input[type=file] {
+.settings_page #settings .inputs_wrap input[type=file] {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -12153,7 +12251,7 @@ img {
   clip: rect(0, 0, 0, 0);
   border: 0;
 }
-.settings_page #settings .image_form .inputs_wrap label {
+.settings_page #settings .inputs_wrap label {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -12165,7 +12263,7 @@ img {
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
 }
-.settings_page #settings .image_form .inputs_wrap label.img_placeholder {
+.settings_page #settings .inputs_wrap label.img_placeholder {
   background-size: 80px !important;
 }
 .settings_page .success_message_wrap {
@@ -12198,6 +12296,9 @@ img {
 .settings_page .success_message_wrap p svg {
   margin-right: 8px;
   margin-top: 2px;
+}
+.settings_page .cm-content {
+  white-space: pre-wrap;
 }
 /*
 ! tailwindcss v3.0.18 | MIT License | https://tailwindcss.com

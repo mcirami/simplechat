@@ -16,7 +16,9 @@
 }
 
 .m-header.m-header-messaging {
-    padding: 28px 20px;
+    padding: 20px;
+    width: 100%;
+    display: inline-block;
 
     .av-s {
         width: 40px;
@@ -24,19 +26,27 @@
     }
 
     .user-name {
-        color: $darkGray;
         font-size: 20px;
     }
 
     .m-header-right {
+        align-items: center;
+        -webkit-align-items: center;
         svg {
             color: $darkRed;
         }
 
         form {
+            margin: auto;
+
             @media all and (max-width: 992px) {
                 display: none;
             }
+        }
+
+        .button svg {
+            color: $white;
+            font-size: 12px;
         }
     }
 }

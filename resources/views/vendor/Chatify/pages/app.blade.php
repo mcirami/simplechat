@@ -87,6 +87,11 @@
                             <i class="fas fa-sign-out-alt"></i>
                         </a>
                     </form>
+                    @if($userRole == 'agent')
+                        <a class="button red alt" href="{{ route('botSettings') }}">Bot Settings
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    @endif
                 </nav>
 
             </nav>

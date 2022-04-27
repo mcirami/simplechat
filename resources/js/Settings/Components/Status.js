@@ -4,7 +4,7 @@ import {getSetting, saveSetting} from '../Services/SettingsRequests';
 
 const Status = () => {
 
-    const [activeStatus, setActiveStatus] = useState();
+    const [activeStatus, setActiveStatus] = useState(true);
 
     useEffect(() => {
 
@@ -35,16 +35,16 @@ const Status = () => {
     }
 
     return (
-        <div>
-            <Switch
-                onChange={handleChange}
-                height={20}
-                checked={Boolean(activeStatus)}
-                onColor="#b0273c"
-                uncheckedIcon={false}
-                checkedIcon={false}
-            />
-        </div>
+
+        <Switch
+            onChange={handleChange}
+            height={20}
+            checked={Boolean(activeStatus)}
+            onColor="#b0273c"
+            uncheckedIcon={false}
+            checkedIcon={false}
+        />
+
     );
 };
 
