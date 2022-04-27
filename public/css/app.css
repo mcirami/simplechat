@@ -12203,6 +12203,9 @@ img {
   margin: 10px 0 20px;
   border-radius: 6px;
 }
+.settings_page #settings .columns_wrap .column .help_text span {
+  font-family: "poppinsbold", sans-serif;
+}
 .settings_page #settings .input_box {
   width: 100%;
   padding: 40px;

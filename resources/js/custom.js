@@ -1778,6 +1778,13 @@ async function sendReply(
 
                         sendBotMessage(sendTo, fromID, botMessage, link);
                     });
+                } else if(botMessage.match(/%p/gi)) {
+                    sendPic = 1;
+
+                    botMessage = botMessage.replace(/%p/g, "");
+
+                    sendBotMessage(sendTo, fromID, botMessage);
+
                 } else {
                     sendBotMessage(sendTo, fromID, botMessage);
                 }
@@ -1820,6 +1827,14 @@ async function sendScript(scriptPackets, trackingPackets, sendTo, fromID) {
 
                     sendBotMessage(sendTo, fromID, botMessage)
                 });
+            } else if (botMessage.includes("%p")) {
+
+                sendPic = 1;
+
+                botMessage = botMessage.replace("%p", "");
+
+                sendBotMessage(sendTo, fromID, botMessage)
+
             } else {
                 sendBotMessage(sendTo, fromID, botMessage)
             }

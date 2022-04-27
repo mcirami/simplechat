@@ -36,7 +36,10 @@ const Script = () => {
         <>
             <h3>Script</h3>
             <div className="help_text">
-                <p>One reply per line. Use %s token to insert a link from your Links settings</p>
+                <p>One reply per line. <br/>
+                    Use <span>%s</span> token to insert a link from your Links settings<br />
+                    Use <span>%p</span> token to send a pic along with your message. (will send pics in order they are uploaded)
+                </p>
             </div>
             <CodeMirror
                 id="script"

@@ -62,7 +62,7 @@ const Pictures = () => {
             <div className="help_text">
                 <p>
                     {/*TOKEN: %p <br />*/}
-                    Pictures will be sent in the order they are uploaded here, if chatter asks for a picture.
+                    Pictures will be sent in the order they are uploaded here, if chatter asks for a picture or if <span>%p</span> token is used in a message
                 </p>
             </div>
 

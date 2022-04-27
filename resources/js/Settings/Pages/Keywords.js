@@ -38,6 +38,7 @@ const Keywords = () => {
                 <p>Keywords make conversations seem more realistic by responding in a way the script normally would not.<br />
                     ex: talk later|Sure, I'll be here|Yup, message me anytime!<br />
                     FORMAT: KEYWORD|RESPONSE-1|RESPONSE-2<br />
+                    Use <span>%p</span> token to send a pic along with your message. (will send pics in order they are uploaded)
                 </p>
             </div>
             <CodeMirror
