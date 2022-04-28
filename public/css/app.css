@@ -12254,7 +12254,23 @@ img {
   clip: rect(0, 0, 0, 0);
   border: 0;
 }
-.settings_page #settings .inputs_wrap label {
+.settings_page #settings .inputs_wrap .content_wrap {
+  position: relative;
+}
+.settings_page #settings .inputs_wrap .content_wrap .remove_button {
+  position: absolute;
+  z-index: 999;
+  right: 0;
+  top: 0;
+  color: white;
+  font-size: 34px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+}
+.settings_page #settings .inputs_wrap .content_wrap label {
+  position: relative;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -12266,7 +12282,7 @@ img {
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
 }
-.settings_page #settings .inputs_wrap label.img_placeholder {
+.settings_page #settings .inputs_wrap .content_wrap label.img_placeholder {
   background-size: 80px !important;
 }
 .settings_page .success_message_wrap {

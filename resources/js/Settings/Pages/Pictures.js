@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {getSetting} from '../Services/SettingsRequests';
 import SubmitButton from '../Components/SubmitButton';
+import RemoveImage from '../Components/RemoveImage';
 
 const Pictures = () => {
 
     const [imageArray, setImageArray] = useState(null);
     const [imagePreviewArray, setImagePreviewArray] = useState({});
-    let count = 0;
 
     useEffect(() => {
         const packets = {
@@ -16,13 +16,14 @@ const Pictures = () => {
         getSetting(packets)
         .then((data) => {
 
-            const imageArray = data["images"];
+            const imageObjArray = data["images"];
 
             let objArray = {};
-            for (let i in imageArray) {
-                const objKey = Object.keys(imageArray[i]);
-                objArray[objKey[0]] = imageArray[i][objKey[0]];
+            for (let i in imageObjArray) {
+                const objKey = Object.keys(imageObjArray[i]);
+                objArray[objKey[0]] = imageObjArray[i][objKey[0]];
             }
+
             setImagePreviewArray(objArray);
         })
 
@@ -56,12 +57,13 @@ const Pictures = () => {
         reader.readAsDataURL(file);
     };
 
+    console.log(imagePreviewArray);
+
     return (
         <>
             <h3>Outgoing Pictures</h3>
             <div className="help_text">
                 <p>
-                    {/*TOKEN: %p <br />*/}
                     Pictures will be sent in the order they are uploaded here, if chatter asks for a picture or if <span>%p</span> token is used in a message
                 </p>
             </div>
@@ -71,27 +73,43 @@ const Pictures = () => {
                 {[...Array(6)].map((e, index) => {
 
                     const picNumber = index + 1;
+                    const imagePreview = imagePreviewArray["image_" + picNumber];
                     return (
-                        <div className="input_column" key={index}>
+                        <div key={index}>
                             <h3>Picture {picNumber}</h3>
-                            <label className={ `${imagePreviewArray["image_" + picNumber] === undefined ? "img_placeholder" : ""}` }
-                                   htmlFor={'image_' + picNumber + '_upload'}
-                                   style={{
-                                       backgroundImage: `url("${ imagePreviewArray["image_" + picNumber] ? imagePreviewArray["image_" + picNumber] : '/images/pic-placeholder.png' }")`,
-                                       backgroundRepeat: `no-repeat`,
-                                       backgroundSize: `cover`,
-                                       backgroundPosition: `center`
-                                   }}
-                            >
-                            </label>
-                            <input
-                                className="custom"
-                                name={'image_' + picNumber}
-                                id={'image_' + picNumber + '_upload'}
-                                type="file"
-                                accept="image/png, image/jpeg, image/jpg, image/gif"
-                                onChange={(e) => onSelectFile(e, picNumber)}
-                            />
+                            <div className="content_wrap">
+                                {imagePreview ?
+
+                                    <RemoveImage
+                                        picNumber={picNumber}
+                                        imagePreviewArray={imagePreviewArray}
+                                        setImagePreviewArray={setImagePreviewArray}
+                                        imageArray={imageArray}
+                                        setImageArray={setImageArray}
+
+                                    />
+
+                                    : ""
+                                }
+                                <label className={ `${imagePreview === undefined ? "img_placeholder" : ""}` }
+                                       htmlFor={'image_' + picNumber + '_upload'}
+                                       style={{
+                                           backgroundImage: `url("${ imagePreview ? imagePreview : '/images/pic-placeholder.png' }")`,
+                                           backgroundRepeat: `no-repeat`,
+                                           backgroundSize: `cover`,
+                                           backgroundPosition: `center`
+                                       }}
+                                >
+                                </label>
+                                <input
+                                    className="custom"
+                                    name={'image_' + picNumber}
+                                    id={'image_' + picNumber + '_upload'}
+                                    type="file"
+                                    accept="image/png, image/jpeg, image/jpg, image/gif"
+                                    onChange={(e) => onSelectFile(e, picNumber)}
+                                />
+                            </div>
                         </div>
                     )
 

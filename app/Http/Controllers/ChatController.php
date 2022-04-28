@@ -72,6 +72,25 @@ class ChatController extends Controller
         } else {
             $settings = "null";
         }
+
+        $userSettings = $user->settings()->first();
+        $images = json_decode($userSettings->images);
+        $imageKey = "image_4";
+
+        foreach($images as $index => $image) {
+            $key = key($image);
+
+            if ($key == $imageKey) {
+
+                $path = explode("/storage", $images[$index]->$key);
+                //Storage::disk('public')->delete($path[1]);
+                unset($images[$index]);
+                break;
+            }
+        }
+        $newArray = json_encode(array_values($images));
+        dd($newArray);
+
        /* if (!empty($getSettings)){
             $setting = $getSettings->pluck('active');
         } else {

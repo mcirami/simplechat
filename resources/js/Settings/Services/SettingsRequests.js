@@ -37,3 +37,19 @@ export const saveImages = async (packets) => {
         console.error(error);
     });
 }
+
+export const deleteImage = async (packets) => {
+
+    return await axios.post('/remove-image', packets)
+    .then(
+        (response) => {
+
+            return {
+                success: true,
+                userImages: response.data.images,
+            }
+        }
+    ).catch(error => {
+        console.error(error);
+    });
+}

@@ -98,7 +98,7 @@ class SettingsService {
         foreach($imageObjects as $key => $image) {
 
             $name = $key . '-' . time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-            $imageFile = Image::make($image)->encode('jpg',80);
+            $imageFile = Image::make($image)->encode('jpg',80); //->orientate()
 
             Storage::put('/public/agent-images/' . $request->user()->id . "/" . $name, $imageFile);
 
@@ -142,5 +142,30 @@ class SettingsService {
                 $userSettings->update(['images' => json_encode($picNameObjects)]);
             }
         }
+    }
+
+    public function deleteImage($picNumber) {
+
+        $userSettings = $this->user->settings()->first();
+        $userImages = json_decode($userSettings->images);
+
+        $imageKey = "image_" . $picNumber;
+
+        foreach($userImages as $index => $image) {
+            $key = key($image);
+
+            if ($key == $imageKey) {
+                $path = explode("/storage", $userImages[$index]->$key);
+                Storage::disk('public')->delete($path[1]);
+                unset($userImages[$index]);
+                break;
+            }
+        }
+
+        $updatedImages = count($userImages) > 0 ? json_encode(array_values($userImages)) : null;
+        $userSettings->update(['images'=> $updatedImages]);
+
+        return $userImages;
+
     }
 }

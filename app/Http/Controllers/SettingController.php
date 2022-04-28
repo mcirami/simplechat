@@ -61,4 +61,13 @@ class SettingController extends Controller
 
         return response()->json(['message' => 'Image(s) Saved']);
     }
+
+    public function removeImage(Request $request, SettingsService $settingService) {
+
+        $picNumber = $request->get('picNumber');
+
+        $userImages = $settingService->deleteImage($picNumber);
+
+        return response()->json(['images' => $userImages]);
+    }
 }

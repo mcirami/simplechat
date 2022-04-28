@@ -31,6 +31,7 @@ Route::group(['middleware' => ['auth', 'role']], function() {
     Route::get('settings', [SettingController::class, 'showEditSettings'])->name('botSettings');
     Route::post('store-setting', [SettingController::class, 'storeSetting']);
     Route::post('store-image', [SettingController::class, 'storeImage']);
+    Route::post('remove-image', [SettingController::class, 'removeImage']);
 });
 
 Route::group(['middleware' => 'auth'], function() {
