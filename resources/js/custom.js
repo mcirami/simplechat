@@ -86,10 +86,8 @@ function updateSelectedContact(user_id) {
 }
 
 function makeLinksClickable() {
-
-
     const messageCards = document.querySelectorAll('.message-card p');
-    console.log(messageCards);
+
     messageCards.forEach((card) => {
         const text = card.innerText;
         if(text.includes('http')) {
@@ -1848,9 +1846,14 @@ function sendBotMessage(sendTo, fromID, botMessage) {
     setAuthId(fromID);
     botTyping = true;
 
+    const randomTime1 = Math.floor(Math.random() * (15000 - 5000) + 5000);
+    const randomTime2 = Math.floor(Math.random() * (35000 - 25000) + 25000);
+
     const typingIndicator = document.querySelector('.typing-indicator');
 
-    typingIndicator.style.display = "block";
+    setTimeout(() => {
+        typingIndicator.style.display = "block";
+    }, randomTime1)
 
     setTimeout(() => {
         messageInput.val(botMessage);
@@ -1860,7 +1863,7 @@ function sendBotMessage(sendTo, fromID, botMessage) {
         botTyping = false;
         isTyping(false);
         typingIndicator.style.display = "none";
-    },5000)
+    },randomTime2)
 }
 
 function compare(triggerArray, replyArray, text) {
@@ -1872,7 +1875,9 @@ function compare(triggerArray, replyArray, text) {
 
             if (triggerArray[x] !== undefined) {
 
-                if (text.trim().includes(triggerArray[x].trim())) {
+                let myReg = new RegExp(triggerArray[x].trim(), "g")
+
+                if (text.trim().match(myReg)) {
                     let items = replyArray[x];
                     item = items[Math.floor(Math.random() * items.length)];
                 }

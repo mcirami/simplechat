@@ -41,6 +41,13 @@ class CustomRegisterController extends Controller
         return view('register-custom.register-three')->with(['addUser' => $addUser, 'src' => $src, 'images' => $imageArray]);
     }
 
+    public function showRegisterFour(Request $request) {
+
+        $addUser = $request->query('add') ? $request->query('add') : null;
+        $src = $request->query('src') ? $request->query('src') : null;
+        return view('register-custom.register-four')->with(['addUser' => $addUser, 'src' => $src]);
+    }
+
     public function showAgentRegister(Request $request) {
 
         return view('register-custom.register-agent');

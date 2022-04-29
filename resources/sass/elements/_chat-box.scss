@@ -160,6 +160,7 @@
 }
 
 .message-card {
+    margin: 10px 15px;
 
     a {
         text-decoration: underline;
@@ -288,4 +289,10 @@
 
 .messenger-messagingView .m-body {
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    padding-bottom: 50px;
+
 }
