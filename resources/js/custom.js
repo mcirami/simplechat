@@ -5,16 +5,11 @@
  *-------------------------------------------------------------
  */
 
-import {
-    trigger,
-    reply,
-    getKeywords,
-    getScript,
-    robot,
-    alternative } from './messages';
 import axios from 'axios';
+import {MessageQueue} from './MessageQueue';
+const queue = new MessageQueue;
 
-var messenger,
+let messenger,
     typingTimeout,
     typingNow = 0,
     temporaryMsgId = 0,
@@ -22,7 +17,8 @@ var messenger,
     messengerColor,
     dark_mode,
     messages_page = 1,
-    sendPic = 0;
+    queueInitiated = 0;
+    //sendPic = 0;
 
 const messagesContainer = $(".messenger-messagingView .m-body"),
     messageInnerContainer = $(".messages"),
@@ -38,10 +34,10 @@ const getMessengerType = () => $("meta[name=type]").attr("content");
 const setMessengerId = (id) => $("meta[name=id]").attr("content", id);
 const setMessengerType = (type) => $("meta[name=type]").attr("content", type);
 
-const getBotTo = () => $("meta[name=bot]").attr("data-to");
-const getBotFrom = () => $("meta[name=bot]").attr("data-from");
 const setBotTo = (id) => $("meta[name=bot]").attr("data-to", id);
 const setBotFrom = (id) => $("meta[name=bot]").attr("data-from", id);
+const getBotTo = () => $("meta[name=bot]").attr("data-to");
+const getBotFrom = () => $("meta[name=bot]").attr("data-from");
 
 const setAuthId = (id) => $("meta[name=url]").attr("data-user", id);
 var botTyping = false;
@@ -89,7 +85,7 @@ function makeLinksClickable() {
 
 
     const messageCards = document.querySelectorAll('.message-card p');
-    console.log(messageCards);
+
     messageCards.forEach((card) => {
         const text = card.innerText;
         if(text.includes('http')) {
@@ -471,7 +467,7 @@ function IDinfo(id, type) {
  * Send message function
  *-------------------------------------------------------------
  */
-function sendMessage( sendTo = null, fromID = "false") {
+function sendMessage( sendTo = null, fromID = "false", sendPic = 0) {
     temporaryMsgId += 1;
     let tempID = "temp_" + temporaryMsgId;
     let hasFile = $(".upload-attachment").val() ? true : false;
@@ -479,6 +475,7 @@ function sendMessage( sendTo = null, fromID = "false") {
     let sendToUser = sendTo ? sendTo : getMessengerId();
 
     if ($.trim(messageInput.val()).length > 0 || hasFile || addChatUser || sendPic) {
+
         const formData = new FormData($("#message-form")[0]);
         formData.append("id", sendToUser);
         formData.append("type", getMessengerType());
@@ -545,7 +542,6 @@ function sendMessage( sendTo = null, fromID = "false") {
                         if(sendPic) {
                             document.querySelector('[data-id="' + data.messageID + '"]').nextElementSibling.remove();
                         }
-                        sendPic = 0;
                     }
 
                     // scroll to bottom
@@ -555,8 +551,26 @@ function sendMessage( sendTo = null, fromID = "false") {
 
                     makeLinksClickable();
 
-                    if (sendTo === null) {
-                        checkForAgentResponse(data.message);
+                    if (sendTo === null && botTyping) {
+
+                        queue.enqueue(data.message);
+                        console.log(queue);
+
+
+                    } else if (queue.length > 0) {
+
+                        console.log(queue);
+
+                        const message = queue.getFront();
+                        const newQueue = queue.dequeue();
+                        console.log(newQueue);
+                        queueInitiated = 1;
+                        checkForAgentResponse(message);
+
+                    } else {
+                        if(!queueInitiated) {
+                            checkForAgentResponse(data.message);
+                        }
                     }
                 }
             },
@@ -1276,7 +1290,6 @@ $(document).ready(function () {
                 if ( $.trim(addChatUser).length > 0) {
                     $(".messenger-search").trigger("focus");
                     try {
-                        console.log("try")
                         messengerSearch(addChatUser);
                     } finally {
                         setTimeout(function() {
@@ -1643,23 +1656,7 @@ $(document).ready(function () {
 
 });
 
-
 async function checkForAgentResponse(message) {
-
-    /*let agents = $.ajax({
-        url: url + "/get-agents",
-        method: "POST",
-        data: {_token: access_token},
-        dataType: "JSON",
-        global: false,
-        async:false,
-        success: (data) => {
-            return data;
-        },
-        error: (error) => {
-            console.log(error);
-        },
-    }).responseJSON*/
 
     const toID = getBotTo();
     const fromID = getBotFrom();
@@ -1697,9 +1694,10 @@ function getResponse(message, sendTo, fromID) {
     .replace(/ please/g, "");
 
     if(text.match(/picture/gi) || text.match(/pic/gi) || text.match(/photo/gi) || text.match(/pics/gi) || text.match(/pix/gi)) {
-        sendPic = 1;
+        //sendPic = 1;
 
-        sendBotMessage(sendTo, fromID, null);
+        //send to id, send from id, message, send pic
+        sendBotMessage(sendTo, fromID, null, 1);
 
     } else {
 
@@ -1741,7 +1739,7 @@ async function sendReply(
     try {
 
         return await axios.post('/get-setting', keywordPackets)
-            .then( (keywordResponse) => {
+        .then( (keywordResponse) => {
 
             let triggers = [];
             let replies = [];
@@ -1779,11 +1777,11 @@ async function sendReply(
                         sendBotMessage(sendTo, fromID, botMessage, link);
                     });
                 } else if(botMessage.match(/%p/gi)) {
-                    sendPic = 1;
+                    //sendPic = 1;
 
                     botMessage = botMessage.replace(/%p/g, "");
 
-                    sendBotMessage(sendTo, fromID, botMessage);
+                    sendBotMessage(sendTo, fromID, botMessage, 1);
 
                 } else {
                     sendBotMessage(sendTo, fromID, botMessage);
@@ -1808,7 +1806,7 @@ async function sendScript(scriptPackets, trackingPackets, sendTo, fromID) {
         const newIndex = index.data.index;
         let botMessage;
         if (newIndex === 999) {
-            botMessage = "You suck!";
+            botMessage = "That's all I got";
             sendBotMessage(sendTo, fromID, botMessage)
         } else {
             botMessage = response.data.script[newIndex];
@@ -1829,11 +1827,11 @@ async function sendScript(scriptPackets, trackingPackets, sendTo, fromID) {
                 });
             } else if (botMessage.includes("%p")) {
 
-                sendPic = 1;
+                //sendPic = 1;
 
                 botMessage = botMessage.replace("%p", "");
 
-                sendBotMessage(sendTo, fromID, botMessage)
+                sendBotMessage(sendTo, fromID, botMessage, 1)
 
             } else {
                 sendBotMessage(sendTo, fromID, botMessage)
@@ -1842,7 +1840,7 @@ async function sendScript(scriptPackets, trackingPackets, sendTo, fromID) {
     })
 }
 
-function sendBotMessage(sendTo, fromID, botMessage) {
+export function sendBotMessage(sendTo, fromID, botMessage, sendPic = 0) {
 
     setMessengerId(sendTo);
     setAuthId(fromID);
@@ -1850,11 +1848,16 @@ function sendBotMessage(sendTo, fromID, botMessage) {
 
     const typingIndicator = document.querySelector('.typing-indicator');
 
-    typingIndicator.style.display = "block";
+    const randomSecs = Math.floor(Math.random() * (15000 - 5000) + 5000);
+    const randomSecs2 = Math.floor(Math.random() * (35000 - 20000) + 20000);
+
+    setTimeout(() => {
+        typingIndicator.style.display = "block";
+    }, 2000);
 
     setTimeout(() => {
         messageInput.val(botMessage);
-        sendMessage(sendTo, fromID);
+        sendMessage(sendTo, fromID, sendPic);
         setMessengerId(fromID);
         setAuthId(sendTo);
         botTyping = false;
@@ -1882,27 +1885,3 @@ function compare(triggerArray, replyArray, text) {
 
     return item;
 }
-
-/*
-function compareKeyword(triggerKeyword, triggerReply, text) {
-    let item;
-
-    for (let x = 0; x < triggerKeyword.length; x++) {
-
-        for (let y = 0; y < triggerReply.length; y++) {
-
-            if (triggerKeyword[x][y] !== undefined) {
-
-                if (text.trim().includes(triggerKeyword[x][y])) {
-
-                    let items = triggerReply[x];
-                    item = items[Math.floor(Math.random() * items.length)];
-                    console.log("trigger this");
-                }
-            }
-        }
-    }
-
-    return item;
-}
-*/

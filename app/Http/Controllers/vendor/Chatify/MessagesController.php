@@ -165,7 +165,7 @@ class MessagesController extends Controller
 
                 $imageNum = explode("_", $index);
                 $newNumb = $imageNum[1] + 1;
-                if ($newNumb > 6) {
+                if ($newNumb > count($images)) {
                     $imageKey = "image_1";
                 } else {
                     $imageKey = "image_" . $newNumb;

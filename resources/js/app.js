@@ -12,3 +12,4 @@ require('./custom');*/
 require('./Sliders/BottomSlider');
 require('./Settings');
 require('./custom');
+//require('./MessageQueue')
