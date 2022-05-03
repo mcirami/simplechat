@@ -5,13 +5,6 @@
  *-------------------------------------------------------------
  */
 
-import {
-    trigger,
-    reply,
-    getKeywords,
-    getScript,
-    robot,
-    alternative } from './messages';
 import axios from 'axios';
 
 var messenger,

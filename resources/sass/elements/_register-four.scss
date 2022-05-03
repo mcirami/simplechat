@@ -1,0 +1,87 @@
+.custom_four {
+
+    .messenger {
+        min-height: 910px;
+
+        .messenger-messagingView {
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            background: #fafaff;
+        }
+    }
+
+    .m-header {
+
+        a {
+            display: inline-flex;
+            align-items: center;
+
+            svg {
+                width: 1em;
+            }
+        }
+    }
+
+    .messenger-listView {
+        background: #fff;
+        border: 1px solid #eee;
+    }
+
+    .contacts-container {
+
+        .messenger-tab .avatar.av-m svg {
+            width: 15px;
+            margin: 0 auto;
+        }
+    }
+
+    .messages-container {
+        justify-content: flex-start;
+
+        .typing-indicator {
+            margin-top: auto;
+        }
+
+        .message-card.empty p {
+            padding: 0px 10px 10px;
+        }
+
+        .messenger-sendCard {
+            display: block;
+            background: $white;
+
+            svg {
+                width: 20px;
+            }
+        }
+    }
+
+    .messenger-infoView {
+        background: #fff;
+        border: 1px solid #eee;
+
+        a {
+            margin-left: 10px;
+            display: inline-flex;
+
+            svg {
+                width: 12px;
+            }
+        }
+
+        .messenger-infoView-btns {
+
+            a {
+                margin: 0;
+
+                svg {
+                    margin-right: 5px;
+                }
+            }
+        }
+
+        .messenger-infoView-shared {
+            display: block;
+        }
+    }
+}
