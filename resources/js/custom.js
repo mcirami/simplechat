@@ -16,8 +16,7 @@ let messenger,
     defaultAvatarInSettings = null,
     messengerColor,
     dark_mode,
-    messages_page = 1,
-    queueInitiated = 0;
+    messages_page = 1;
     //sendPic = 0;
 
 const messagesContainer = $(".messenger-messagingView .m-body"),
@@ -554,23 +553,10 @@ function sendMessage( sendTo = null, fromID = "false", sendPic = 0) {
                     if (sendTo === null && botTyping) {
 
                         queue.enqueue(data.message);
-                        console.log(queue);
-
-
-                    } else if (queue.length > 0) {
-
-                        console.log(queue);
-
-                        const message = queue.getFront();
-                        const newQueue = queue.dequeue();
-                        console.log(newQueue);
-                        queueInitiated = 1;
-                        checkForAgentResponse(message);
+                        //console.log(queue);
 
                     } else {
-                        if(!queueInitiated) {
-                            checkForAgentResponse(data.message);
-                        }
+                        checkForAgentResponse(data.message);
                     }
                 }
             },
@@ -1671,6 +1657,7 @@ async function checkForAgentResponse(message) {
     return await axios.post('/get-setting', statusPackets)
     .then( (status) => {
 
+        console.log(status.data.active);
         if (status.data.active) {
             const firstPart = message.split('<p>');
             const secondPart = firstPart[1].split('<sub');
@@ -1853,7 +1840,7 @@ export function sendBotMessage(sendTo, fromID, botMessage, sendPic = 0) {
 
     setTimeout(() => {
         typingIndicator.style.display = "block";
-    }, 2000);
+    }, randomSecs);
 
     setTimeout(() => {
         messageInput.val(botMessage);
@@ -1863,7 +1850,12 @@ export function sendBotMessage(sendTo, fromID, botMessage, sendPic = 0) {
         botTyping = false;
         isTyping(false);
         typingIndicator.style.display = "none";
-    },5000)
+
+        setTimeout(() => {
+            sendQueue(sendTo, fromID);
+        },2000)
+
+    },randomSecs2)
 }
 
 function compare(triggerArray, replyArray, text) {
@@ -1884,4 +1876,17 @@ function compare(triggerArray, replyArray, text) {
     }
 
     return item;
+}
+
+function sendQueue(sendTo, fromID) {
+
+    if (queue.length() > 0) {
+        setBotTo(sendTo)
+        setBotFrom(fromID);
+        const message = queue.getFront();
+        console.log(message);
+        const newQueue = queue.dequeue();
+        checkForAgentResponse(message);
+    }
+
 }
