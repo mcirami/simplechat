@@ -81,8 +81,6 @@ function updateSelectedContact(user_id) {
 }
 
 function makeLinksClickable() {
-
-
     const messageCards = document.querySelectorAll('.message-card p');
 
     messageCards.forEach((card) => {
@@ -1833,14 +1831,14 @@ export function sendBotMessage(sendTo, fromID, botMessage, sendPic = 0) {
     setAuthId(fromID);
     botTyping = true;
 
-    const typingIndicator = document.querySelector('.typing-indicator');
+    const randomTime1 = Math.floor(Math.random() * (15000 - 5000) + 5000);
+    const randomTime2 = Math.floor(Math.random() * (35000 - 20000) + 20000);
 
-    const randomSecs = Math.floor(Math.random() * (15000 - 5000) + 5000);
-    const randomSecs2 = Math.floor(Math.random() * (35000 - 20000) + 20000);
+    const typingIndicator = document.querySelector('.typing-indicator');
 
     setTimeout(() => {
         typingIndicator.style.display = "block";
-    }, randomSecs);
+    }, randomTime1)
 
     setTimeout(() => {
         messageInput.val(botMessage);
@@ -1853,9 +1851,9 @@ export function sendBotMessage(sendTo, fromID, botMessage, sendPic = 0) {
 
         setTimeout(() => {
             sendQueue(sendTo, fromID);
-        },2000)
+        }, 2000);
 
-    },randomSecs2)
+    },randomTime2)
 }
 
 function compare(triggerArray, replyArray, text) {
@@ -1867,7 +1865,9 @@ function compare(triggerArray, replyArray, text) {
 
             if (triggerArray[x] !== undefined) {
 
-                if (text.trim().includes(triggerArray[x].trim())) {
+                let myReg = new RegExp(triggerArray[x].trim(), "g")
+
+                if (text.trim().match(myReg)) {
                     let items = replyArray[x];
                     item = items[Math.floor(Math.random() * items.length)];
                 }
@@ -1888,5 +1888,4 @@ function sendQueue(sendTo, fromID) {
         const newQueue = queue.dequeue();
         checkForAgentResponse(message);
     }
-
 }
