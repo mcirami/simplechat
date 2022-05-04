@@ -240,6 +240,31 @@
                                     <div class="image-file chat-image" style="width: 250px; height: 150px; background-image: url({{asset('images/freakygrl4.jpg')}});"></div>
                                 </div>
                             </div>
+                            <form id="register_form" method="POST" action="{{ route('custom-email-register') }}">
+                                <div class="heading my_row mb-4">
+                                    <h2>freakygrl269 sent you a private chat invite!</h2>
+                                </div>
+                                @csrf
+
+                                <!-- UserName -->
+                                <input id="add_chat_user" type="hidden" name="add_chat_user" value="{{$addUser}}"  />
+                                <input id="src" type="hidden" name="src" value="{{$src}}"  />
+
+                                <!-- Email Address -->
+                                <div class="mt-4">
+                                    <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required placeholder="Email"/>
+                                </div>
+
+                                <div class="flex items-center justify-end mt-4 button_row">
+                                    {{--<a class="underline text-sm" href="{{ route('login') }}">
+                                        {{ __('Already registered?') }}
+                                    </a>--}}
+
+                                    <x-button class="ml-4">
+                                        {{ __('Accept Invite') }}
+                                    </x-button>
+                                </div>
+                            </form>
                         </div>
 
                         <div class="typing-indicator">
@@ -268,6 +293,8 @@
                                     <!-- <span class="fas fa-paper-plane"></span> -->
                                 </button>
                             </form>
+                            <div class="my_row form_wrap register">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -302,33 +329,6 @@
                     </div>
 
                 </div>
-            </div>
-            <div class="my_row form_wrap register d-none">
-                <div class="heading my_row">
-                    <h2>HoneyKatty sent you a private chat invite!</h2>
-                </div>
-                <form method="POST" action="{{ route('custom-email-register') }}">
-                    @csrf
-
-                    <!-- UserName -->
-                    <input id="add_chat_user" type="hidden" name="add_chat_user" value="{{$addUser}}"  />
-                    <input id="src" type="hidden" name="src" value="{{$src}}"  />
-
-                    <!-- Email Address -->
-                    <div class="mt-4">
-                        <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required placeholder="Email"/>
-                    </div>
-
-                    <div class="flex items-center justify-end mt-4 button_row">
-                        {{--<a class="underline text-sm" href="{{ route('login') }}">
-                            {{ __('Already registered?') }}
-                        </a>--}}
-
-                        <x-button class="ml-4">
-                            {{ __('Accept Invite') }}
-                        </x-button>
-                    </div>
-                </form>
             </div>
         </div>
 
