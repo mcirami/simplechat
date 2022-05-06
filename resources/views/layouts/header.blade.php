@@ -10,6 +10,7 @@
     <title>{{ config('app.name', 'Romeo.Chat') }}</title>
 
     <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
     <link rel="icon" href="{{ asset('images/favicon.ico') }}">
     <!-- Fonts -->

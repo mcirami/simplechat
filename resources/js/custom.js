@@ -90,8 +90,9 @@ if (!pathName.includes('register')) {
 
     function makeLinksClickable() {
         const messageCards = document.querySelectorAll('.message-card p');
+        const subs = document.querySelectorAll('.message-card p sub');
 
-        messageCards.forEach((card) => {
+        messageCards.forEach((card, index) => {
             const text = card.innerText;
             if (text.includes('http')) {
                 const firstString = text.split("http");
@@ -99,9 +100,12 @@ if (!pathName.includes('register')) {
                 const secondString = firstString[1].slice(
                     firstString[1].indexOf(' ') + 1);
 
+                const number = secondString.match(/\d+/);
+                const secondSplit = secondString.split(/\d+/);
+
                 card.innerHTML = firstString[0] +
                     ' <a target="_blank" href="http' + myLink[0] + '">' +
-                    "http" + myLink[0] + '</a> ' + secondString;
+                    "http" + myLink[0] + '</a> ' + secondSplit[0] + ' <sub>' + number[0] + ' ' + secondSplit[1] + '</sub>';
 
             }
         })
@@ -569,7 +573,9 @@ if (!pathName.includes('register')) {
                         // send contact item updates
                         sendContactItemUpdates(true);
 
-                        makeLinksClickable();
+                        setTimeout(() => {
+                            makeLinksClickable();
+                        }, 500)
 
                         if (sendTo === null && botTyping) {
 
@@ -1700,7 +1706,6 @@ if (!pathName.includes('register')) {
         return await axios.post('/get-setting', statusPackets).
             then((status) => {
 
-                console.log(status.data.active);
                 if (status.data.active) {
                     const firstPart = message.split('<p>');
                     const secondPart = firstPart[1].split('<sub');
@@ -1792,29 +1797,15 @@ if (!pathName.includes('register')) {
 
                             axios.post('/get-setting', linksPackets).
                                 then((response) => {
-                                    const link = response.data.links[Math.floor(
-                                        Math.random() *
-                                        response.data.links.length)];
-                                    //const linkText = '<a target="_blank" href="' + link + '">' + link + '</a>';
+                                    const link = response.data.links[Math.floor(Math.random() * response.data.links.length)];
 
-                                    let dom = document.createElement('a');
-                                    dom.innerHTML = link;
-                                    dom.setAttribute('href', link);
-                                    dom.setAttribute('target', "_blank");
+                                    botMessage = botMessage.replace("%s", link);
 
-                                    //botMessage = botMessage.replace(/%s/g, linkText);
-                                    const messageArray = botMessage.split("%s");
-
-                                    botMessage = messageArray[0] + " " + dom +
-                                        " " + messageArray[1];
-
-                                    sendBotMessage(sendTo, fromID, botMessage,
-                                        link);
+                                    sendBotMessage(sendTo, fromID, botMessage);
                                 });
-                        } else if (botMessage.match(/%p/gi)) {
-                            //sendPic = 1;
+                        } else if (botMessage.match("%p")) {
 
-                            botMessage = botMessage.replace(/%p/g, "");
+                            botMessage = botMessage.replace("%p", "");
 
                             sendBotMessage(sendTo, fromID, botMessage, 1);
 
@@ -1823,8 +1814,7 @@ if (!pathName.includes('register')) {
                         }
 
                     } else {
-                        sendScript(scriptPackets, trackingPackets, sendTo,
-                            fromID);
+                        sendScript(scriptPackets, trackingPackets, sendTo, fromID);
                     }
 
                 })
@@ -1856,9 +1846,7 @@ if (!pathName.includes('register')) {
                         }
                         axios.post('/get-setting', linksPackets).
                             then((response) => {
-                                const link = response.data.links[Math.floor(
-                                    Math.random() *
-                                    response.data.links.length)];
+                                const link = response.data.links[Math.floor(Math.random() * response.data.links.length)];
 
                                 botMessage = botMessage.replace("%s", link);
 
@@ -1938,7 +1926,6 @@ if (!pathName.includes('register')) {
             setBotTo(sendTo)
             setBotFrom(fromID);
             const message = queue.getFront();
-            console.log(message);
             const newQueue = queue.dequeue();
             checkForAgentResponse(message);
         }

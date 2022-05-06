@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Models\ScriptTracking;
 use App\Models\Setting;
 use App\Models\User;
+use Chatify\Facades\ChatifyMessenger as Chatify;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -98,9 +99,20 @@ class SettingsService {
         foreach($imageObjects as $key => $image) {
 
             $name = $key . '-' . time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-            $imageFile = Image::make($image)->encode('jpg',80); //->orientate()
 
-            Storage::put('/public/agent-images/' . $request->user()->id . "/" . $name, $imageFile);
+            $imageFile = Image::make($image)->orientate();
+            //$thumbnailPath = storage_path() . '/public/agent-images/' . $request->user()->id . '/thumbnail/';
+            $originalPath = storage_path() . '/app/public/agent-images/' . $request->user()->id . '/';
+            $imageFile->save($originalPath . $name);
+            //$imageFile->orientate();
+
+            /*$diff = $imageFile->width() - $imageFile->height();
+            if ($imageFile->width() > $imageFile->height() && $diff > 300) {
+                $imageFile->rotate(270);
+            }*/
+            $imageFile->save($originalPath . $name);
+
+            //Storage::put('/public/agent-images/' . $request->user()->id . "/" . $name, $imageFile);
 
             $path = '/storage/agent-images/' . $request->user()->id . '/' . $name;
 
@@ -126,8 +138,16 @@ class SettingsService {
                     $found = false;
 
                     foreach ($currentImages as $innerIndex => $innerName) {
-                        if (key($innerName) === key($path)) {
+
+                        $key = key($innerName);
+
+                        if ($key === key($path)) {
+                            $oldImage = $currentImages[$innerIndex]->$key;
+                            $oldPath = explode("/storage", $oldImage);
+                            Storage::disk('public')->delete($oldPath[1]);
+
                             $currentImages[$innerIndex] = $path;
+
                             $found = true;
                         }
                     }

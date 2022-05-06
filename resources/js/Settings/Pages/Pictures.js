@@ -57,8 +57,6 @@ const Pictures = () => {
         reader.readAsDataURL(file);
     };
 
-    console.log(imagePreviewArray);
-
     return (
         <>
             <h3>Outgoing Pictures</h3>

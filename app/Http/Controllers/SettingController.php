@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ImageUploadRequest;
 use App\Services\SettingsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Nette\Utils\Image;
 
 class SettingController extends Controller
 {
@@ -55,9 +57,9 @@ class SettingController extends Controller
         return response()->json(['index' => $index]);
     }
 
-    public function storeImage(Request $request, SettingsService $settingService) {
+    public function storeImage(ImageUploadRequest $request, SettingsService $settingService) {
 
-         $settingService->saveImage($request);
+        $settingService->saveImage($request);
 
         return response()->json(['message' => 'Image(s) Saved']);
     }

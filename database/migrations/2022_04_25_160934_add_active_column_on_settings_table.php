@@ -14,7 +14,7 @@ class AddActiveColumnOnSettingsTable extends Migration
     public function up()
     {
         Schema::table('settings', function (Blueprint $table) {
-            $table->boolean('active')->after('user_id');
+            $table->boolean('active')->default(0)->after('user_id');
         });
     }
 
