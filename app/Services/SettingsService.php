@@ -102,17 +102,18 @@ class SettingsService {
 
             $imageFile = Image::make($image)->orientate();
             //$thumbnailPath = storage_path() . '/public/agent-images/' . $request->user()->id . '/thumbnail/';
-            $originalPath = storage_path() . '/app/public/agent-images/' . $request->user()->id . '/';
-            $imageFile->save($originalPath . $name);
+
+            //$originalPath = storage_path() . '/app/public/agent-images/' . $request->user()->id . '/';
+            //$imageFile->save($originalPath . $name);
             //$imageFile->orientate();
 
             /*$diff = $imageFile->width() - $imageFile->height();
             if ($imageFile->width() > $imageFile->height() && $diff > 300) {
                 $imageFile->rotate(270);
             }*/
-            $imageFile->save($originalPath . $name);
+            //$imageFile->save($originalPath . $name);
 
-            //Storage::put('/public/agent-images/' . $request->user()->id . "/" . $name, $imageFile);
+            Storage::put('/public/agent-images/' . $request->user()->id . "/" . $name, $imageFile);
 
             $path = '/storage/agent-images/' . $request->user()->id . '/' . $name;
 
