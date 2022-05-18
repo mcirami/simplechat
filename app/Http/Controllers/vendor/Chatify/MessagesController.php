@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\vendor\Chatify;
 
+use App\Models\Page;
+use App\Models\ScriptTracking;
+use App\Models\Setting;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 use App\Models\ChMessage as Message;
 use App\Models\ChFavorite as Favorite;
@@ -13,9 +17,12 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request as FacadesRequest;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Intervention\Image\Facades\Image;
 use Psy\Util\Json;
+
 
 class MessagesController extends Controller
 {
@@ -58,6 +65,9 @@ class MessagesController extends Controller
      */
     public function index( $id = null)
     {
+        $user = Auth::user();
+        $userRole = $user->role;
+
         $routeName= FacadesRequest::route()->getName();
         $type = in_array($routeName, ['user','group'])
             ? $routeName
@@ -68,6 +78,7 @@ class MessagesController extends Controller
             'type' => $type ?? 'user',
             'messengerColor' => Auth::user()->messenger_color ?? $this->messengerFallbackColor,
             'dark_mode' => Auth::user()->dark_mode < 1 ? 'light' : 'dark',
+            'userRole' => $userRole
         ]);
     }
 
@@ -132,6 +143,51 @@ class MessagesController extends Controller
         $attachment = null;
         $attachment_title = null;
 
+        if ($request["sendPic"] == 1) {
+            $userID = $request['from'];
+            $settings = Setting::where('user_id', $userID)->pluck('images');
+            $images = json_decode($settings[0], true);
+            $tracking = ScriptTracking::where('from_id', $userID)->where('to_id', $request['id'])->first();
+            $index = $tracking->image_index;
+
+            $imagePath = "";
+            $imageKey = "";
+            if ($index == null) {
+                foreach ($images as $index => $image) {
+                    $key = key($image);
+                    if ($key == "image_1") {
+                        $imageKey = "image_1";
+                        $imagePath = str_replace("/storage", "", $images[$index][$key]);
+                        break;
+                    }
+                }
+            } else {
+
+                $imageNum = explode("_", $index);
+                $newNumb = $imageNum[1] + 1;
+                if ($newNumb > count($images)) {
+                    $imageKey = "image_1";
+                } else {
+                    $imageKey = "image_" . $newNumb;
+                }
+
+                foreach ($images as $index => $image) {
+                    $key = key($image);
+                    if ($key == $imageKey) {
+                        $imagePath = str_replace("/storage", "", $images[$index][$key]);
+                        break;
+                    }
+                }
+            }
+
+            $file = Storage::disk('public')->get($imagePath);
+            $attachment = Str::uuid() . ".jpg";
+            $image = Image::make($file)->encode('jpg',80);
+            Storage::disk('public')->put(config('chatify.attachments.folder') . "/" . $attachment, $image);
+
+            $tracking->update(['image_index' => $imageKey]);
+        }
+
         // if there is attachment [file]
         if ($request->hasFile('file')) {
             // allowed extensions
@@ -158,13 +214,16 @@ class MessagesController extends Controller
             }
         }
 
+
+        $fromID = $request['from'] != "false" ?  $request['from'] : Auth::user()->id;
+
         if (!$error->status) {
             // send to database
             $messageID = mt_rand(9, 999999999) + time();
             Chatify::newMessage([
                 'id' => $messageID,
                 'type' => $request['type'],
-                'from_id' => Auth::user()->id,
+                'from_id' => $fromID,
                 'to_id' => $request['id'],
                 'body' => htmlentities(trim($request['message']), ENT_QUOTES, 'UTF-8'),
                 'attachment' => ($attachment) ? json_encode((object)[
@@ -178,7 +237,7 @@ class MessagesController extends Controller
 
             // send to user using pusher
             Chatify::push('private-chatify', 'messaging', [
-                'from_id' => Auth::user()->id,
+                'from_id' => $fromID,
                 'to_id' => $request['id'],
                 'message' => Chatify::messageCard($messageData, 'default')
             ]);
@@ -190,6 +249,8 @@ class MessagesController extends Controller
             'error' => $error,
             'message' => Chatify::messageCard(@$messageData),
             'tempID' => $request['temporaryMsgId'],
+            'messageID' => $messageID,
+            'attachment' => $attachment
         ]);
     }
 

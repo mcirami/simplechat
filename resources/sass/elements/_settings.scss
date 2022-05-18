@@ -1,0 +1,273 @@
+.settings_page {
+    width: 100%;
+    display: inline-block;
+
+    .top_section {
+        width: 100%;
+        display: inline-block;
+        min-height: unset;
+        padding-bottom: 20px;
+        /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#e0e0e0+1,ededed+43,ffffff+92 */
+        background: rgb(224,224,224); /* Old browsers */
+        background: -moz-linear-gradient(top,  rgba(224,224,224,1) 1%, rgba(237,237,237,1) 43%, rgba(255,255,255,1) 92%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top,  rgba(224,224,224,1) 1%,rgba(237,237,237,1) 43%,rgba(255,255,255,1) 92%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom,  rgba(224,224,224,1) 1%,rgba(237,237,237,1) 43%,rgba(255,255,255,1) 92%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e0e0e0', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+
+    }
+
+    #settings {
+        width: 100%;
+        float: left;
+        padding: 40px 0;
+
+        .status {
+            margin-bottom: 20px;
+        }
+
+        .columns_wrap {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+
+            @media screen and (max-width: 992px) {
+                -ms-flex-wrap: wrap;
+                flex-wrap: wrap;
+            }
+
+            .column {
+
+                &.side_nav {
+                    width: 15%;
+
+                    @media all and (max-width: 992px) {
+                        width: 100%;
+                    }
+
+                    ul {
+                        @media all and (max-width: 992px) {
+                            display: -webkit-box;
+                            display: -ms-flexbox;
+                            display: flex;
+                            -webkit-box-orient: horizontal;
+                            -webkit-box-direction: normal;
+                            -ms-flex-direction: row;
+                            flex-direction: row;
+                            -ms-flex-wrap: wrap;
+                            flex-wrap: wrap;
+                            gap: 5%;
+                            column-gap: 5%;
+                            margin-bottom: 20px;
+                        }
+                    }
+
+                    a {
+                        display: flex;
+                        align-items: center;
+                        justify-content: flex-start;
+                        column-gap: 10px;
+                        gap: 10px;
+                        row-gap: 10px;
+                        margin-bottom: 10px;
+                        font-size: 18px;
+
+                        @media all and (max-width: 768px) {
+                            font-size: 16px;
+                        }
+
+                        span {
+                            font-size: 28px;
+
+                            @media all and (max-width: 768px) {
+                                font-size: 24px;
+                            }
+                        }
+
+                        &:hover {
+                            color: $darkRed;
+                        }
+                    }
+                }
+
+                &.content {
+                    width: 85%;
+
+                    @media all and (max-width: 992px) {
+                        width: 100%;
+                    }
+                }
+
+                .help_text {
+                    background: rgba(211,113,113, .4);
+                    padding: 10px 20px;
+                    margin: 10px 0 20px;
+                    border-radius: 6px;
+
+                    span {
+                        @include poppinsbold;
+                    }
+                }
+            }
+        }
+
+        .input_box {
+            width: 100%;
+            padding: 40px;
+            box-shadow: 0px 0px 10px rgba(155, 155, 155, .4);
+            border-radius: 6px;
+
+            .cm-theme-light {
+                border-radius: 6px;
+                -webkit-border-radius: 6px;
+                -moz-border-radius: 6px;
+                box-shadow: 0px 0px 10px -1px rgba(155, 155, 155, .2);
+
+                .ͼ1 {
+                    .cm-editor, &.cm-scroller {
+                        border-radius: 6px;
+                        -webkit-border-radius: 6px;
+                        -moz-border-radius: 6px;
+                    }
+
+                }
+            }
+
+            .button_wrap {
+                width: 100%;
+                display: inline-block;
+                margin-top: 40px;
+                text-align: right;
+
+                .button {
+                    display: inline-block;
+                    min-width: 100px;
+                }
+            }
+        }
+
+        .inputs_wrap {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            grid-gap: 20px;
+            grid-column-gap: 20px;
+            grid-row-gap: 20px;
+
+            input[type="file"] {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                padding: 0;
+                margin: -1px;
+                overflow: hidden;
+                clip: rect(0, 0, 0, 0);
+                border: 0;
+            }
+
+            .content_wrap {
+                position: relative;
+
+                .remove_button {
+                    position: absolute;
+                    z-index: 999;
+                    right: 0;
+                    top: 0;
+                    color: white;
+                    font-size: 34px;
+                    background: rgba(0, 0, 0, .6);
+                    border-radius: 6px;
+                    -webkit-border-radius: 6px;
+                    -moz-border-radius: 6px;
+                }
+
+                label {
+                    position: relative;
+                    display: -webkit-box;
+                    display: -ms-flexbox;
+                    display: flex;
+                    -webkit-box-orient: horizontal;
+                    -webkit-box-direction: normal;
+                    -ms-flex-direction: row;
+                    flex-direction: row;
+                    -ms-flex-wrap: nowrap;
+                    flex-wrap: nowrap;
+                    justify-content: center;
+                    align-items: center;
+                    min-height: 300px;
+                    box-shadow: 0 0 15px -5px rgba(155, 155, 155, .4);
+                    border-radius: 8px;
+                    -webkit-border-radius: 8px;
+                    -moz-border-radius: 8px;
+
+
+                    &.img_placeholder {
+                        background-size: 80px !important;
+                    }
+
+                }
+            }
+
+        }
+    }
+
+    .success_message_wrap {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        background: $darkRed;
+        z-index: 999;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        -webkit-transition: opacity 1s ease-in-out;
+        -moz-transition: opacity 1s ease-in-out;
+        -o-transition: opacity 1s ease-in-out;
+
+        &.active {
+            opacity: 1;
+        }
+
+        p {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            color: $white;
+            text-transform: uppercase;
+            font-size: 24px;
+
+            svg {
+                margin-right: 8px;
+                margin-top: 2px;
+            }
+
+        }
+    }
+
+    .cm-content {
+        white-space: pre-wrap;
+    }
+}

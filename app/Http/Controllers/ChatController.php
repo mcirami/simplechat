@@ -2,12 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ScriptTracking;
+use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Events\Message;
 use App\Models\Page;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 use Pusher\Pusher;
 
 
@@ -57,8 +64,40 @@ class ChatController extends Controller
     }*/
 
     public function testing() {
-        $user = User::where('name', 'Matteo')->get();
-        dd($user);
+
+        $user = User::where('id', 36327401)->first();
+        //$getSettings = $user->settings->findOrFail();
+        if (Setting::where('user_id', 36327401 )->exists()) {
+            $settings = $user->settings->first()->pluck('active');
+        } else {
+            $settings = "null";
+        }
+
+        $userSettings = $user->settings()->first();
+        $images = json_decode($userSettings->images);
+        $imageKey = "image_4";
+
+        foreach($images as $index => $image) {
+            $key = key($image);
+
+            if ($key == $imageKey) {
+
+                $path = explode("/storage", $images[$index]->$key);
+                //Storage::disk('public')->delete($path[1]);
+                unset($images[$index]);
+                break;
+            }
+        }
+        $newArray = json_encode(array_values($images));
+        dd($newArray);
+
+       /* if (!empty($getSettings)){
+            $setting = $getSettings->pluck('active');
+        } else {
+            $setting = "empty";
+        }*/
+
+        dd($settings);
 
     }
 

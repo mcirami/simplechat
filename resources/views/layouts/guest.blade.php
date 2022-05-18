@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
         <link rel="icon" href="{{ asset('images/favicon.ico') }}">
         <!-- Scripts -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
     <body>

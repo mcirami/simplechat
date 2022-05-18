@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role'
     ];
 
     /**
@@ -45,5 +46,9 @@ class User extends Authenticatable
 
     public function messages(){
         return $this->hasMany(Message::class,'sender_id');
+    }
+
+    public function settings() {
+        return $this->hasOne(Setting::class);
     }
 }

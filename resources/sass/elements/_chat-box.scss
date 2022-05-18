@@ -2,21 +2,37 @@
     min-height: 300px;
 }
 
-.messenger-listView .m-header {
-    position: relative;
-    padding: 10px !important;
-
-    svg {
-        color: $darkRed;
+.messenger-listView {
+    @media screen and (max-width: 980px) {
+        position: relative;
     }
 
-    .messenger-headTitle {
-        color: $darkGray;
+    @media screen and (max-width: 680px) {
+        width: auto;
+    }
+
+    @media all and (max-width: 768px) {
+        display: none;
+    }
+
+    .m-header {
+        position: relative;
+        padding: 10px !important;
+
+        svg {
+            color: $darkRed;
+        }
+
+        .messenger-headTitle {
+            color: $darkGray;
+        }
     }
 }
 
 .m-header.m-header-messaging {
-    padding: 28px 20px;
+    padding: 20px;
+    width: 100%;
+    display: inline-block;
 
     .av-s {
         width: 40px;
@@ -24,19 +40,27 @@
     }
 
     .user-name {
-        color: $darkGray;
         font-size: 20px;
     }
 
     .m-header-right {
+        align-items: center;
+        -webkit-align-items: center;
         svg {
             color: $darkRed;
         }
 
         form {
+            margin: auto;
+
             @media all and (max-width: 992px) {
                 display: none;
             }
+        }
+
+        .button svg {
+            color: $white;
+            font-size: 12px;
         }
     }
 }
@@ -133,6 +157,10 @@
 
 .messenger-infoView {
 
+    @media all and (max-width: 992px) {
+        display: none;
+    }
+
     svg {
         color: $darkRed;
     }
@@ -150,6 +178,15 @@
 }
 
 .message-card {
+    margin: 10px 15px;
+
+    a {
+        text-decoration: underline;
+
+        &:hover {
+            color: $darkRed;
+        }
+    }
 
     p {
         background: $red;
@@ -268,6 +305,20 @@
     overflow-y: scroll;
 }
 
-.messenger-messagingView .m-body {
-    overflow: hidden;
+.messenger-messagingView {
+    @media screen and (max-width: 680px) {
+        position: relative;
+        height: auto;
+    }
+
+    .m-body {
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        padding-bottom: 50px;
+
+    }
+
 }

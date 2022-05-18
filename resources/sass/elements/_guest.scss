@@ -142,6 +142,17 @@
                     }
                 }
 
+                &.agent {
+
+                    &:before {
+                        background: $black;
+                    }
+
+                    form {
+                        max-width: unset;
+                    }
+                }
+
                 .button_row {
                     @media all and (max-width: 550px) {
                         flex-wrap: wrap-reverse;
@@ -286,6 +297,7 @@
     }
 
     .white_box {
+
         .content_wrap {
 
             h2 {
