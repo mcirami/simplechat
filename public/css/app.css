@@ -12417,6 +12417,10 @@ img {
 }
 .button.red:hover {
   background: #801c2c;
+  color: #fff;
+}
+.button.red:focus {
+  color: #fff;
 }
 .button.red.alt {
   padding: 2px 0 5px 10px;
