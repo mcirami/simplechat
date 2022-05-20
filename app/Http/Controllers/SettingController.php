@@ -27,8 +27,8 @@ class SettingController extends Controller
         $settingService->saveSetting($column, $value);
 
         if($column == 'active') {
-            $status = $value == 0 ? "Disabled" : "Enabled";
-            $message = "Bot " . $status;
+            //$status = $value == 0 ? "Manual Mode" : "Bot Mode";
+            $message = $value == 0 ? "Manual Mode" : "Bot Mode";
         } else {
             $message = $column . " Saved";
         }
