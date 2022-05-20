@@ -2,10 +2,13 @@ import React, {useEffect, useState} from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import {getSetting} from '../Services/SettingsRequests';
 import SubmitButton from '../Components/SubmitButton';
+import {useOutletContext} from "react-router-dom";
+
 
 const Script = () => {
 
     const [script, setScript] = useState("");
+    const [activeStatus] = useOutletContext();
 
     useEffect(() => {
 
@@ -33,12 +36,16 @@ const Script = () => {
     },[])
 
     return (
-        <>
+        <article className={!activeStatus ? "disabled" : ""}>
             <h3>Script</h3>
             <div className="help_text">
                 <p>One reply per line. <br/>
                     Use <span>%s</span> token to insert a link from your Links settings<br />
-                    Use <span>%p</span> token to send a pic along with your message. (will send pics in order they are uploaded)
+                </p>
+                <p className="mt-3">
+                    Use <span>%p plus pic number</span> token to send a pic along with your message - <span>MUST INCLUDE PIC NUMBER</span>
+                    <br />
+                    ex: <span>%p1</span> will send image 1,  <span>%p2</span> will send image 2 etc...
                 </p>
             </div>
             <CodeMirror
@@ -55,7 +62,7 @@ const Script = () => {
             />
 
             <SubmitButton value={script} column={"script"}/>
-        </>
+        </article>
     );
 };
 

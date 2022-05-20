@@ -488,7 +488,7 @@ if (!pathName.includes('register')) {
      * Send message function
      *-------------------------------------------------------------
      */
-    function sendMessage(sendTo = null, fromID = "false", sendPic = 0) {
+    function sendMessage(sendTo = null, fromID = "false", sendPic = 0, picNumber = null) {
         temporaryMsgId += 1;
         let tempID = "temp_" + temporaryMsgId;
         let hasFile = $(".upload-attachment").val() ? true : false;
@@ -505,6 +505,7 @@ if (!pathName.includes('register')) {
             formData.append("from", fromID);
             formData.append("_token", access_token);
             formData.append("sendPic", sendPic);
+            formData.append("picNumber", picNumber);
 
             $.ajax({
                 url: $("#message-form").attr("action"),
@@ -1691,6 +1692,7 @@ if (!pathName.includes('register')) {
 
     });
 
+    // Called after message is sent to check if Bot response should be sent.
     async function checkForAgentResponse(message) {
 
         const toID = getBotTo();
@@ -1701,8 +1703,7 @@ if (!pathName.includes('register')) {
             userID: fromID
         }
 
-        //const agent = agents['agents'].find(agent => agent.id == fromID);
-
+        //get agent settings to see if bot enabled
         return await axios.post('/get-setting', statusPackets).
             then((status) => {
 
@@ -1711,11 +1712,13 @@ if (!pathName.includes('register')) {
                     const secondPart = firstPart[1].split('<sub');
                     let final = secondPart[0].replaceAll('\n', ' ');
                     final = final.replaceAll('<br />', '');
+                    //call to get bot response
                     getResponse(final, toID, fromID);
                 }
             });
     }
 
+    //Get the bot response based on user message input
     function getResponse(message, sendTo, fromID) {
 
         //let response = null;
@@ -1727,7 +1730,7 @@ if (!pathName.includes('register')) {
             replace(/please /g, "").
             replace(/ please/g, "");
 
-        if (text.match(/picture/gi) || text.match(/pic/gi) ||
+        /*if (text.match(/picture/gi) || text.match(/pic/gi) ||
             text.match(/photo/gi) || text.match(/pics/gi) ||
             text.match(/pix/gi)) {
             //sendPic = 1;
@@ -1735,7 +1738,7 @@ if (!pathName.includes('register')) {
             //send to id, send from id, message, send pic
             sendBotMessage(sendTo, fromID, null, 1);
 
-        } else {
+        } else {*/
 
             const keywordPackets = {
                 column: 'keywords',
@@ -1760,7 +1763,7 @@ if (!pathName.includes('register')) {
                 fromID,
                 text
             );
-        }
+        /*}*/
     }
 
     async function sendReply(
@@ -1805,9 +1808,14 @@ if (!pathName.includes('register')) {
                                 });
                         } else if (botMessage.match("%p")) {
 
+                            const index = botMessage.indexOf("%p");
+                            const token = botMessage.substr(index, 3);
+                            const split = token.split("p");
+
                             botMessage = botMessage.replace("%p", "");
 
-                            sendBotMessage(sendTo, fromID, botMessage, 1);
+                            // sent message to, message from, bot message, send pic, pic number
+                            sendBotMessage(sendTo, fromID, botMessage, 1, split[1]);
 
                         } else {
                             sendBotMessage(sendTo, fromID, botMessage);
@@ -1854,11 +1862,13 @@ if (!pathName.includes('register')) {
                             });
                     } else if (botMessage.includes("%p")) {
 
-                        //sendPic = 1;
+                        const index = botMessage.indexOf("%p");
+                        const token = botMessage.substr(index, 3);
+                        const split = token.split("p");
 
                         botMessage = botMessage.replace("%p", "");
 
-                        sendBotMessage(sendTo, fromID, botMessage, 1)
+                        sendBotMessage(sendTo, fromID, botMessage, 1, split[1])
 
                     } else {
                         sendBotMessage(sendTo, fromID, botMessage)
@@ -1867,7 +1877,7 @@ if (!pathName.includes('register')) {
             })
     }
 
-    function sendBotMessage(sendTo, fromID, botMessage, sendPic = 0) {
+    function sendBotMessage(sendTo, fromID, botMessage, sendPic = 0, picNumber = null) {
 
         setMessengerId(sendTo);
         setAuthId(fromID);
@@ -1884,7 +1894,7 @@ if (!pathName.includes('register')) {
 
         setTimeout(() => {
             messageInput.val(botMessage);
-            sendMessage(sendTo, fromID, sendPic);
+            sendMessage(sendTo, fromID, sendPic, picNumber);
             setMessengerId(fromID);
             setAuthId(sendTo);
             botTyping = false;

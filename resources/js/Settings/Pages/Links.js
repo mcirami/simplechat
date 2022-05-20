@@ -2,10 +2,12 @@ import React, {useState, useEffect} from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import {getSetting} from '../Services/SettingsRequests';
 import SubmitButton from '../Components/SubmitButton';
+import {useOutletContext} from "react-router-dom";
 
 const Links = () => {
 
     const [links, setLinks] = useState("");
+    const [activeStatus] = useOutletContext();
 
     useEffect(() => {
 
@@ -33,7 +35,7 @@ const Links = () => {
     },[])
 
     return (
-        <>
+        <article className={!activeStatus ? "disabled" : ""}>
             <h3>Links</h3>
             <div className="help_text">
                 <p>
@@ -56,7 +58,7 @@ const Links = () => {
 
             <SubmitButton value={links} column={"links"}/>
 
-        </>
+        </article>
     );
 };
 

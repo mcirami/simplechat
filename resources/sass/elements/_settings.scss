@@ -23,6 +23,32 @@
 
         .status {
             margin-bottom: 20px;
+            padding-bottom: 20px;
+            box-shadow: 0 5px 6px -5px rgba(155, 155, 155, .6);
+            -moz-box-shadow: 0 5px 6px -5px rgba(155, 155, 155, .6);
+            -webkit-box-shadow: 0 5px 6px -5px rgba(155, 155, 155, .6);
+
+            .switch_row {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-orient: horizontal;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: row;
+                flex-direction: row;
+                -ms-flex-wrap: nowrap;
+                flex-wrap: nowrap;
+                align-items: center;
+                -webkit-align-items: center;
+                gap: 5px;
+                column-gap: 5px;
+                -webkit-column-gap: 5px;
+                -moz-column-gap: 5px;
+
+                p {
+                    font-size: 14px;
+                }
+            }
         }
 
         .columns_wrap {
@@ -44,10 +70,12 @@
             .column {
 
                 &.side_nav {
-                    width: 15%;
+                    width: 20%;
+                    padding-right: 4%;
 
                     @media all and (max-width: 992px) {
                         width: 100%;
+                        padding-right: 0;
                     }
 
                     ul {
@@ -96,7 +124,8 @@
                 }
 
                 &.content {
-                    width: 85%;
+                    width: 80%;
+                    position: relative;
 
                     @media all and (max-width: 992px) {
                         width: 100%;
@@ -184,7 +213,7 @@
 
                 .remove_button {
                     position: absolute;
-                    z-index: 999;
+                    z-index: 990;
                     right: 0;
                     top: 0;
                     color: white;
@@ -269,5 +298,21 @@
 
     .cm-content {
         white-space: pre-wrap;
+    }
+
+    article.disabled {
+        &:before {
+            content: '';
+            background: rgba(155,155,155,.6);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            border-radius: 6px;
+            -webkit-border-radius: 6px;
+            -moz-border-radius: 6px;
+            z-index: 999;
+        }
     }
 }

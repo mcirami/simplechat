@@ -2,11 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {getSetting} from '../Services/SettingsRequests';
 import SubmitButton from '../Components/SubmitButton';
 import RemoveImage from '../Components/RemoveImage';
+import {useOutletContext} from "react-router-dom";
 
 const Pictures = () => {
 
     const [imageArray, setImageArray] = useState(null);
     const [imagePreviewArray, setImagePreviewArray] = useState({});
+    const [activeStatus] = useOutletContext();
 
     useEffect(() => {
         const packets = {
@@ -58,7 +60,7 @@ const Pictures = () => {
     };
 
     return (
-        <>
+        <article className={!activeStatus ? "disabled" : ""}>
             <h3>Outgoing Pictures</h3>
             <div className="help_text">
                 <p>
@@ -116,7 +118,7 @@ const Pictures = () => {
 
             <SubmitButton value={imageArray} column={"images"} setImageArray={setImageArray}/>
 
-        </>
+        </article>
     );
 };
 

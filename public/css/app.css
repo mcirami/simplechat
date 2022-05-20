@@ -12363,12 +12363,20 @@ h4, .h4, p {
   font-family: "muli", sans-serif;
 }
 
+html {
+  height: 100%;
+}
+
 body {
   height: 100%;
   max-width: 100%;
   display: inline-block;
   width: 100%;
   overflow-x: hidden;
+}
+
+.page_wrap {
+  height: 100%;
 }
 
 .my_row {
@@ -13227,6 +13235,24 @@ img {
 }
 .settings_page #settings .status {
   margin-bottom: 20px;
+  padding-bottom: 20px;
+  box-shadow: 0 5px 6px -5px rgba(155, 155, 155, 0.6);
+  -moz-box-shadow: 0 5px 6px -5px rgba(155, 155, 155, 0.6);
+  -webkit-box-shadow: 0 5px 6px -5px rgba(155, 155, 155, 0.6);
+}
+.settings_page #settings .status .switch_row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  -webkit-align-items: center;
+  gap: 5px;
+  column-gap: 5px;
+  -webkit-column-gap: 5px;
+  -moz-column-gap: 5px;
+}
+.settings_page #settings .status .switch_row p {
+  font-size: 14px;
 }
 .settings_page #settings .columns_wrap {
   display: flex;
@@ -13239,11 +13265,13 @@ img {
   }
 }
 .settings_page #settings .columns_wrap .column.side_nav {
-  width: 15%;
+  width: 20%;
+  padding-right: 4%;
 }
 @media all and (max-width: 992px) {
   .settings_page #settings .columns_wrap .column.side_nav {
     width: 100%;
+    padding-right: 0;
   }
 }
 @media all and (max-width: 992px) {
@@ -13285,7 +13313,8 @@ img {
   color: #b0273c;
 }
 .settings_page #settings .columns_wrap .column.content {
-  width: 85%;
+  width: 80%;
+  position: relative;
 }
 @media all and (max-width: 992px) {
   .settings_page #settings .columns_wrap .column.content {
@@ -13354,7 +13383,7 @@ img {
 }
 .settings_page #settings .inputs_wrap .content_wrap .remove_button {
   position: absolute;
-  z-index: 999;
+  z-index: 990;
   right: 0;
   top: 0;
   color: white;
@@ -13414,9 +13443,22 @@ img {
 .settings_page .cm-content {
   white-space: pre-wrap;
 }
+.settings_page article.disabled:before {
+  content: "";
+  background: rgba(155, 155, 155, 0.6);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  z-index: 999;
+}
 
-.custom_four .messenger {
-  min-height: 910px;
+.custom_four {
+  height: 100%;
 }
 .custom_four .messenger .messenger-messagingView {
   border-top: 1px solid #eee;
