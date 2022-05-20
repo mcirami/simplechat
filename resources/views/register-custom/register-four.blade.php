@@ -1,7 +1,6 @@
 
 <x-guest-layout>
 
-
         <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
         <div class="content_wrap custom_four">

@@ -2,9 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Switch from "react-switch";
 import {getSetting, saveSetting} from '../Services/SettingsRequests';
 
-const Status = () => {
-
-    const [activeStatus, setActiveStatus] = useState(true);
+const Status = ({activeStatus, setActiveStatus}) => {
 
     useEffect(() => {
 
@@ -36,14 +34,21 @@ const Status = () => {
 
     return (
 
-        <Switch
-            onChange={handleChange}
-            height={20}
-            checked={Boolean(activeStatus)}
-            onColor="#b0273c"
-            uncheckedIcon={false}
-            checkedIcon={false}
-        />
+        <>
+            <h3 className="mb-3">Bot/Manual Mode</h3>
+            <div className="switch_row">
+                <p>Manual</p>
+                <Switch
+                    onChange={handleChange}
+                    height={20}
+                    checked={Boolean(activeStatus)}
+                    onColor="#b0273c"
+                    uncheckedIcon={false}
+                    checkedIcon={false}
+                />
+                <p>Bot</p>
+            </div>
+        </>
 
     );
 };

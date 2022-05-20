@@ -144,10 +144,11 @@ class MessagesController extends Controller
         $attachment_title = null;
 
         if ($request["sendPic"] == 1) {
+            $imageKey = "image_" . $request["picNumber"];
             $userID = $request['from'];
             $settings = Setting::where('user_id', $userID)->pluck('images');
             $images = json_decode($settings[0], true);
-            $tracking = ScriptTracking::where('from_id', $userID)->where('to_id', $request['id'])->first();
+            /*$tracking = ScriptTracking::where('from_id', $userID)->where('to_id', $request['id'])->first();
             $index = $tracking->image_index;
 
             $imagePath = "";
@@ -161,15 +162,15 @@ class MessagesController extends Controller
                         break;
                     }
                 }
-            } else {
+            } else {*/
 
-                $imageNum = explode("_", $index);
+                /*$imageNum = explode("_", $index);
                 $newNumb = $imageNum[1] + 1;
                 if ($newNumb > count($images)) {
                     $imageKey = "image_1";
                 } else {
                     $imageKey = "image_" . $newNumb;
-                }
+                }*/
 
                 foreach ($images as $index => $image) {
                     $key = key($image);
@@ -178,14 +179,14 @@ class MessagesController extends Controller
                         break;
                     }
                 }
-            }
+            /*}*/
 
             $file = Storage::disk('public')->get($imagePath);
             $attachment = Str::uuid() . ".jpg";
             $image = Image::make($file)->encode('jpg',80);
             Storage::disk('public')->put(config('chatify.attachments.folder') . "/" . $attachment, $image);
 
-            $tracking->update(['image_index' => $imageKey]);
+            //$tracking->update(['image_index' => $imageKey]);
         }
 
         // if there is attachment [file]

@@ -21,6 +21,8 @@ mix.js('resources/js/app.js', 'public/js')
 ])
 .react()
 .sass('resources/sass/app.scss', 'public/css')
+.minify('public/js/app.js', 'public/js/app.min.js')
+.minify('public/css/app.css', 'public/css/app.min.css')
 .polyfill({
     enabled: true,
     useBuiltIns: 'entry',
