@@ -20,7 +20,7 @@ const Script = () => {
             .then((data) => {
 
                 const array = data["script"];
-
+                console.log(array);
                 if (array) {
                     let savedScript = "";
                     array.map((line, i, row) => {

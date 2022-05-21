@@ -46,12 +46,12 @@ class SettingsService {
         if ($userID != null) {
             if (Setting::where('user_id', $userID )->exists()) {
                 $user = User::where('id', $userID)->first();
-                $setting = $user->settings->first()->pluck($column);
+                $setting = $user->settings->pluck($column);
             }
         } else {
 
             if (Setting::where('user_id', $this->user->id )->exists()) {
-                $setting = $this->user->settings()->first()->pluck($column);
+                $setting = $this->user->settings()->pluck($column);
             }
         }
 
