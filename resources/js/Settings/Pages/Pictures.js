@@ -64,7 +64,8 @@ const Pictures = () => {
             <h3>Outgoing Pictures</h3>
             <div className="help_text">
                 <p>
-                    Pictures will be sent in the order they are uploaded here, if chatter asks for a picture or if <span>%p</span> token is used in a message
+                    Pictures will be sent according to pic number used with token <span>%p</span> in script or keywords.<br />
+                    ex: %p1 will send image 1, %p2 will send image 2 etc...
                 </p>
             </div>
 
