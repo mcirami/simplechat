@@ -65,39 +65,15 @@ class ChatController extends Controller
 
     public function testing() {
 
-        $user = User::where('id', 36327401)->first();
-        //$getSettings = $user->settings->findOrFail();
-        if (Setting::where('user_id', 36327401 )->exists()) {
-            $settings = $user->settings->first()->pluck('active');
-        } else {
-            $settings = "null";
-        }
-
-        $userSettings = $user->settings()->first();
-        $images = json_decode($userSettings->images);
-        $imageKey = "image_4";
-
-        foreach($images as $index => $image) {
-            $key = key($image);
-
-            if ($key == $imageKey) {
-
-                $path = explode("/storage", $images[$index]->$key);
-                //Storage::disk('public')->delete($path[1]);
-                unset($images[$index]);
-                break;
-            }
-        }
-        $newArray = json_encode(array_values($images));
-        dd($newArray);
-
-       /* if (!empty($getSettings)){
-            $setting = $getSettings->pluck('active');
-        } else {
-            $setting = "empty";
+        /*if (Setting::where('user_id', 19249105 )->exists()) {
+            $user = User::where('id', 19249105)->first();
+            $setting = Setting::where('user_id', 19249105)->pluck('script');
+            //$setting = $user->settings->pluck('script');
         }*/
 
-        dd($settings);
+       $user = Auth::user();
+
+        dd($user->id);
 
     }
 

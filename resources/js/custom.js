@@ -11,7 +11,7 @@ const queue = new MessageQueue;
 
 const pathName = window.location.pathname;
 
-if (!pathName.includes('register')) {
+if (!pathName.includes('register') && !pathName.includes('settings')) {
     let messenger,
         typingTimeout,
         typingNow = 0,
@@ -1804,15 +1804,28 @@ if (!pathName.includes('register')) {
 
                                     botMessage = botMessage.replace("%s", link);
 
-                                    sendBotMessage(sendTo, fromID, botMessage);
+                                    if (botMessage.includes("%p")) {
+
+                                        const index = botMessage.indexOf("%p");
+                                        const token = botMessage.substr(index, 3);
+                                        const split = token.split("p");
+
+                                        botMessage = botMessage.replace(
+                                            "%p" + split[1], "");
+
+                                        sendBotMessage(sendTo, fromID, botMessage,
+                                            1, split[1])
+                                    } else {
+                                        sendBotMessage(sendTo, fromID, botMessage);
+                                    }
                                 });
-                        } else if (botMessage.match("%p")) {
+                        } else if (botMessage.includes("%p")) {
 
                             const index = botMessage.indexOf("%p");
                             const token = botMessage.substr(index, 3);
                             const split = token.split("p");
 
-                            botMessage = botMessage.replace("%p", "");
+                            botMessage = botMessage.replace("%p" + split[1], "");
 
                             // sent message to, message from, bot message, send pic, pic number
                             sendBotMessage(sendTo, fromID, botMessage, 1, split[1]);
@@ -1835,6 +1848,7 @@ if (!pathName.includes('register')) {
 
         return await axios.post('/get-setting', scriptPackets).
             then(async (response) => {
+
                 const index = await axios.post('/script-tracking',
                     trackingPackets)
 
@@ -1858,7 +1872,22 @@ if (!pathName.includes('register')) {
 
                                 botMessage = botMessage.replace("%s", link);
 
-                                sendBotMessage(sendTo, fromID, botMessage)
+                                if (botMessage.includes("%p")) {
+
+                                    const index = botMessage.indexOf("%p");
+                                    const token = botMessage.substr(index, 3);
+                                    const split = token.split("p");
+
+                                    botMessage = botMessage.replace(
+                                        "%p" + split[1], "");
+
+                                    sendBotMessage(sendTo, fromID, botMessage,
+                                        1, split[1])
+                                } else {
+                                    sendBotMessage(sendTo, fromID, botMessage)
+                                }
+
+
                             });
                     } else if (botMessage.includes("%p")) {
 
@@ -1866,11 +1895,12 @@ if (!pathName.includes('register')) {
                         const token = botMessage.substr(index, 3);
                         const split = token.split("p");
 
-                        botMessage = botMessage.replace("%p", "");
+                        botMessage = botMessage.replace("%p" + split[1], "");
 
                         sendBotMessage(sendTo, fromID, botMessage, 1, split[1])
 
                     } else {
+
                         sendBotMessage(sendTo, fromID, botMessage)
                     }
                 }

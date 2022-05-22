@@ -45,13 +45,16 @@ class SettingsService {
         $setting = null;
         if ($userID != null) {
             if (Setting::where('user_id', $userID )->exists()) {
-                $user = User::where('id', $userID)->first();
-                $setting = $user->settings->pluck($column);
+               $user = User::where('id', $userID)->first();
+               $setting = $user->settings()->pluck($column);
+              // $setting = Setting::where('user_id', $userID)->pluck('script');
             }
         } else {
 
-            if (Setting::where('user_id', $this->user->id )->exists()) {
-                $setting = $this->user->settings()->pluck($column);
+            $userID = $this->user->getAuthIdentifier();
+            if (Setting::where('user_id',  $userID )->exists()) {
+                //$setting = $this->user->settings()->pluck($column);
+                $setting = Setting::where('user_id', $userID)->pluck($column);
             }
         }
 
