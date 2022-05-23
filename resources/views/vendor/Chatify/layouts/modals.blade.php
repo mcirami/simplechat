@@ -62,6 +62,10 @@
                         @endif
                       @endforeach
                       </div>--}}
+                      <div class="update_name my-3">
+                          <label class="mb-2" for="name">Name</label>
+                          <input class="shadow-sm border-gray-300 rounded-md" id="name" name="name" type="text" placeholder="Name" value="{{ Auth::user()->name }}">
+                      </div>
                   </div>
                   <div class="app-modal-footer">
                       <a href="javascript:void(0)" class="app-btn cancel">Cancel</a>

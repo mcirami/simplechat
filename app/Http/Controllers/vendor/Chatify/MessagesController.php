@@ -545,6 +545,10 @@ class MessagesController extends Controller
             }
         }
 
+        if ($request['name']) {
+            User::where('id', Auth::user()->id)->update(['name' => $request['name']]);
+        }
+
         // send the response
         return Response::json([
             'status' => $success ? 1 : 0,
