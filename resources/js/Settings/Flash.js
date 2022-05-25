@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import EventBus from './Utils/Bus';
-import {MdCheckCircle} from 'react-icons/md';
+import {MdCheckCircle, MdCancel} from 'react-icons/md';
 
 export const Flash = () => {
 
@@ -48,7 +48,14 @@ export const Flash = () => {
         visibility &&
         <div className={`${visibility && "active "} success_message_wrap`}>
             <div className="display_message alert">
-                <p><MdCheckCircle/> { message }!</p>
+                <p>
+                    { messageType === "success" ?
+                        <MdCheckCircle/>
+                        :
+                        <MdCancel/>
+                    }
+                    { message }!
+                </p>
             </div>
         </div>
 

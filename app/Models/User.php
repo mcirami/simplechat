@@ -44,11 +44,24 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function messages(){
         return $this->hasMany(Message::class,'sender_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function settings() {
         return $this->hasOne(Setting::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function contentSettings() {
+        return $this->hasOne(ContentSetting::class);
     }
 }

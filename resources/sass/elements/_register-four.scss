@@ -42,9 +42,20 @@
             margin-top: auto;
         }
 
-        .message-card.empty p {
-            padding: 0px 10px 10px;
+        .message-card {
+
+            &.empty p {
+                padding: 0px 10px 10px;
+            }
+
+            .image-file {
+                width: auto;
+                max-width: 400px;
+                height: auto;
+            }
         }
+
+
 
         .messenger-sendCard {
             display: block;

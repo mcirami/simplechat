@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ContentSetting;
 use App\Models\ScriptTracking;
 use App\Models\Setting;
 use App\Models\User;
@@ -65,15 +66,8 @@ class ChatController extends Controller
 
     public function testing() {
 
-        /*if (Setting::where('user_id', 19249105 )->exists()) {
-            $user = User::where('id', 19249105)->first();
-            $setting = Setting::where('user_id', 19249105)->pluck('script');
-            //$setting = $user->settings->pluck('script');
-        }*/
-
-       $user = Auth::user();
-
-        dd($user->id);
+        $usernames = ContentSetting::all()->pluck('username')->toArray();
+        dd($usernames);
 
     }
 

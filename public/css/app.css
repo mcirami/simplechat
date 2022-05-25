@@ -11516,7 +11516,6 @@ body {
   text-align: center;
   border-radius: 100%;
   overflow: hidden;
-  background-image: url("");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
@@ -13236,6 +13235,16 @@ img {
   float: left;
   padding: 40px 0;
 }
+.settings_page #settings .nav_link {
+  box-shadow: 0 -5px 6px -5px rgba(155, 155, 155, 0.6);
+  -moz-box-shadow: 0 -5px 6px -5px rgba(155, 155, 155, 0.6);
+  -webkit-box-shadow: 0 -5px 6px -5px rgba(155, 155, 155, 0.6);
+  padding: 20px 0;
+  margin-top: 20px;
+}
+.settings_page #settings .nav_link span {
+  font-size: 26px !important;
+}
 .settings_page #settings .status {
   margin-bottom: 20px;
   padding-bottom: 20px;
@@ -13403,7 +13412,7 @@ img {
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
-  min-height: 300px;
+  min-height: 400px;
   box-shadow: 0 0 15px -5px rgba(155, 155, 155, 0.4);
   border-radius: 8px;
   -webkit-border-radius: 8px;
@@ -13460,6 +13469,29 @@ img {
   z-index: 999;
 }
 
+.edit_profile .input_row {
+  margin-bottom: 20px;
+}
+.edit_profile .input_row small, .edit_profile .input_row .small {
+  color: #d37171;
+}
+.edit_profile .input_row input {
+  width: 50%;
+}
+.edit_profile .input_row p {
+  font-size: 14px;
+  margin-left: 12px;
+}
+.edit_profile .input_row p.red {
+  color: red;
+}
+.edit_profile .input_row p.green {
+  color: green;
+}
+.edit_profile h3, .edit_profile .h3 {
+  margin-bottom: 10px;
+}
+
 .custom_four {
   height: 100%;
 }
@@ -13491,6 +13523,11 @@ img {
 }
 .custom_four .messages-container .message-card.empty p {
   padding: 0px 10px 10px;
+}
+.custom_four .messages-container .message-card .image-file {
+  width: auto;
+  max-width: 400px;
+  height: auto;
 }
 .custom_four .messages-container .messenger-sendCard {
   display: block;
@@ -14256,6 +14293,9 @@ select {
 .mt-1 {
   margin-top: 0.25rem;
 }
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
 .mt-3 {
   margin-top: 0.75rem;
 }
@@ -14264,9 +14304,6 @@ select {
 }
 .-mr-2 {
   margin-right: -0.5rem;
-}
-.mb-2 {
-  margin-bottom: 0.5rem;
 }
 .block {
   display: block;

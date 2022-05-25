@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ContentSetting;
 use App\Models\User;
 use App\Notifications\WelcomeNotification;
 use App\Providers\RouteServiceProvider;
@@ -45,7 +46,21 @@ class CustomRegisterController extends Controller
 
         $addUser = $request->query('add') ? $request->query('add') : null;
         $src = $request->query('src') ? $request->query('src') : null;
-        return view('register-custom.register-four')->with(['addUser' => $addUser, 'src' => $src]);
+
+        $content = null;
+        if ($addUser != null) {
+            $content = ContentSetting::where('username', $addUser)->first();
+        }
+
+
+        return view('register-custom.register-four')->with([
+            'addUser' => $addUser,
+            'src' => $src,
+            'username' => $content !== null ? $content->username : null,
+            'profile' => $content !== null ? $content->profile : null,
+            'background' => $content !== null ? $content->background : null,
+            'attachment' => $content !== null ? $content->attachment : null,
+        ]);
     }
 
     public function showAgentRegister(Request $request) {

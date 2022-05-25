@@ -3,6 +3,12 @@
 
         <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
+        @php
+
+            $username = $username != null ? $username : 'freakygrl269';
+			$profileImage = $profile !== null ? $profile : asset('images/freakygrl1.jpg');
+			$attachmentImage = $attachment !== null ? $attachment :asset('images/freakygrl4.jpg') ;
+        @endphp
         <div class="content_wrap custom_four">
 
             <div class="messenger">
@@ -37,67 +43,6 @@
 
                         <div class=" show  messenger-tab users-tab app-scroll" data-view="users">
 
-                            <div class="favorites-section" style="display: none;">
-                                <p class="messenger-title">Favorites</p>
-                                <div class="messenger-favorites app-scroll-thin">
-                                    <div class="loadingPlaceholder">
-                                        <div class="loadingPlaceholder-wrapper">
-                                            <div class="loadingPlaceholder-body">
-                                                <table class="loadingPlaceholder-header">
-                                                    <tbody><tr>
-                                                        <td style="width: 45px;">
-                                                            <div class="loadingPlaceholder-avatar" style="margin: 2px;"></div>
-                                                        </td>
-                                                    </tr>
-                                                    </tbody></table>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="loadingPlaceholder">
-                                        <div class="loadingPlaceholder-wrapper">
-                                            <div class="loadingPlaceholder-body">
-                                                <table class="loadingPlaceholder-header">
-                                                    <tbody><tr>
-                                                        <td style="width: 45px;">
-                                                            <div class="loadingPlaceholder-avatar" style="margin: 2px;"></div>
-                                                        </td>
-                                                    </tr>
-                                                    </tbody></table>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="loadingPlaceholder">
-                                        <div class="loadingPlaceholder-wrapper">
-                                            <div class="loadingPlaceholder-body">
-                                                <table class="loadingPlaceholder-header">
-                                                    <tbody><tr>
-                                                        <td style="width: 45px;">
-                                                            <div class="loadingPlaceholder-avatar" style="margin: 2px;"></div>
-                                                        </td>
-                                                    </tr>
-                                                    </tbody></table>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="loadingPlaceholder">
-                                        <div class="loadingPlaceholder-wrapper">
-                                            <div class="loadingPlaceholder-body">
-                                                <table class="loadingPlaceholder-header">
-                                                    <tbody><tr>
-                                                        <td style="width: 45px;">
-                                                            <div class="loadingPlaceholder-avatar" style="margin: 2px;"></div>
-                                                        </td>
-                                                    </tr>
-                                                    </tbody></table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
                             <table class="messenger-list-item m-li-divider" data-contact="56653703">
                                 <tbody><tr data-action="0">
 
@@ -122,13 +67,13 @@
                                         <tr data-action="0">
                                             <td style="position: relative">
                                                 <span class="activeStatus"></span>
-                                                <div class="avatar av-m" style="background: url({{ asset('images/freakygrl1.jpg') }}) no-repeat; background-size: cover;">
+                                                <div class="avatar av-m" style="background: url({{ $profileImage }}) no-repeat; background-size: cover;">
                                                 </div>
                                             </td>
 
                                             <td>
                                                 <p data-id="36327401" data-type="user">
-                                                    freakygrl269
+                                                    {{ $username }}
                                                     <span>now</span>
                                                 </p>
                                                 <span>I'm naked right now</span>
@@ -195,7 +140,7 @@
                                 </a>
                                 <div class="avatar av-s header-avatar" style="margin: 0px 10px; margin-top: -5px; margin-bottom: -5px;">
                                 </div>
-                                <a href="#" class="user-name">freakygrl269</a>
+                                <a href="#" class="user-name">{{ $username }}</a>
                             </div>
 
                             <nav class="m-header-right">
@@ -236,12 +181,15 @@
                             </div>
                             <div>
                                 <div class="message-card">
-                                    <div class="image-file chat-image" style="width: 250px; height: 150px; background-image: url({{asset('images/freakygrl4.jpg')}});"></div>
+                                    <!-- style="width: 250px; height: 150px; background-image: url();" -->
+                                    <div class="image-file chat-image">
+                                        <img src="{{$attachmentImage}}" alt="">
+                                    </div>
                                 </div>
                             </div>
                             <form id="register_form" method="POST" action="{{ route('custom-email-register') }}">
                                 <div class="heading my_row mb-4">
-                                    <h2>freakygrl269 sent you a private chat invite!</h2>
+                                    <h2>{{ $username }} sent you a private chat invite!</h2>
                                 </div>
                                 @csrf
 
@@ -307,8 +255,8 @@
                             </svg>
                         </a>
                     </nav>
-                    <div class="avatar av-l" style="background: url({{ asset('images/freakygrl1.jpg') }}) no-repeat; background-size: cover;"></div>
-                    <p class="info-name">freakygrl269</p>
+                    <div class="avatar av-l" style="background: url({{ $profileImage }}) no-repeat; background-size: cover;"></div>
+                    <p class="info-name">{{ $username }}</p>
                     <div class="messenger-infoView-btns">
                         <a href="#" class="danger delete-conversation">
                             <svg class="svg-inline--fa fa-trash-alt fa-w-14" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="">
@@ -321,9 +269,9 @@
                     <div class="messenger-infoView-shared">
                         <p class="messenger-title">shared photos</p>
                         <div class="shared-photos-list">
-                            <div class="shared-photo chat-image" style="background: url({{ asset('images/freakygrl2.jpg') }}) no-repeat; background-size: cover;"></div>
+                            {{--<div class="shared-photo chat-image" style="background: url({{ asset('images/freakygrl2.jpg') }}) no-repeat; background-size: cover;"></div>
                             <div class="shared-photo chat-image" style="background: url({{ asset('images/freakygrl3.jpg') }}) no-repeat; background-size: cover;"></div>
-                            <div class="shared-photo chat-image" style="background: url({{ asset('images/freakygrl4.jpg') }}) no-repeat; background-size: cover;"></div>
+                            <div class="shared-photo chat-image" style="background: url({{ asset('images/freakygrl4.jpg') }}) no-repeat; background-size: cover;"></div>--}}
                         </div>
                     </div>
 

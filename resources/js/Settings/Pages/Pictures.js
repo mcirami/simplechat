@@ -79,7 +79,7 @@ const Pictures = () => {
                         <div key={index}>
                             <h3>Picture {picNumber}</h3>
                             <div className="content_wrap">
-                                {imagePreview ?
+                                {imagePreview &&
 
                                     <RemoveImage
                                         picNumber={picNumber}
@@ -89,13 +89,11 @@ const Pictures = () => {
                                         setImageArray={setImageArray}
 
                                     />
-
-                                    : ""
                                 }
                                 <label className={ `${imagePreview === undefined ? "img_placeholder" : ""}` }
                                        htmlFor={'image_' + picNumber + '_upload'}
                                        style={{
-                                           backgroundImage: `url("${ imagePreview ? imagePreview : '/images/pic-placeholder.png' }")`,
+                                           backgroundImage: `url("${ imagePreview || '/images/pic-placeholder.png' }")`,
                                            backgroundRepeat: `no-repeat`,
                                            backgroundSize: `cover`,
                                            backgroundPosition: `center`

@@ -6,6 +6,7 @@ use App\Http\Controllers\CustomRegisterController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\PageContentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,12 @@ Route::group(['middleware' => ['auth', 'role']], function() {
     Route::post('store-setting', [SettingController::class, 'storeSetting']);
     Route::post('store-image', [SettingController::class, 'storeImage']);
     Route::post('remove-image', [SettingController::class, 'removeImage']);
+
+    Route::get('get-content', [PageContentController::class, 'getContent']);
+    Route::get('get-username', [PageContentController::class, 'getUsername']);
+    Route::get('get-all-user-names', [PageContentController::class, 'getAllUserNames']);
+    Route::post('store-content', [PageContentController::class, 'storeContent']);
+    Route::post('remove-content-image', [PageContentController::class, 'removeContentImage']);
 });
 
 Route::group(['middleware' => 'auth'], function() {
