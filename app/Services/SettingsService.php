@@ -65,7 +65,7 @@ class SettingsService {
        return $setting;
     }
 
-    public function getScriptIndex ($toID, $fromID) {
+    public function getScriptIndex($toID, $fromID) {
 
         $tracking = ScriptTracking::where('to_id', $toID)->where('from_id', $fromID)->first();
 
