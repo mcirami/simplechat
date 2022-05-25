@@ -26,6 +26,7 @@ Route::get('register-two', [CustomRegisterController::class, 'showRegisterTwo'])
 Route::get('register-three', [CustomRegisterController::class, 'showRegisterThree']);
 Route::get('register-four', [CustomRegisterController::class, 'showRegisterFour']);
 Route::get('register-agent', [CustomRegisterController::class, 'showAgentRegister']);
+Route::post('store-agent', [CustomRegisterController::class, 'storeAgentUser'])->name('storeAgent');
 Route::post('custom-email-register', [CustomRegisterController::class, 'store'])->name('custom-email-register');
 Route::get('email', [MailController::class, 'email']);
 

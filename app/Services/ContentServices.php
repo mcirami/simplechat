@@ -13,10 +13,11 @@ class ContentServices {
         $user = Auth::user();
         $contentSettings = $user->contentSettings()->first();
 
-        if ($username != null) {
+        if ($username != null && $username != 'undefined') {
 
             $user->update([
-                'name' => $username
+                'username' => $username,
+                'name'     => $username
             ]);
         }
 
