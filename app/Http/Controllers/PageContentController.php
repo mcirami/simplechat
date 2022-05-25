@@ -14,13 +14,16 @@ class PageContentController extends Controller
 
     public function storeContent(Request $request, ContentServices $service) {
 
-        $images = $request->get('imageArray');
+
+        /*$request->validate([
+            'username' => ['required', 'string', 'max:255', 'unique:users']
+        ]);*/
+
         $username = $request->get('username');
+        $images = $request->get('imageArray');
 
         //$imageValidator = new ImageUploadRequest($images);
-        $username->validate([
-            'name' => 'required|unique'
-        ]);
+
         /*
                 if($usernameValidator->fails()) {
                     return response()->json([
@@ -56,7 +59,7 @@ class PageContentController extends Controller
 
     public function getUsername() {
 
-        $username = Auth::user()->name;
+        $username = Auth::user()->username;
 
         return response()->json(['username' => $username]);
 

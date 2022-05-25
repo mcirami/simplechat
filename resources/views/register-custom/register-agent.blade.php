@@ -17,14 +17,12 @@
                 <h2>Complete the form below to register as an agent</h2>
             </div>
             <div class="form_wrap register agent">
-                <form method="POST" action="{{ route('register') }}">
+                <form method="POST" action="{{ route('storeAgent') }}">
                     @csrf
-
-                    <input type="hidden" name="role" value="agent">
 
                     <!-- Name -->
                     <div>
-                        <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus placeholder="Name"/>
+                        <x-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')" required autofocus placeholder="Username"/>
                     </div>
 
                     <!-- Email Address -->

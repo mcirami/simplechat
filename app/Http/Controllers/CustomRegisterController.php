@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
 
 class CustomRegisterController extends Controller
 {
@@ -27,6 +28,11 @@ class CustomRegisterController extends Controller
         return view('register-custom.register-two')->with(['addUser' => $addUser, 'src' => $src]);
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function showRegisterThree(Request $request) {
 
         $images = File::glob(public_path('images/slider-bottom').'/*');
@@ -42,6 +48,11 @@ class CustomRegisterController extends Controller
         return view('register-custom.register-three')->with(['addUser' => $addUser, 'src' => $src, 'images' => $imageArray]);
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function showRegisterFour(Request $request) {
 
         $addUser = $request->query('add') ? $request->query('add') : null;
@@ -63,6 +74,11 @@ class CustomRegisterController extends Controller
         ]);
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function showAgentRegister(Request $request) {
 
         return view('register-custom.register-agent');
@@ -119,5 +135,32 @@ class CustomRegisterController extends Controller
         $chatUser = $referral ? "?add_chat_user=" . $referral : "";
 
         return redirect(RouteServiceProvider::HOME . $chatUser);
+    }
+
+    public function storeAgentUser(Request $request) {
+
+        $request->validate([
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'username' => ['required', 'string', 'max:255', 'unique:users'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+
+        $id = IdGenerator::generate(['table' => 'users', 'length' => 8, 'prefix' => random_int(100000, 999999)]);
+
+        $user = User::create([
+            'id' => $id,
+            'name' => $request->username,
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => "agent"
+        ]);
+
+        event(new Registered($user));
+
+        Auth::login($user);
+
+        return redirect(RouteServiceProvider::HOME);
+
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class MakeNameFieldUniqueOnUsersTable extends Migration
+class RemoveUniqueFromNameColumnAddUsernameUniqueUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,8 @@ class MakeNameFieldUniqueOnUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('name')->unique()->change();
+            $table->dropUnique('users_name_unique')->change();
+            $table->string('username')->unique()->nullable()->after('name');
         });
     }
 
@@ -26,7 +27,8 @@ class MakeNameFieldUniqueOnUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropUnique('users_name_unique')->change();
+            $table->string('name')->unique()->change();
+            $table->dropColumn('username');
         });
     }
 }
