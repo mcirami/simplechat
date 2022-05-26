@@ -17,6 +17,7 @@ const LanderContent = () => {
     const [allUserNames, setAllUserNames] = useState(null);
     const [available, setAvailability] = useState(true);
 
+    const host = window.location.origin;
 
     const fetchAllContent = async () => {
 
@@ -132,6 +133,13 @@ const LanderContent = () => {
                 <p className={available ? "green" : "red"}>
                     {available ? "Available" : "Not Available"}
                 </p>
+            </div>
+            <div className="link_row">
+                <h3>Preview Links</h3>
+                <p><a target="_blank" href={host + '/register?add=' + username}>{host + '/register?add=' + username}</a></p>
+                <p><a target="_blank" href={host + '/register-two?add=' + username}>{host + '/register-two?add=' + username}</a></p>
+                <p><a target="_blank" href={host + '/register-three?add=' + username}>{host + '/register-three?add=' + username}</a></p>
+                <p><a target="_blank" href={host + '/register-four?add=' + username}>{host + '/register-four?add=' + username}</a></p>
             </div>
             <div className="inputs_wrap w-100">
                 <div className="column">

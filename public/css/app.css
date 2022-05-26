@@ -13581,6 +13581,18 @@ img {
 .edit_profile h3, .edit_profile .h3 {
   margin-bottom: 10px;
 }
+.edit_profile .link_row {
+  margin-bottom: 20px;
+}
+.edit_profile .link_row p {
+  margin-bottom: 5px;
+}
+.edit_profile .link_row p a {
+  color: #d37171;
+}
+.edit_profile .link_row p a:hover {
+  color: #801c2c;
+}
 
 .custom_four {
   height: 100%;

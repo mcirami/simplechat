@@ -390,4 +390,20 @@
     h3 {
         margin-bottom: 10px;
     }
+
+    .link_row {
+        margin-bottom: 20px;
+
+        p {
+            margin-bottom: 5px;
+
+            a {
+                color: $red;
+
+                &:hover {
+                    color: $hoverRed;
+                }
+            }
+        }
+    }
 }
