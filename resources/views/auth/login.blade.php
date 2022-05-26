@@ -11,7 +11,7 @@
 
         <!-- Validation Errors -->
         <x-auth-validation-errors class="mb-4" :errors="$errors" />
-        <div class="content_wrap">
+        <div class="content_wrap login">
             <div class="form_wrap alt">
                 <form method="POST" action="{{ route('login') }}">
                     <h2>Login to start chatting <span>Now!</span></h2>

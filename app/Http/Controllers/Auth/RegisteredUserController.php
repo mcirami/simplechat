@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\TrackingController;
+use App\Models\ContentSetting;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -23,9 +24,24 @@ class RegisteredUserController extends Controller
     public function create(Request $request)
     {
 
-        $addUser = $request->query('add') ? $request->query('add') : "";
-        $src = $request->query('src') ? $request->query('src') : "";
-        return view('auth.register')->with(['addUser' => $addUser, 'src' => $src]);
+        $addUser = $request->query('add') ? $request->query('add') : null;
+        $src = $request->query('src') ? $request->query('src') : null;
+
+        $content = null;
+        if ($addUser != null) {
+
+            $userID = User::where('username', $addUser)->pluck('id')->first();
+            if ($userID != null) {
+                $content = ContentSetting::where('user_id', $userID)->first();
+            }
+        }
+
+
+        return view('auth.register')->with([
+            'addUser' => $addUser,
+            'src' => $src,
+            'background' => $content !== null ? $content->background : null,
+        ]);
     }
 
     /**

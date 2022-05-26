@@ -25,7 +25,21 @@ class CustomRegisterController extends Controller
 
         $addUser = $request->query('add') ? $request->query('add') : null;
         $src = $request->query('src') ? $request->query('src') : null;
-        return view('register-custom.register-two')->with(['addUser' => $addUser, 'src' => $src]);
+
+        $content = null;
+        if ($addUser != null) {
+
+            $userID = User::where('username', $addUser)->pluck('id')->first();
+            if ($userID != null) {
+                $content = ContentSetting::where('user_id', $userID)->first();
+            }
+        }
+
+        return view('register-custom.register-two')->with([
+            'addUser' => $addUser,
+            'src' => $src,
+            'background' => $content !== null ? $content->background : null,
+        ]);
     }
 
     /**
@@ -45,7 +59,22 @@ class CustomRegisterController extends Controller
 
         $addUser = $request->query('add') ? $request->query('add') : null;
         $src = $request->query('src') ? $request->query('src') : null;
-        return view('register-custom.register-three')->with(['addUser' => $addUser, 'src' => $src, 'images' => $imageArray]);
+
+        $content = null;
+        if ($addUser != null) {
+
+            $userID = User::where('username', $addUser)->pluck('id')->first();
+            if ($userID != null) {
+                $content = ContentSetting::where('user_id', $userID)->first();
+            }
+        }
+
+        return view('register-custom.register-three')->with([
+            'addUser' => $addUser,
+            'src' => $src,
+            'images' => $imageArray,
+            'background' => $content !== null ? $content->background : null,
+        ]);
     }
 
     /**
@@ -60,14 +89,18 @@ class CustomRegisterController extends Controller
 
         $content = null;
         if ($addUser != null) {
-            $content = ContentSetting::where('username', $addUser)->first();
+
+            $userID = User::where('username', $addUser)->pluck('id')->first();
+            if ($userID != null) {
+                $content = ContentSetting::where('user_id', $userID)->first();
+            }
         }
 
 
         return view('register-custom.register-four')->with([
             'addUser' => $addUser,
             'src' => $src,
-            'username' => $content !== null ? $content->username : null,
+            'username' => $addUser,
             'profile' => $content !== null ? $content->profile : null,
             'background' => $content !== null ? $content->background : null,
             'attachment' => $content !== null ? $content->attachment : null,

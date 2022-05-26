@@ -1,4 +1,6 @@
 .card_content {
+    width: 100%;
+
     .logo {
         img {
             max-width: 300px;
@@ -29,6 +31,11 @@
     .content_wrap {
         position: relative;
         z-index: 2;
+
+        &.login {
+            max-width: 500px;
+            margin: 0 auto;
+        }
 
         .heading {
             background: $black;
@@ -180,6 +187,27 @@
         }
 
         &.custom_one {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+
+            .column {
+
+                &:first-child {
+                    width: 33%;
+                }
+
+                &:last-child {
+                    width: 67%;
+                }
+            }
+
             .heading {
                 padding: 20px 20px 0;
             }
@@ -224,6 +252,51 @@
     overflow: hidden;
     max-height: 900px;
 
+    .columns_wrap {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+
+        @media all and (max-width: 550px) {
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+        }
+
+        .column {
+            &:first-child {
+                width: 33%;
+
+                @media screen and (max-width: 768px) {
+                    width: 50%;
+                }
+
+                @media all and (max-width: 550px) {
+                    width: 100%;
+                    background-size: contain !important;
+                    min-height: 300px;
+                }
+            }
+
+            &:last-child {
+                width: 67%;
+
+                @media screen and (max-width: 768px) {
+                    width: 50%;
+                }
+
+                @media all and (max-width: 550px) {
+                    width: 100%;
+                }
+            }
+        }
+    }
+
     .images_wrap {
         display: -webkit-box;
         display: -ms-flexbox;
@@ -264,9 +337,9 @@
         left: 0;
         width: 100%;
 
-        & > div {
+        > .container > div {
             background: none !important;
-            max-width: 550px;
+            max-width: 850px;
             margin: 0 auto;
 
             @media screen and (max-width: 550px) {
@@ -299,6 +372,8 @@
     .white_box {
 
         .content_wrap {
+            width: 100%;
+            display: inline-block;
 
             h2 {
                 color: $darkGray;

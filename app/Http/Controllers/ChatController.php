@@ -67,17 +67,10 @@ class ChatController extends Controller
     public function testing() {
 
         //$user = Auth::user();
-        $user = User::where('id', 93131205)->first();
-       /* $userSettings =  Auth::user()->settings()->first();
-        $user = User::where('id', Auth::user()->getAuthIdentifier())->first();*/
-        $setting = $user->settings()->pluck('images');
-        if (is_array(json_decode($setting[0], true))) {
-            dd(json_decode($setting[0]));
-        } else {
-            dd("not");
-        }
+       //$user = User::where('id', 93131205)->first();
+        $userID = User::where('username', 'fdgfgfh')->pluck('id')->first();
 
-
+        dd($userID);
 
     }
 

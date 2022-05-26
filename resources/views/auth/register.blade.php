@@ -1,4 +1,8 @@
+@php
 
+    $backgroundImage = $background !== null ? $background : asset('images/freakygrl4.jpg') ;
+
+@endphp
 <x-guest-layout>
 
         <x-auth-card>
@@ -14,11 +18,11 @@
 
                 <div class="content_wrap">
                     <div class="heading">
-                        <h2>Complete the form below to be instantly connected to <span>{{$addUser}}</span> and chat live <span>FREE!</span></h2>
+                        <h2>Complete the form below to be instantly connected to <span>{{$addUser ?: 'freakygrl269'}}</span> and chat live <span>FREE!</span></h2>
                     </div>
                     <div class="form_wrap {{ $addUser ? '' : 'alt' }} register"
                          style="
-                             background: url({{ asset('storage/agent-images/' . $addUser . '.jpg')}}) no-repeat;
+                             background: url( {{$backgroundImage}} ) no-repeat;
                              background-size: contain;
                              background-position: left;
                              background-color: #000;">

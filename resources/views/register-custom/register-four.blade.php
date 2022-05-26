@@ -5,9 +5,9 @@
 
         @php
 
-            $username = $username != null ? $username : 'freakygrl269';
+            $username = $addUser != null ? $addUser : 'freakygrl269';
 			$profileImage = $profile !== null ? $profile : asset('images/freakygrl1.jpg');
-			$attachmentImage = $attachment !== null ? $attachment :asset('images/freakygrl4.jpg') ;
+			$attachmentImage = $attachment !== null ? $attachment : asset('images/freakygrl4.jpg') ;
         @endphp
         <div class="content_wrap custom_four">
 
@@ -73,7 +73,7 @@
 
                                             <td>
                                                 <p data-id="36327401" data-type="user">
-                                                    {{ $username }}
+                                                    {{$username}}
                                                     <span>now</span>
                                                 </p>
                                                 <span>I'm naked right now</span>
@@ -140,7 +140,7 @@
                                 </a>
                                 <div class="avatar av-s header-avatar" style="margin: 0px 10px; margin-top: -5px; margin-bottom: -5px;">
                                 </div>
-                                <a href="#" class="user-name">{{ $username }}</a>
+                                <a href="#" class="user-name">{{$username}}</a>
                             </div>
 
                             <nav class="m-header-right">
@@ -189,7 +189,7 @@
                             </div>
                             <form id="register_form" method="POST" action="{{ route('custom-email-register') }}">
                                 <div class="heading my_row mb-4">
-                                    <h2>{{ $username }} sent you a private chat invite!</h2>
+                                    <h2>{{$username}} sent you a private chat invite!</h2>
                                 </div>
                                 @csrf
 
@@ -256,7 +256,7 @@
                         </a>
                     </nav>
                     <div class="avatar av-l" style="background: url({{ $profileImage }}) no-repeat; background-size: cover;"></div>
-                    <p class="info-name">{{ $username }}</p>
+                    <p class="info-name">{{$username}}</p>
                     <div class="messenger-infoView-btns">
                         <a href="#" class="danger delete-conversation">
                             <svg class="svg-inline--fa fa-trash-alt fa-w-14" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg="">
