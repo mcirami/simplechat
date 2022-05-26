@@ -39,7 +39,7 @@ const Links = () => {
             <h3>Links</h3>
             <div className="help_text">
                 <p>
-                    TOKEN: %s <br />
+                    TOKEN: <span>%s</span> <br />
                     If more than 1, Will be used in random order.
                 </p>
             </div>

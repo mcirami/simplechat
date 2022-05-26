@@ -47,6 +47,10 @@ const Script = () => {
                     <br />
                     ex: <span>%p1</span> will send image 1,  <span>%p2</span> will send image 2 etc...
                 </p>
+                <p className="mt-3">
+                    Use <span>%n</span> token to display models name<br />
+                    Use <span>%a</span> token to display models age
+                </p>
             </div>
             <CodeMirror
                 id="script"

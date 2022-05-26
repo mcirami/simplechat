@@ -11675,7 +11675,7 @@ body {
 }
 
 .message-card p sub {
-  display: inline-block;
+  display: none;
   font-size: 11px;
 }
 

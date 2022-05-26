@@ -40,6 +40,34 @@ class SettingsService {
         }
     }
 
+    public function saveModelInfo($age, $name) {
+
+        $userSettings = $this->user->settings()->first();
+
+        if($userSettings == null) {
+            $this->user->settings()->create([
+                'age' => $age,
+                'name' => $name
+            ]);
+        } else {
+            $userSettings->update([
+                'age' => $age,
+                'name' => $name
+            ]);
+        }
+    }
+
+    public function getModelInfo() {
+
+        $userSettings = $this->user->settings()->first();
+
+        return [
+            'age' => $userSettings->age,
+            'name' => $userSettings->name
+        ];
+
+    }
+
     public function getSetting( $column, $userID ) {
 
         $setting = null;
@@ -59,7 +87,12 @@ class SettingsService {
         }
 
         if ($setting != null) {
-            return json_decode($setting[0]);
+
+            if ( is_array(json_decode($setting[0], true)) ) {
+                return json_decode($setting[0]);
+            } else {
+                return $setting[0];
+            }
         }
 
        return $setting;

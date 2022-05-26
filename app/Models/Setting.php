@@ -17,6 +17,7 @@ class Setting extends Model
     protected $fillable = [
         'user_id',
         'name',
+        'age',
         'script',
         'keywords',
         'keep_alive',

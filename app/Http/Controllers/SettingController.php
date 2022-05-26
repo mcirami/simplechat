@@ -37,6 +37,23 @@ class SettingController extends Controller
 
     }
 
+    public function storeModelInfo(Request $request, SettingsService $settingService) {
+
+        $age = $request->get('age');
+        $name = $request->get('name');
+
+        $settingService->saveModelInfo($age, $name);
+
+        return response()->json(['message' => 'Model Info Saved']);
+    }
+
+    public function getModelInfo(SettingsService $settingService) {
+
+         $modelInfo = $settingService->getModelInfo();
+
+        return response()->json(['age' => $modelInfo['age'], 'name' => $modelInfo['name']]);
+    }
+
     public function getSetting(Request $request, SettingsService $settingService) {
 
         $column = $request->get('column');

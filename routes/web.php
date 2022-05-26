@@ -33,6 +33,8 @@ Route::get('email', [MailController::class, 'email']);
 Route::group(['middleware' => ['auth', 'role']], function() {
     Route::get('settings', [SettingController::class, 'showEditSettings'])->name('botSettings');
     Route::post('store-setting', [SettingController::class, 'storeSetting']);
+    Route::post('store-model-info', [SettingController::class, 'storeModelInfo']);
+    Route::get('get-model-info', [SettingController::class, 'getModelInfo']);
     Route::post('store-image', [SettingController::class, 'storeImage']);
     Route::post('remove-image', [SettingController::class, 'removeImage']);
 

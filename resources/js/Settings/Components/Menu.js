@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import {BiLink, BiNotepad, BiBot, BiImages} from 'react-icons/bi';
 import {ImProfile} from 'react-icons/im';
+import {IoWomanOutline} from 'react-icons/io5';
 
 const Menu = () => {
 
@@ -39,6 +40,14 @@ const Menu = () => {
                     Pictures
                 </Link>
             </li>
+            <li>
+                <Link to='model-info'>
+                    <span>
+                        <IoWomanOutline />
+                    </span>
+                    Model Info
+                </Link>
+            </li>
             {/*<li>
                 <Link to='keepalive'>Keep-Alive</Link>
             </li>*/}
@@ -47,7 +56,7 @@ const Menu = () => {
                     <span>
                         <ImProfile />
                     </span>
-                    Edit Profile
+                    Lander Content
                 </Link>
             </li>
         </ul>

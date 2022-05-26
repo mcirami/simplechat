@@ -39,12 +39,16 @@ const Keywords = () => {
             <div className="help_text">
                 <p>Keywords make conversations seem more realistic by responding in a way the script normally would not.<br />
                     ex: talk later|Sure, I'll be here|Yup, message me anytime!<br />
-                    FORMAT: KEYWORD|RESPONSE-1|RESPONSE-2
+                    FORMAT: <span>KEYWORD|RESPONSE-1|RESPONSE-2</span>
                 </p>
                 <p className="mt-3">
                     Use <span>%p plus pic number</span> token to send a pic along with your message - <span>MUST INCLUDE PIC NUMBER</span>
                     <br />
                     ex: <span>%p1</span> will send image 1,  <span>%p2</span> will send image 2 etc...
+                </p>
+                <p className="mt-3">
+                    Use <span>%n</span> token to display models name<br/>
+                    Use <span>%a</span> token to display models age
                 </p>
             </div>
             <CodeMirror

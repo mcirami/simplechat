@@ -1740,25 +1740,7 @@ if (!pathName.includes('register') && !pathName.includes('settings')) {
 
         } else {*/
 
-            const keywordPackets = {
-                column: 'keywords',
-                userID: fromID
-            }
-
-            const scriptPackets = {
-                column: 'script',
-                userID: fromID
-            }
-
-            const trackingPackets = {
-                to_id: sendTo,
-                from_id: fromID
-            }
-
             sendReply(
-                scriptPackets,
-                trackingPackets,
-                keywordPackets,
                 sendTo,
                 fromID,
                 text
@@ -1767,13 +1749,15 @@ if (!pathName.includes('register') && !pathName.includes('settings')) {
     }
 
     async function sendReply(
-        scriptPackets,
-        trackingPackets,
-        keywordPackets,
         sendTo,
         fromID,
         text
     ) {
+
+        const keywordPackets = {
+            column: 'keywords',
+            userID: fromID
+        }
 
         try {
 
@@ -1819,6 +1803,42 @@ if (!pathName.includes('register') && !pathName.includes('settings')) {
                                         sendBotMessage(sendTo, fromID, botMessage);
                                     }
                                 });
+                        } else if (botMessage.match(/%a/gi)) {
+
+                            const agePackets = {
+                                column: 'age',
+                                userID: fromID
+                            }
+
+                            axios.post('/get-setting', agePackets).
+                                then((response) => {
+
+                                    const age = response.data.age;
+
+                                    botMessage = botMessage.replace("%a", age);
+
+                                    sendBotMessage(sendTo, fromID, botMessage);
+
+                                });
+
+
+                        } else if (botMessage.match(/%n/gi)) {
+
+                            const namePackets = {
+                                column: 'name',
+                                userID: fromID
+                            }
+
+                            axios.post('/get-setting', namePackets).
+                                then((response) => {
+
+                                    const name = response.data.name;
+
+                                    botMessage = botMessage.replace("%n", name);
+
+                                    sendBotMessage(sendTo, fromID, botMessage);
+
+                                });
                         } else if (botMessage.includes("%p")) {
 
                             const index = botMessage.indexOf("%p");
@@ -1835,7 +1855,7 @@ if (!pathName.includes('register') && !pathName.includes('settings')) {
                         }
 
                     } else {
-                        sendScript(scriptPackets, trackingPackets, sendTo, fromID);
+                        sendScript(sendTo, fromID);
                     }
 
                 })
@@ -1844,7 +1864,17 @@ if (!pathName.includes('register') && !pathName.includes('settings')) {
         }
     }
 
-    async function sendScript(scriptPackets, trackingPackets, sendTo, fromID) {
+    async function sendScript(sendTo, fromID) {
+
+        const scriptPackets = {
+            column: 'script',
+            userID: fromID
+        }
+
+        const trackingPackets = {
+            to_id: sendTo,
+            from_id: fromID
+        }
 
         return await axios.post('/get-setting', scriptPackets).
             then(async (response) => {
@@ -1886,7 +1916,40 @@ if (!pathName.includes('register') && !pathName.includes('settings')) {
                                 } else {
                                     sendBotMessage(sendTo, fromID, botMessage)
                                 }
+                            });
+                    } else if (botMessage.match(/%a/gi)) {
 
+                        const agePackets = {
+                            column: 'age',
+                            userID: fromID
+                        }
+
+                        axios.post('/get-setting', agePackets).
+                            then((response) => {
+                                const age = response.data.age;
+
+                                botMessage = botMessage.replace("%a", age);
+
+                                sendBotMessage(sendTo, fromID, botMessage);
+
+                            });
+
+
+                    } else if (botMessage.match(/%n/gi)) {
+
+                        const namePackets = {
+                            column: 'name',
+                            userID: fromID
+                        }
+
+                        axios.post('/get-setting', namePackets).
+                            then((response) => {
+
+                                const name = response.data.name;
+
+                                botMessage = botMessage.replace("%n", name);
+
+                                sendBotMessage(sendTo, fromID, botMessage);
 
                             });
                     } else if (botMessage.includes("%p")) {
