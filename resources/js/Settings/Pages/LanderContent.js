@@ -66,7 +66,6 @@ const LanderContent = () => {
         }
     }
 
-    console.log(imageArray);
     const onSelectFile = (e, type) => {
         let files = e.target.files || e.dataTransfer.files;
         if (!files.length) {
