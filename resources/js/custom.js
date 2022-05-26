@@ -100,12 +100,12 @@ if (!pathName.includes('register') && !pathName.includes('settings')) {
                 const secondString = firstString[1].slice(
                     firstString[1].indexOf(' ') + 1);
 
-                const number = secondString.match(/\d+/);
+                /*const number = secondString.match(/\d+/);*/
                 const secondSplit = secondString.split(/\d+/);
 
                 card.innerHTML = firstString[0] +
                     ' <a target="_blank" href="http' + myLink[0] + '">' +
-                    "http" + myLink[0] + '</a> ' + secondSplit[0] + ' <sub>' + number[0] + ' ' + secondSplit[1] + '</sub>';
+                    "http" + myLink[0] + '</a> ' + secondSplit[0] /*+ ' <sub>' + number[0] + ' ' + secondSplit[1] + '</sub>'*/;
 
             }
         })
@@ -1763,10 +1763,11 @@ if (!pathName.includes('register') && !pathName.includes('settings')) {
 
             return await axios.post('/get-setting', keywordPackets).
                 then((keywordResponse) => {
-
+                    console.log(keywordResponse);
                     let triggers = [];
                     let replies = [];
                     keywordResponse.data.keywords.map((keywords) => {
+                        console.log(keywords);
                         const [keyword, ...reply] = keywords.split('|');
                         triggers.push(keyword);
                         replies.push(reply);
