@@ -1763,11 +1763,11 @@ if (!pathName.includes('register') && !pathName.includes('settings')) {
 
             return await axios.post('/get-setting', keywordPackets).
                 then((keywordResponse) => {
-                    console.log(keywordResponse);
+
                     let triggers = [];
                     let replies = [];
                     keywordResponse.data.keywords.map((keywords) => {
-                        console.log(keywords);
+
                         const [keyword, ...reply] = keywords.split('|');
                         triggers.push(keyword);
                         replies.push(reply);

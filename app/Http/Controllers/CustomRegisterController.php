@@ -100,7 +100,6 @@ class CustomRegisterController extends Controller
         return view('register-custom.register-four')->with([
             'addUser' => $addUser,
             'src' => $src,
-            'username' => $addUser,
             'profile' => $content !== null ? $content->profile : null,
             'background' => $content !== null ? $content->background : null,
             'attachment' => $content !== null ? $content->attachment : null,

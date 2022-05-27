@@ -22,6 +22,7 @@ use App\Http\Controllers\PageContentController;
 Route::get('/', function () {
     return view('home');
 });
+
 Route::get('register-two', [CustomRegisterController::class, 'showRegisterTwo']);
 Route::get('register-three', [CustomRegisterController::class, 'showRegisterThree']);
 Route::get('register-four', [CustomRegisterController::class, 'showRegisterFour']);

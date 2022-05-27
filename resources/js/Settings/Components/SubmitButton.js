@@ -23,7 +23,8 @@ const SubmitButton = ({value, column, setImageArray}) => {
             }
 
         } else {
-            const array = value.split("\n");
+            const arraySplit = value.split("\n");
+            const array = arraySplit.filter(e => e);
 
             const packets = {
                 column: column,
