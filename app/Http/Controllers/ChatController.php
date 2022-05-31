@@ -68,9 +68,9 @@ class ChatController extends Controller
 
         //$user = Auth::user();
        //$user = User::where('id', 93131205)->first();
-        $userID = User::where('username', 'fdgfgfh')->pluck('id')->first();
-
-        dd($userID);
+        //$userID = User::where('username', 'fdgfgfh')->pluck('id')->first();
+        $path = Storage::path('content-images/');
+        dd($path);
 
     }
 

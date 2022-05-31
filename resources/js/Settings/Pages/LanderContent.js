@@ -11,7 +11,9 @@ import EventBus from '../Utils/Bus';
 
 const LanderContent = () => {
 
+    // sets the preview after image selected and sets saved images on page load
     const [imagePreview, setImagePreview] = useState({});
+    // sets the images ready to upload and references if there's images ready to know if deleting from DB or just the state
     const [imageArray, setImageArray] = useState({});
     const [username, setUsername] = useState(null);
     const [allUserNames, setAllUserNames] = useState(null);

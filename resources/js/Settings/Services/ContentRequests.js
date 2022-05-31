@@ -19,9 +19,17 @@ export const saveContent = async (packets) => {
         const returnMessage = JSON.stringify(response.data.message);
         EventBus.dispatch("success", {message: returnMessage});
 
+        return {
+            "success" : true
+        }
+
     } catch (error) {
 
         console.error(error);
+        EventBus.dispatch("error", {message: "Error Saving Image"});
+        return {
+            "success" : false
+        }
     }
 }
 

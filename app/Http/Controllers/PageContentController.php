@@ -38,9 +38,9 @@ class PageContentController extends Controller
                     ], 422);
                 }*/
 
-        $service->saveContent($images, $username);
+        $data = $service->saveContent($images, $username);
 
-        return response()->json(['message' => "Profile Content Saved"]);
+        return response()->json(['message' => "Profile Content Saved", "data" => $data]);
 
     }
 

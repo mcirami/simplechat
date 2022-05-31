@@ -5,6 +5,9 @@ namespace App\Services;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
+//use Intervention\Image\Image;
+//use Intervention\Image\Imagick;
+use Imagick;
 
 class ContentServices {
 
@@ -21,6 +24,8 @@ class ContentServices {
             ]);
         }
 
+        $array = [];
+
         if (!empty($images)) {
             foreach ( $images as $key => $image ) {
 
@@ -28,9 +33,23 @@ class ContentServices {
                         explode( ':', substr( $image, 0, strpos( $image, ';' ) ) )[1] )[1];
                 $imageFile = Image::make( $image )->orientate();
 
+                //array_push($array, $image);
+
                 Storage::put( '/public/content-images/' . $user->id . "/" . $name, $imageFile );
 
                 $path = '/storage/content-images/' . $user->id . '/' . $name;
+
+                /*if($imageFile->mime() == "image/gif") {
+                    $gifImage = new Imagick($image);
+                    $gifFile = $gifImage->coalesceImages();
+                    do {
+                        $gifFile->resizeImage(120, 120, Imagick::FILTER_BOX, 1);
+                    } while ($gifFile->nextImage());
+                    $gifFile = $gifFile->deconstructImages();
+                    $gifFile->writeImages('new_120x120.gif', true);
+
+                    Storage::put( '/public/content-images/' . $user->id . "/" . $name, $gifFile );
+                }*/
 
                 if ($contentSettings == null) {
                     $contentSettings = $user->contentSettings()->create([
@@ -50,6 +69,8 @@ class ContentServices {
                 }
             }
         }
+
+        return $array;
     }
 
     public function getContent() {

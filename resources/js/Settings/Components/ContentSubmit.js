@@ -13,9 +13,15 @@ function ContentSubmit({username, imageArray, setImageArray, available}) {
                 imageArray: imageArray
             }
 
-            saveContent(packets);
+            saveContent(packets)
+            .then((response) => {
 
-            setImageArray({});
+                if(response.success) {
+                    setImageArray({});
+                }
+
+            });
+
         } else {
             EventBus.dispatch("error", {message: "Username Not Available"});
         }
